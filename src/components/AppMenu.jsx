@@ -18,36 +18,50 @@ import staffIcon from "../images/main-nav/staff.svg";
 import userIcon from "../images/main-nav/user.svg";
 import promotionIcon from "../images/main-nav/promotion.svg";
 import statisticIcon from "../images/main-nav/statistic.svg";
+import ordersIcon2 from "../images/main-nav-selected/orders.svg";
+import productsIcon2 from "../images/main-nav-selected/products.svg";
+import storageIcon2 from "../images/main-nav-selected/storage.svg";
+import staffIcon2 from "../images/main-nav-selected/staff.svg";
+import userIcon2 from "../images/main-nav-selected/user.svg";
+import promotionIcon2 from "../images/main-nav-selected/promotion.svg";
+import statisticIcon2 from "../images/main-nav-selected/statistic.svg";
 import logOutIcon from "../images/log-out.svg";
 
 const navItems = [
   {
     title: "Orders",
     icon: ordersIcon,
+    selectedIcon: ordersIcon2
   },
   {
     title: "Products",
     icon: productsIcon,
+    selectedIcon: productsIcon2
   },
   {
     title: "Storage",
     icon: storageIcon,
+    selectedIcon: storageIcon2
   },
   {
     title: "Staff",
     icon: staffIcon,
+    selectedIcon: staffIcon2
   },
   {
     title: "User",
     icon: userIcon,
+    selectedIcon: userIcon2
   },
   {
     title: "Promotion",
     icon: promotionIcon,
+    selectedIcon: promotionIcon2
   },
   {
     title: "Statistic",
     icon: statisticIcon,
+    selectedIcon: statisticIcon2
   },
 ];
 
@@ -82,7 +96,7 @@ const AppMenu = ({ drawerWidth }) => {
           >
             <ListItemButton className="py-[18px] px-[41px]">
               <ListItemIcon>
-                <img src={nav.icon} alt="Sidebar" className="fill-white"/>
+                <img src={currNav===nav.title.toLocaleLowerCase() ? nav.selectedIcon : nav.icon} alt="Sidebar" className="fill-white"/>
               </ListItemIcon>
               <ListItemText
                 primary={nav.title}
