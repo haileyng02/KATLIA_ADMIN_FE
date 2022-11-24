@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import AppMenu from "../components/AppMenu";
 import profileIcon from "../images/profile.svg";
 import Orders from "./Orders";
+import { navRoutes } from "../routes";
 
 const drawerWidth = 250;
 
@@ -45,14 +46,17 @@ const Main = () => {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` ,},
-          height: '100vh',
-          pt:10,
-          backgroundColor:'#D9D9D9'
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          height: "100vh",
+          pt: 10,
+          backgroundColor: "#D9D9D9",
         }}
       >
         <Routes>
-          <Route path={'/orders'} element={<Orders />} />;
+          {navRoutes.map((route, index) => {
+            const Page = route.component;
+            return <Route key={index} path={route.path} element={<Page />} />;
+          })}
         </Routes>
       </Box>
     </Box>
