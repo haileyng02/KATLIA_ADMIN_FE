@@ -8,7 +8,7 @@ function App() {
     <div className=''>
       <Routes>
         <Route path='/' element={<Main />}>
-        {navRoutes.map((route, index) => {
+          {navRoutes.map((route, index) => {
             const Page = route.component;
             return <Route key={index} path={route.path} element={<Page />} />;
           })}
