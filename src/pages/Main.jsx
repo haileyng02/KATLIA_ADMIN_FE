@@ -10,7 +10,7 @@ const drawerWidth = 250;
 
 const Main = () => {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex" }} >
       <AppBar
         position="fixed"
         sx={{
@@ -44,7 +44,6 @@ const Main = () => {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          height: "100vh",
           pt: 10,
           backgroundColor: "#D9D9D9",
         }}
