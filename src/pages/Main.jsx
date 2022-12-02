@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import AppMenu from "../components/AppMenu";
 import profileIcon from "../images/profile.svg";
-import Orders from "./Orders";
-import { navRoutes } from "../routes";
 
 const drawerWidth = 250;
 
@@ -32,9 +29,9 @@ const Main = () => {
               <img src={searchIcon} alt='Search'/>
             </IconButton>
           </Box> */}
-          <div className="flex">
+          <div className="flex items-center">
             <img src={profileIcon} alt="Profile" />
-            <p className="text-black text-[16px] ml-[12px] ">
+            <p className="text-black text-[16px] ml-[12px] mb-0">
               Nguyen Huu Trung Kien
             </p>
           </div>
@@ -52,12 +49,7 @@ const Main = () => {
           backgroundColor: "#D9D9D9",
         }}
       >
-        <Routes>
-          {navRoutes.map((route, index) => {
-            const Page = route.component;
-            return <Route key={index} path={route.path} element={<Page />} />;
-          })}
-        </Routes>
+        <Outlet />
       </Box>
     </Box>
   );

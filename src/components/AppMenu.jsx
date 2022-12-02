@@ -11,64 +11,68 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import ordersIcon from "../images/main-nav/orders.svg";
-import productsIcon from "../images/main-nav/products.svg";
-import storageIcon from "../images/main-nav/storage.svg";
-import staffIcon from "../images/main-nav/staff.svg";
-import userIcon from "../images/main-nav/user.svg";
-import promotionIcon from "../images/main-nav/promotion.svg";
-import statisticIcon from "../images/main-nav/statistic.svg";
-import ordersIcon2 from "../images/main-nav-selected/orders.svg";
-import productsIcon2 from "../images/main-nav-selected/products.svg";
-import storageIcon2 from "../images/main-nav-selected/storage.svg";
-import staffIcon2 from "../images/main-nav-selected/staff.svg";
-import userIcon2 from "../images/main-nav-selected/user.svg";
-import promotionIcon2 from "../images/main-nav-selected/promotion.svg";
-import statisticIcon2 from "../images/main-nav-selected/statistic.svg";
+import {
+  ordersIcon,
+  productsIcon,
+  storageIcon,
+  staffIcon,
+  userIcon,
+  promotionIcon,
+  statisticIcon,
+} from "../images/main-nav";
+import {
+  ordersIcon2,
+  productsIcon2,
+  storageIcon2,
+  staffIcon2,
+  userIcon2,
+  promotionIcon2,
+  statisticIcon2,
+} from "../images/main-nav-selected";
 import logOutIcon from "../images/log-out.svg";
 
 const navItems = [
   {
     title: "Orders",
     icon: ordersIcon,
-    selectedIcon: ordersIcon2
+    selectedIcon: ordersIcon2,
   },
   {
     title: "Products",
     icon: productsIcon,
-    selectedIcon: productsIcon2
+    selectedIcon: productsIcon2,
   },
   {
     title: "Storage",
     icon: storageIcon,
-    selectedIcon: storageIcon2
+    selectedIcon: storageIcon2,
   },
   {
     title: "Staff",
     icon: staffIcon,
-    selectedIcon: staffIcon2
+    selectedIcon: staffIcon2,
   },
   {
     title: "User",
     icon: userIcon,
-    selectedIcon: userIcon2
+    selectedIcon: userIcon2,
   },
   {
     title: "Promotion",
     icon: promotionIcon,
-    selectedIcon: promotionIcon2
+    selectedIcon: promotionIcon2,
   },
   {
     title: "Statistic",
     icon: statisticIcon,
-    selectedIcon: statisticIcon2
+    selectedIcon: statisticIcon2,
   },
 ];
 
 const AppMenu = ({ drawerWidth }) => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [currNav,setCurrNav] = useState('orders');
+  const [currNav, setCurrNav] = useState("orders");
 
   const handleNavClick = (path) => {
     navigate("/" + path.toLowerCase());
@@ -76,15 +80,16 @@ const AppMenu = ({ drawerWidth }) => {
 
   // Get current nav based on URL
   useEffect(() => {
-    const path =window.location.pathname;
-    setCurrNav(path.substring(1));
-    console.log(path.substring(1));
+    const path = window.location.pathname;
+    let nav = path.substring(1);
+    if (nav === "") nav = "orders";
+    setCurrNav(nav);
   }, [navigate]);
 
   const drawer = (
     <div className="flex flex-col h-full">
       <Box sx={{ height: 90, backgroundColor: "#C85A27", display: "flex" }}>
-        <h1 className="text-30 m-auto">KATLIA</h1>
+        <h1 className="text-30 m-auto font-inder">KATLIA</h1>
       </Box>
       <List disablePadding>
         {navItems.map((nav, index) => (
@@ -92,17 +97,35 @@ const AppMenu = ({ drawerWidth }) => {
             key={index}
             disablePadding
             onClick={() => handleNavClick(nav.title)}
-            sx={{backgroundColor : currNav===nav.title.toLocaleLowerCase() ? 'rgba(249, 175, 94, 0.9)' : 'white'}}
+            sx={{
+              backgroundColor:
+                currNav === nav.title.toLocaleLowerCase()
+                  ? "rgba(249, 175, 94, 0.9)"
+                  : "white",
+            }}
           >
             <ListItemButton className="py-[18px] px-[41px]">
               <ListItemIcon>
-                <img src={currNav===nav.title.toLocaleLowerCase() ? nav.selectedIcon : nav.icon} alt="Sidebar" className="fill-white"/>
+                <img
+                  src={
+                    currNav === nav.title.toLocaleLowerCase()
+                      ? nav.selectedIcon
+                      : nav.icon
+                  }
+                  alt="Sidebar"
+                  className="fill-white"
+                />
               </ListItemIcon>
               <ListItemText
                 primary={nav.title}
                 disableTypography
                 className="font-inter"
-                sx={{color: currNav===nav.title.toLocaleLowerCase() ? 'white' : 'black'}}
+                sx={{
+                  color:
+                    currNav === nav.title.toLocaleLowerCase()
+                      ? "white"
+                      : "black",
+                }}
               />
             </ListItemButton>
           </ListItem>

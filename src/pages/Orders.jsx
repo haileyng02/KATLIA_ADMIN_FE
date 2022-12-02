@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { DatePicker, Button } from "antd";
 import dropIcon from "../images/dropdown.svg";
 import calendarIcon from "../images/calendar.svg";
 
@@ -46,53 +47,28 @@ const Orders = () => {
     <div>
       <div className="flex justify-between items-center">
         <div className="flex items-center ml-[23px]">
-          <h1 className="text-30 font-inter font-bold">Order</h1>
-          <p className="ml-[15px]">15 Orders found</p>
+          <h1 className="text-30 font-inter font-bold mb-0">Order</h1>
+          <p className="ml-[15px] mb-0">15 Orders found</p>
         </div>
-        {/* <Input
-          width="190px"
-          type="date"
-          css={{
-            $$inputColor: "rgba(249, 175, 94, 0.57)",
-            $$inputTextColor: "#9098B1",
-          }}
-          className=" font-inter font-bold"
-        /> */}
+        <DatePicker className="bg-primary font-bold " />
       </div>
       <div className="flex justify-between mt-[37px]">
         <div className="flex">
-          {/* {buttons.map((b, i) => (
-            <Button
+          {buttons.map((b, i) => (
+            <button
               key={i}
-              className="bg-white font-inter font-semibold"
-              css={{
-                color: "rgba(0, 0, 0, 0.5)",
-                width: 85,
-                height: 36,
-                minWidth: 0,
-                fontSize: 15,
-                $$buttonBorderRadius: "5px",
-              }}
+              className="bg-white w-[85px] h-[36px] rounded-5"
+              style={{ color: "rgba(0, 0, 0, 0.5)" }}
             >
-              {b}
-            </Button>
-          ))} */}
+              <p className="font-inter font-semibold text-15 mb-0 hover:text-secondary">{b}</p>
+            </button>
+          ))}
         </div>
-        {/* <Button
-          bordered
-          color={"warning"}
-          borderWeight={"light"}
-          className="bg-white font-inter font-semibold"
-          css={{
-            borderColor: "Black",
-            color: "Black",
-            $$buttonHeight: 40,
-            minWidth: 100,
-            $$buttonBorderRadius: "5px",
-          }}
+        <button
+          className="bg-white  h-[40px] px-[13px] rounded-5 border-1 border-black" danger color="rgba(249, 175, 94, 0.9)"
         >
-          Clear Filter
-        </Button> */}
+          <p className="mb-0 text-14 font-semibold">Clear Filter</p>
+        </button>
       </div>
     </div>
   );

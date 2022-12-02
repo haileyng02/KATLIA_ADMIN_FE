@@ -15,8 +15,8 @@ module.exports = {
         200: "200px",
       },
       colors: {
-        primary: 'rgba(200, 90, 39, 0.57)',
-        secondary: "#C85A27",
+        primary: 'rgba(249, 175, 94, 0.57)',
+        secondary: "rgba(249, 175, 94, 0.9)",
         divider: "#ABABAB",
         'header': '#D9D9D9',
         'placeholder': 'rgba(0, 0, 0, 0.25)',
@@ -26,11 +26,12 @@ module.exports = {
         'menu-nav': 'rgba(0, 0, 0, 0.46)',
         'account-nav': 'rgba(0, 0, 0, 0.47)',
         'black70': 'rgba(0,0,0,0.7)',
-        'kaliablue' : "#223263",
-        'kaliayellow' : "#F9AF5E"
+        'kaliablue': "#223263",
+        'kaliayellow': "#F9AF5E"
       },
       fontSize: {
         '13': ['13px', '13px'],
+        '14': '14px',
         '15': '15px',
         '20': '20px',
         '25': '25px',
@@ -43,14 +44,18 @@ module.exports = {
       boxShadow: {
         'circle': '0px 0px 10px rgba(0, 0, 0, 0.2)',
       },
-      fontFamily:{
+      fontFamily: {
+        'inter': ['Inter'],
+        'inder': ['Inder'],
         'kopub-batang': ['KoPub Batang'],
         'inconsolata': ['Inconsolata'],
-        'inter': ['Inter'],
-        'poppins' : ['Poppins']
+        'poppins': ['Poppins']
       },
-      borderWidth:{
+      borderWidth: {
         '1': '1px',
+      },
+      borderRadius: {
+        '5': '5px'
       }
     },
   },

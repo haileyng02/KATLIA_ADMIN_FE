@@ -1,24 +1,21 @@
-import { Routes, Route } from 'react-router-dom'
-import Main from './pages/Main';
-import Orders from './pages/Orders';
-import { publicRoutes, privateRoutes, navRoutes } from './routes'
+import { Routes, Route } from 'react-router-dom';
+import 'antd/dist/reset.css';
+import { Main, Orders, Products, Storage, Staff, User, Promotion, Statistic } from './pages';
 
 function App() {
   return (
-    <div className=''>
-      <Routes>
-        <Route path='/' element={<Main />}>
-          {navRoutes.map((route, index) => {
-            const Page = route.component;
-            return <Route key={index} path={route.path} element={<Page />} />;
-          })}
-        </Route>
-        {privateRoutes.map((route, index) => {
-          const Page = route.component;
-          return <Route key={index} path={route.path} element={<Page />} />
-        })}
-      </Routes>
-    </div>
+    <Routes>
+      <Route path='/' element={<Main />}>
+        <Route index element={<Orders />} />
+        <Route path='orders' element={<Orders />} />
+        <Route path='products' element={<Products />} />
+        <Route path='storage' element={<Storage />} />
+        <Route path='staff' element={<Staff />} />
+        <Route path='user' element={<User />} />
+        <Route path='promotion' element={<Promotion />} />
+        <Route path='statistic' element={<Statistic />} />
+      </Route>
+    </Routes>
   );
 }
 
