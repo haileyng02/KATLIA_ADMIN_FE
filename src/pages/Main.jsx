@@ -10,7 +10,7 @@ const drawerWidth = 250;
 
 const Main = () => {
   return (
-    <Box sx={{ display: "flex" }} >
+    <Box sx={{ display: "flex", backgroundColor: "#D9D9D9" }}>
       <AppBar
         position="fixed"
         sx={{
@@ -45,8 +45,8 @@ const Main = () => {
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           pt: 10,
-          backgroundColor: "#D9D9D9",
         }}
+        className='min-h-screen'
       >
         <Outlet />
       </Box>

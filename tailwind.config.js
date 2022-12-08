@@ -26,6 +26,7 @@ module.exports = {
         'menu-nav': 'rgba(0, 0, 0, 0.46)',
         'account-nav': 'rgba(0, 0, 0, 0.47)',
         'black70': 'rgba(0,0,0,0.7)',
+        'black80': 'rgba(0,0,0,0.8)',
         'kaliablue': "#223263",
         'kaliayellow': "#F9AF5E"
       },
@@ -55,7 +56,8 @@ module.exports = {
         '1': '1px',
       },
       borderRadius: {
-        '5': '5px'
+        '5': '5px',
+        '10': '10px'
       }
     },
   },
@@ -63,7 +65,7 @@ module.exports = {
   variants: {
     extend: {
       display: ['group-hover'],
-      visibility: ['group-hover']
+      visibility: ['group-hover'],
     }
   }
 }

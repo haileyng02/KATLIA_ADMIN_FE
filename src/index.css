@@ -23,6 +23,38 @@ body {
   text-rendering: optimizeSpeed;
 }
 
+div.row{
+  margin-bottom: 0px;
+}
+
+.title {
+  @apply text-30 font-inter font-bold mb-0
+}
+
+.subtitle {
+  @apply ml-[15px] text-15 font-semibold text-black80 mb-0
+}
+
+.row {
+  @apply flex items-center
+}
+
+.between-row {
+  @apply flex justify-between items-center
+}
+
+.button {
+  @apply h-[40px] w-[100px] rounded-10 bg-primary text-[#9098B1] font-bold text-14
+}
+
+.clear-button {
+  @apply bg-white h-[40px] w-[100px] rounded-5 border-1 border-black
+}
+
+.clear-button p {
+  @apply mb-0 text-14 font-semibold
+}
+
 .action-button {
   @apply w-6 h-6 rounded-5
 }

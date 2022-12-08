@@ -178,7 +178,7 @@ const Orders = () => {
             style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
           >
             <center>
-              <img src={editIcon} alt="Cancel" />
+              <img src={cancelIcon} alt="Cancel" />
             </center>
           </button>
         </div>
@@ -216,11 +216,11 @@ const Orders = () => {
   };
 
   return (
-    <div className="h-screen">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center ml-[23px]">
-          <h1 className="text-30 font-inter font-bold mb-0">Order</h1>
-          <p className="ml-[15px] mb-0">15 Orders found</p>
+    <div>
+      <div className="between-row">
+        <div className="row">
+          <h1 className="title">Order</h1>
+          <p className="subtitle">15 Orders found</p>
         </div>
         <DatePicker className="bg-primary font-bold " />
       </div>
@@ -239,17 +239,16 @@ const Orders = () => {
           ))}
         </div>
         <button
-          className="bg-white  h-[40px] px-[13px] rounded-5 border-1 border-black"
-          color="rgba(249, 175, 94, 0.9)"
+          className="clear-button"
         >
-          <p className="mb-0 text-14 font-semibold">Clear Filter</p>
+          <p>Clear Filter</p>
         </button>
       </div>
       <Table
         columns={columns}
         dataSource={data}
         onChange={onChange}
-        className="mt-5 pagination-active table-header"
+        ="mt-5 pagination-active table-header"
       />
     </div>
   );
