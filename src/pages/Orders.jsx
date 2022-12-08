@@ -248,7 +248,7 @@ const Orders = () => {
         columns={columns}
         dataSource={data}
         onChange={onChange}
-        ="mt-5 pagination-active table-header"
+        className="mt-5 pagination-active table-header"
       />
     </div>
   );
