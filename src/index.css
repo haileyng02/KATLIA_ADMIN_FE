@@ -43,6 +43,10 @@ div.row{
   @apply flex justify-between items-center
 }
 
+.buttons-row {
+  @apply row gap-x-[10px]
+}
+
 .button {
   @apply h-[40px] w-[100px] rounded-10 bg-primary text-[#9098B1] font-bold text-14
 }
@@ -78,4 +82,20 @@ div.row{
 
 .table-header .ant-table-column-sorter-down.active {
   color: rgba(249, 175, 94, 0.9);
+}
+
+.options .ant-segmented-group {
+  @apply h-full 
+}
+
+.options .ant-segmented-item {
+  @apply flex items-center
+}
+
+.ant-segmented-item-label {
+  @apply text-15 font-inter font-semibold
+}
+
+.ant-segmented-item-selected .ant-segmented-item-label{
+  @apply text-secondary
 }

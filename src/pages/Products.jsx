@@ -95,7 +95,7 @@ const Products = () => {
         <h1 className="title">Product</h1>
         <p className="subtitle">1 Product found</p>
       </div>
-      <div className="mt-[15px] row justify-end gap-x-[10px]">
+      <div className="mt-[15px] buttons-row justify-end">
         <button className="button">Add Item</button>
         <button className="clear-button">
           <p>Clear Filter</p>
