@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "antd";
-import {viewIcon,editIcon,deleteIcon} from '../images/actions'
+import {viewIcon,editIcon,deleteIcon} from '../images/actions';
 
 const data = [
   {
@@ -55,7 +55,7 @@ const Products = () => {
       key: "action",
       align: "center",
       render: (_) => (
-        <div className="flex gap-x-[11px] justify-center">
+        <div className="flex gap-x-[20px] justify-center">
           <button
             className="action-button"
             style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}

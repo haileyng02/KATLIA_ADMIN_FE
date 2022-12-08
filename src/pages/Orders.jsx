@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { DatePicker, Table, Segmented } from "antd";
 import getStatus from '../utils/getStatus';
-import { viewIcon, editIcon, cancelIcon } from "../images/actions";
+import { viewIcon, checkIcon, cancelIcon } from "../images/actions";
 
 const options = ["All Order", "Completed", "Pading", "Cancel"];
 
@@ -168,10 +168,10 @@ const Orders = () => {
           </button>
           <button
             className="action-button"
-            style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
+            style={{ backgroundColor: "#60BE80" }}
           >
             <center>
-              <img src={editIcon} alt="Edit" />
+              <img src={checkIcon} alt="Check" />
             </center>
           </button>
           <button
