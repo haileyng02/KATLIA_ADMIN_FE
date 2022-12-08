@@ -67,6 +67,10 @@ div.row{
   @apply mb-0 text-15 font-semibold font-inter
 }
 
+.table-cell-medium {
+  @apply mb-0 text-15 font-medium font-inter
+}
+
 .pagination-active .ant-pagination-item-active{
   border-color: transparent;
   background-color: rgba(249, 175, 94, 0.9);

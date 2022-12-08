@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "antd";
+import getRole from "../utils/getRole";
 import { editIcon } from "../images/actions";
 
 const data = [
@@ -98,30 +99,14 @@ const Staff = () => {
   const getStatus = (status) => {
     switch (status) {
       case "Working":
-        return <p className={"table-cell text-[#60BE80]"}>{status}</p>;
+        return <p className={"table-cell-medium text-[#60BE80]"}>{status}</p>;
       case "Retired":
         return (
           <p
-            className={"table-cell"}
+            className={"table-cell-medium"}
             style={{ color: "rgba(245, 150, 7, 0.57)" }}
           >
             {status}
-          </p>
-        );
-      default:
-        return null;
-    }
-  };
-
-  const getRole = (role) => {
-    switch (role) {
-      case "Admin":
-        return (
-          <p
-            className={"table-cell"}
-            style={{ color: "rgba(253, 56, 56, 0.9)" }}
-          >
-            {role}
           </p>
         );
       default:
