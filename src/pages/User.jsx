@@ -1,5 +1,5 @@
-import React from 'react';
-import { Table } from 'antd';
+import React from "react";
+import { Table } from "antd";
 import getRole from "../utils/getRole";
 import { profileIcon } from "../images/actions";
 
@@ -10,7 +10,7 @@ const data = [
     name: "Nguyen Huu Trung Kien",
     email: "a@gmail.com",
     phoneNumber: "0975305060",
-    role: "Admin"
+    role: "Admin",
   },
   {
     key: "2",
@@ -18,7 +18,7 @@ const data = [
     name: "A",
     email: "a@gmail.com",
     phoneNumber: "0975305060",
-    role: "Customer"
+    role: "Customer",
   },
 ];
 
@@ -80,18 +80,22 @@ const User = () => {
 
   return (
     <div>
-      <div className='row'>
-        <h1 className='title'>User</h1>
-        <p className='subtitle'>2 Users found</p>
+      <div className="row">
+        <h1 className="title">User</h1>
+        <p className="subtitle">2 Users found</p>
       </div>
-      <button className='clear-button mt-[12px] float-right'><p>Clear Filter</p></button>
+      <div className="mt-[12px] flex justify-end">
+        <button className="clear-button">
+          <p>Clear Filter</p>
+        </button>
+      </div>
       <Table
         columns={columns}
         dataSource={data}
         className="mt-5 pagination-active table-header"
       />
     </div>
-  )
-}
+  );
+};
 
-export default User
+export default User;
