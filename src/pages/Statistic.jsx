@@ -1,4 +1,7 @@
 import React from "react";
+import MonthlyRevenue from "../components/MonthlyRevenue";
+import OrdersAmount from "../components/OrdersAmount";
+import PieChart from "../components/PieChart";
 import StatisticCard from "../components/StatisticCard";
 
 const data = {
@@ -28,6 +31,11 @@ const Statistic = () => {
           percent={-2.8}
         />
         <StatisticCard title={"GROWTH"} value={89.87 + "%"} percent={2.8} />
+      </div>
+      <MonthlyRevenue />
+      <div className="mt-5 flex justify-between">
+        <OrdersAmount />
+        <PieChart />
       </div>
     </div>
   );

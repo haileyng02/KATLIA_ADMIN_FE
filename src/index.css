@@ -103,3 +103,11 @@ div.row{
 .ant-segmented-item-selected .ant-segmented-item-label{
   @apply text-secondary
 }
+
+.chart-card {
+  @apply bg-white rounded-20 p-5
+}
+
+.chart-title {
+  @apply font-semibold text-[17px] text-[#0E132F] mb-[40px]
+}

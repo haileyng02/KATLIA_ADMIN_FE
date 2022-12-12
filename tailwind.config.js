@@ -57,7 +57,8 @@ module.exports = {
       },
       borderRadius: {
         '5': '5px',
-        '10': '10px'
+        '10': '10px',
+        '20': '20px',
       }
     },
   },
