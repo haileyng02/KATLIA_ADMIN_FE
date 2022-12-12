@@ -105,7 +105,7 @@ const data = [
   },
 ];
 
-const Storage = () => {
+const Import = () => {
   const columns = [
     {
       title: "Order ID",
@@ -187,7 +187,7 @@ const Storage = () => {
   return (
     <div>
       <div className="row">
-        <h1 className="title">Storage</h1>
+        <h1 className="title">Import</h1>
         <p className="subtitle">1 Import found</p>
       </div>
       <div className="between-row">
@@ -212,4 +212,4 @@ const Storage = () => {
   );
 };
 
-export default Storage;
+export default Import;

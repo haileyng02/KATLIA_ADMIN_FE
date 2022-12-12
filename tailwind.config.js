@@ -17,6 +17,7 @@ module.exports = {
       colors: {
         primary: 'rgba(249, 175, 94, 0.57)',
         secondary: "rgba(249, 175, 94, 0.9)",
+        'customer-primary': 'rgba(200, 90, 39, 0.57)',
         divider: "#ABABAB",
         'header': '#D9D9D9',
         'placeholder': 'rgba(0, 0, 0, 0.25)',

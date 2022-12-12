@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import 'antd/dist/reset.css';
-import { Main, Orders, Products, Storage, Staff, User, Promotion, Statistic } from './pages';
+import { Main, Orders, Products, Import, Staff, User, Promotion, Statistic } from './pages';
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
         <Route index element={<Orders />} />
         <Route path='orders' element={<Orders />} />
         <Route path='products' element={<Products />} />
-        <Route path='storage' element={<Storage />} />
+        <Route path='import' element={<Import />} />
         <Route path='staff' element={<Staff />} />
         <Route path='user' element={<User />} />
         <Route path='promotion' element={<Promotion />} />

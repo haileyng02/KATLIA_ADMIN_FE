@@ -5,7 +5,6 @@ import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -14,7 +13,7 @@ import ListItemText from "@mui/material/ListItemText";
 import {
   ordersIcon,
   productsIcon,
-  storageIcon,
+  importIcon,
   staffIcon,
   userIcon,
   promotionIcon,
@@ -23,7 +22,7 @@ import {
 import {
   ordersIcon2,
   productsIcon2,
-  storageIcon2,
+  importIcon2,
   staffIcon2,
   userIcon2,
   promotionIcon2,
@@ -43,9 +42,9 @@ const navItems = [
     selectedIcon: productsIcon2,
   },
   {
-    title: "Storage",
-    icon: storageIcon,
-    selectedIcon: storageIcon2,
+    title: "Import",
+    icon: importIcon,
+    selectedIcon: importIcon2,
   },
   {
     title: "Staff",

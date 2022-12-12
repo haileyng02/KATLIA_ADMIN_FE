@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { DatePicker, Table, Segmented } from "antd";
 import getStatus from '../utils/getStatus';
 import { viewIcon, checkIcon, cancelIcon } from "../images/actions";
+import CancelOrderModal from "../modals/order/CancelOrderModal";
 
 const options = ["All Order", "Completed", "Pading", "Cancel"];
 
@@ -108,6 +109,7 @@ const data = [
 ];
 
 const Orders = () => {
+  const [cancelModal,setCancelModal] = useState(false);
   const columns = [
     {
       title: "Order ID",
@@ -177,6 +179,7 @@ const Orders = () => {
           <button
             className="action-button"
             style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
+            onClick={()=>{setCancelModal(true)}}
           >
             <center>
               <img src={cancelIcon} alt="Cancel" />
@@ -227,6 +230,7 @@ const Orders = () => {
         onChange={onChange}
         className="mt-5 pagination-active table-header"
       />
+      <CancelOrderModal open={cancelModal} handleCancel={()=>setCancelModal(false)}/>
     </div>
   );
 };
