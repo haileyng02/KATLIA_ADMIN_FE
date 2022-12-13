@@ -10,6 +10,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import WarningModal from '../modals/WarningModal'
 import {
   ordersIcon,
   productsIcon,
@@ -71,6 +72,7 @@ const navItems = [
 const AppMenu = ({ drawerWidth }) => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [logOutOpen,setLogOutOpen] = useState(false);
   const [currNav, setCurrNav] = useState("orders");
 
   const handleNavClick = (path) => {
@@ -142,6 +144,7 @@ const AppMenu = ({ drawerWidth }) => {
             color: "black",
             fontFamily: "Inter",
           }}
+          onClick={()=>setLogOutOpen(true)}
         >
           Log Out
         </Button>
@@ -190,6 +193,7 @@ const AppMenu = ({ drawerWidth }) => {
       >
         {drawer}
       </Drawer>
+      <WarningModal text='Are you sure you want to log out?' open={logOutOpen} handleCancel={()=>setLogOutOpen(false)}/>
     </Box>
   );
 };
