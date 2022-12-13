@@ -1,9 +1,9 @@
 import React,{useState} from "react";
 import { Modal } from "antd";
 import CountingTextArea from "../../components/CountingTextArea";
-import getModalFooter from "../../utils/getModalFooter";
 import ModalTitle from "../../components/ModalTitle";
 import WarningModal from "../WarningModal";
+import getModalFooter from "../../utils/getModalFooter";
 
 const CancelOrderModal = ({ open, handleCancel }) => {
   const [confirm,setConfirm] = useState(false);

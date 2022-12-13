@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table } from "antd";
 import {viewIcon,editIcon,deleteIcon} from '../images/actions';
+import ProductDetailModal from "../modals/product/ProductDetailModal";
 
 const data = [
   {
@@ -15,6 +16,7 @@ const data = [
 
 
 const Products = () => {
+  const [detailOpen,setDetailOpen] = useState(false);
   const columns = [
     {
       title: "Product ID",
@@ -59,6 +61,7 @@ const Products = () => {
           <button
             className="action-button"
             style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
+            onClick={()=>setDetailOpen(true)}
           >
             <center>
               <img src={viewIcon} alt="View" />
@@ -107,6 +110,7 @@ const Products = () => {
         onChange={onChange}
         className="mt-5 pagination-active table-header"
       />
+      <ProductDetailModal open={detailOpen} handleCancel={()=>setDetailOpen(false)}/>
     </div>
   );
 };

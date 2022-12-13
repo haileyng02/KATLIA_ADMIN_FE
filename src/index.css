@@ -96,6 +96,15 @@ div.row{
   color: rgba(249, 175, 94, 0.9);
 }
 
+.table-product-detail {
+  border-collapse: separate;
+  border-spacing: 15px 25px;
+}
+
+.table-product-detail th{
+  @apply text-right font-inter font-medium w-[20.5%]
+}
+
 .options .ant-segmented-group {
   @apply h-full 
 }
