@@ -1,26 +1,27 @@
-import React, { useState } from "react";
+import React,{useState} from "react";
 import { Modal } from "antd";
 import CountingTextArea from "../../components/CountingTextArea";
+import getModalFooter from "../../utils/getModalFooter";
+import ModalTitle from "../../components/ModalTitle";
+import WarningModal from "../WarningModal";
 
 const CancelOrderModal = ({ open, handleCancel }) => {
+  const [confirm,setConfirm] = useState(false);
+  const handleOk = () => {
+    setConfirm(true);
+  }
   return (
     <Modal
-      title={<h2 className="font-semibold text-[25px] mb-0">Cancel Order</h2>}
+      title={<ModalTitle text={'Cancel Order'}/>}
       open={open}
       onCancel={handleCancel}
       centered
       width={700}
-      footer={[
-        <button onClick={handleCancel} className="h-[34px] border-1 border-black rounded-5 px-[10px] text-15">
-          Cancel
-        </button>,
-        <button className="h-[34px] bg-[#F9AF5EE5] rounded-5 px-[10px] text-15 text-white ml-5">
-          Confirm
-        </button>,
-      ]}
+      footer={getModalFooter({handleCancel,handleOk})}
     >
       <h2 className="font-medium text-[20px]">Cancel Reason</h2>
       <CountingTextArea maxLength={1500} />
+      <WarningModal text='Are you sure you want to cancel this order?' open={confirm} handleCancel={()=>setConfirm(false)}/>
     </Modal>
   );
 };
