@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inder&display=swap');
-@import url('https://fonts.googleapis.com/earlyaccess/kopubbatang.css');
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inder&display=swap");
+@import url("https://fonts.googleapis.com/earlyaccess/kopubbatang.css");
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 
 * {
   margin: 0;
@@ -16,75 +16,74 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif, 
-  -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
+  font-family: "Inter", sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
   text-rendering: optimizeSpeed;
 }
 
-div.row{
+div.row {
   margin-bottom: 0px;
 }
 
 .title {
-  @apply text-30 font-inter font-bold mb-0
+  @apply text-30 font-inter font-bold mb-0;
 }
 
 .subtitle {
-  @apply ml-[15px] text-15 font-semibold text-black80 mb-0
+  @apply ml-[15px] text-15 font-semibold text-black80 mb-0;
 }
 
 .row {
-  @apply flex items-center
+  @apply flex items-center;
 }
 
 .between-row {
-  @apply flex justify-between items-center
+  @apply flex justify-between items-center;
 }
 
 .buttons-row {
-  @apply row gap-x-[10px]
+  @apply row gap-x-[10px];
 }
 
 .button {
-  @apply h-[40px] w-[100px] rounded-10 bg-primary text-[#9098B1] font-bold text-14
+  @apply h-[40px] w-[100px] rounded-10 bg-primary text-[#9098B1] font-bold text-14;
 }
 
 .clear-button {
-  @apply bg-white h-[40px] w-[100px] rounded-5 border-1 border-black
+  @apply bg-white h-[40px] w-[100px] rounded-5 border-1 border-black;
 }
 
 .clear-button p {
-  @apply mb-0 text-14 font-semibold
+  @apply mb-0 text-14 font-semibold;
 }
 
 .action-button {
-  @apply w-6 h-6 rounded-5
+  @apply w-6 h-6 rounded-5;
 }
 
 .cancel-button {
-  @apply h-[34px] border-1 border-black rounded-5 px-[10px] text-15
+  @apply h-[34px] border-1 border-black rounded-5 px-[10px] text-15 hover:border-secondary hover:text-secondary
 }
 
 .confirm-button {
-  @apply h-[34px] bg-[#F9AF5EE5] rounded-5 px-[10px] text-15 text-white ml-5
+  @apply h-[34px] bg-[#F9AF5EE5] rounded-5 px-[10px] text-15 text-white ml-5 hover:bg-[#C85A27];
 }
 
 .table-cell {
-  @apply mb-0 text-15 font-semibold font-inter
+  @apply mb-0 text-15 font-semibold font-inter;
 }
 
 .table-cell-medium {
-  @apply mb-0 text-15 font-medium font-inter
+  @apply mb-0 text-15 font-medium font-inter;
 }
 
-.pagination-active .ant-pagination-item-active{
+.pagination-active .ant-pagination-item-active {
   border-color: transparent;
   background-color: rgba(249, 175, 94, 0.9);
 }
 
-.pagination-active .ant-pagination-item-active a{
+.pagination-active .ant-pagination-item-active a {
   color: white;
 }
 
@@ -96,39 +95,92 @@ div.row{
   color: rgba(249, 175, 94, 0.9);
 }
 
-.table-product-detail {
-  border-collapse: separate;
-  border-spacing: 15px 25px;
-}
-
-.table-product-detail th{
-  @apply text-right font-inter font-medium w-[20.5%]
-}
-
 .options .ant-segmented-group {
-  @apply h-full 
+  @apply h-full;
 }
 
 .options .ant-segmented-item {
-  @apply flex items-center
+  @apply flex items-center;
 }
 
 .ant-segmented-item-label {
-  @apply text-15 font-inter font-semibold
+  @apply text-15 font-inter font-semibold;
 }
 
-.ant-segmented-item-selected .ant-segmented-item-label{
-  @apply text-secondary
+.ant-segmented-item-selected .ant-segmented-item-label {
+  @apply text-secondary;
 }
 
 .chart-card {
-  @apply bg-white rounded-20 p-5
+  @apply bg-white rounded-20 p-5;
 }
 
 .chart-title {
-  @apply font-semibold text-[17px] text-[#0E132F] mb-[40px]
+  @apply font-semibold text-[17px] text-[#0E132F] mb-[40px];
 }
 
 .modal-title {
-  @apply font-semibold text-[25px] mb-0
+  @apply font-semibold text-[25px] mb-0;
+}
+
+.modal-table{
+  border-collapse: separate;
+  border-spacing: 15px 25px;
+  @apply table-auto w-full
+}
+
+.modal-table th {
+  @apply text-right font-inter font-medium w-0 whitespace-nowrap align-text-top pt-1;
+}
+
+.input {
+  @apply h-[40px] text-[16px] border-black;
+}
+
+.ant-select-selector {
+  border-color: black !important;
+  box-shadow: none !important;
+}
+
+.ant-upload-wrapper.ant-upload-picture-card-wrapper::before,
+.ant-upload-wrapper .ant-upload-list::before,
+.ant-upload-wrapper .ant-upload-list .ant-upload-list-item-container::before,
+.ant-upload-wrapper.ant-upload-picture-card-wrapper::after {
+  display: none;
+}
+
+.ant-upload-list-item-actions {
+  @apply flex items-center justify-center;
+}
+
+/* .ant-upload-wrapper.ant-upload-picture-card-wrapper
+  .ant-upload.ant-upload-select {
+  @apply border-none w-min mb-0;
+}
+.ant-upload-wrapper.ant-upload-picture-card-wrapper
+  .ant-upload.ant-upload-select {
+  margin-inline-end: 0;
+  vertical-align: baseline;
+}
+
+:where(.css-dev-only-do-not-override-z6wftn)[class^="ant-upload"]
+  [class^="ant-upload"],
+:where(.css-dev-only-do-not-override-z6wftn)[class*=" ant-upload"]
+  [class^="ant-upload"] {
+  height: 0px;
+} */
+
+.required::before {
+  color: #FF0000;
+  content: '*';
+  display:inline;
+  margin-right: 4px;
+}
+
+.ant-form-item .ant-form-item-explain-error {
+  @apply text-[16px] 
+}
+
+.ant-form-item {
+  @apply mb-0
 }

@@ -1,3 +1,5 @@
+import { Button } from "antd";
+
 const getModalFooter = ({handleCancel,handleOk}) => [
   <button onClick={handleCancel} className="cancel-button">
     Cancel

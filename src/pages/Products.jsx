@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Table } from "antd";
 import {viewIcon,editIcon,deleteIcon} from '../images/actions';
 import ProductDetailModal from "../modals/product/ProductDetailModal";
+import ModifyProductModal from "../modals/product/ModifyProductModal";
 
 const data = [
   {
@@ -17,6 +18,8 @@ const data = [
 
 const Products = () => {
   const [detailOpen,setDetailOpen] = useState(false);
+  const [modifyOpen,setModifyOpen] = useState(false);
+
   const columns = [
     {
       title: "Product ID",
@@ -99,7 +102,7 @@ const Products = () => {
         <p className="subtitle">1 Product found</p>
       </div>
       <div className="mt-[15px] buttons-row justify-end">
-        <button className="button">Add Item</button>
+        <button onClick={()=>setModifyOpen(true)} className="button">Add Item</button>
         <button className="clear-button">
           <p>Clear Filter</p>
         </button>
@@ -111,6 +114,7 @@ const Products = () => {
         className="mt-5 pagination-active table-header"
       />
       <ProductDetailModal open={detailOpen} handleCancel={()=>setDetailOpen(false)}/>
+      <ModifyProductModal open={modifyOpen} handleCancel = {()=>setModifyOpen(false)}/>
     </div>
   );
 };

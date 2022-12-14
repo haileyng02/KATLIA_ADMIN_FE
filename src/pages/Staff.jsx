@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import { Table } from "antd";
 import getRole from "../utils/getRole";
 import { editIcon } from "../images/actions";
+import AddStaffModal from "../modals/staff/AddStaffModal";
 
 const data = [
   {
@@ -27,6 +28,8 @@ const data = [
 ];
 
 const Staff = () => {
+  const [addOpen,setAddOpen] = useState(false);
+
   const columns = [
     {
       title: "Staff ID",
@@ -121,7 +124,7 @@ const Staff = () => {
         <p className="subtitle">2 Staffs found</p>
       </div>
       <div className="buttons-row justify-end mt-[12px]">
-        <button className="button">Add Staff</button>
+        <button onClick={()=>setAddOpen(true)} className="button">Add Staff</button>
         <button className="clear-button">
           <p>Clear Filter</p>
         </button>
@@ -131,6 +134,7 @@ const Staff = () => {
         dataSource={data}
         className="mt-5 pagination-active table-header"
       />
+      <AddStaffModal open={addOpen} handleCancel={()=>setAddOpen(false)}/>
     </div>
   );
 };

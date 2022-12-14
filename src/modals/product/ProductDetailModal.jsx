@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal } from "antd";
 import ModalTitle from "../../components/ModalTitle";
+import ColorIcon from "../../components/ColorIcon";
 
 const data = {
   name: "Basic Knit Sweater",
@@ -40,7 +41,7 @@ const ProductDetailModal = ({ open, handleCancel }) => {
       width={800}
       footer={null}
     >
-      <table class="table-auto table-product-detail">
+      <table className="table-auto modal-table">
         <tbody>
           <tr>
             <th>Name:</th>
@@ -62,11 +63,7 @@ const ProductDetailModal = ({ open, handleCancel }) => {
             <th>Color:</th>
             <td className="row gap-x-10">
               {data.colors.map((c, i) => (
-                <div
-                  key={i}
-                  className="w-5 h-5 rounded-full"
-                  style={{ backgroundColor: c }}
-                ></div>
+                <ColorIcon key={i} color={c}/>
               ))}
             </td>
           </tr>
@@ -75,10 +72,10 @@ const ProductDetailModal = ({ open, handleCancel }) => {
             <td>{data.sizeAndAmount}</td>
           </tr>
           <tr>
-            <th>Image:</th>
+            <th>Images:</th>
             <td className="flex overflow-x-auto pb-2 gap-x-3">
               {data.images.map((image, i) => (
-                <img src={image} alt="Product" className="w-[100px] h-[150px] object-cover object-center flex-none"/>
+                <img key={i} src={image} alt="Product" className="w-[100px] h-[150px] object-cover object-center flex-none"/>
               ))}
             </td>
           </tr>
