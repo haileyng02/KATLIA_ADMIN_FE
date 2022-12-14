@@ -103,6 +103,10 @@ div.row {
   @apply flex items-center;
 }
 
+.select-option {
+  @apply font-inter font-medium text-[16px] mb-0
+}
+
 .ant-segmented-item-label {
   @apply text-15 font-inter font-semibold;
 }

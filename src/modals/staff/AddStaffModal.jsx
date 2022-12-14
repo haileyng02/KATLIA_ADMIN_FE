@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Form, Input, Select, DatePicker } from "antd";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import ModalTitle from "../../components/ModalTitle";
 import getModalFooter from "../../utils/getModalFooter";
 import roles from "../../utils/roles";
@@ -11,7 +11,9 @@ const AddStaffModal = ({ open, handleCancel }) => {
   const [form] = Form.useForm();
 
   const handleOk = () => {
-    form.validateFields().then((values) => {console.log(values)});
+    form.validateFields().then((values) => {
+      console.log(values);
+    });
   };
 
   return (
@@ -47,29 +49,37 @@ const AddStaffModal = ({ open, handleCancel }) => {
               </td>
             </tr>
             <tr>
-              <th>Role:</th>
+              <th className="required">Role:</th>
               <td>
-                <Form.Item name={'role'}>
-                    <Select size="large" className="w-full" defaultValue={'admin'}>
-                      {roles.map((role, i) => (
-                        <Option key={i} value={role.value}>
-                          <p
-                            style={{ color: role.labelColor }}
-                            className="font-inter font-medium text-[16px]"
-                          >
-                            {role.title}
-                          </p>
-                        </Option>
-                      ))}
-                    </Select>
+                <Form.Item
+                  name={"role"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please choose role",
+                    },
+                  ]}
+                >
+                  <Select size="large" className="w-full">
+                    {roles.map((role, i) => (
+                      <Option key={i} value={role.value}>
+                        <p
+                          style={{ color: role.labelColor }}
+                          className="select-option"
+                        >
+                          {role.title}
+                        </p>
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
               </td>
             </tr>
             <tr>
               <th>Start At:</th>
               <td>
-                <Form.Item name='start'>
-                    <DatePicker className="input w-full" format="DD-MM-YYYY" defaultValue={dayjs()}/>
+                <Form.Item name="start" initialValue={dayjs()}>
+                  <DatePicker className="input w-full" format="DD-MM-YYYY" />
                 </Form.Item>
               </td>
             </tr>

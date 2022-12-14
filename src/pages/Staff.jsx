@@ -3,6 +3,7 @@ import { Table } from "antd";
 import getRole from "../utils/getRole";
 import { editIcon } from "../images/actions";
 import AddStaffModal from "../modals/staff/AddStaffModal";
+import ActionModal from "../modals/staff/ActionModal";
 
 const data = [
   {
@@ -29,6 +30,7 @@ const data = [
 
 const Staff = () => {
   const [addOpen,setAddOpen] = useState(false);
+  const [actionOpen,setActionOpen] = useState(false);
 
   const columns = [
     {
@@ -89,6 +91,7 @@ const Staff = () => {
           <button
             className="action-button"
             style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
+            onClick={()=>setActionOpen(true)}
           >
             <center>
               <img src={editIcon} alt="Edit" />
@@ -135,6 +138,7 @@ const Staff = () => {
         className="mt-5 pagination-active table-header"
       />
       <AddStaffModal open={addOpen} handleCancel={()=>setAddOpen(false)}/>
+      <ActionModal open={actionOpen} handleCancel={()=>setActionOpen(false)}/>
     </div>
   );
 };
