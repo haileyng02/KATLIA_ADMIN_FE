@@ -15,8 +15,10 @@ const Main = () => {
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          height:61,
           ml: { sm: `${drawerWidth}px` },
           backgroundColor: "white",
+          justifyContent:'center'
         }}
       >
         <Toolbar className="flex justify-end">
@@ -42,11 +44,9 @@ const Main = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          pt: 10,
         }}
-        className='min-h-screen'
+        className='min-h-screen p-5 pt-[90px]'
       >
         <Outlet />
       </Box>

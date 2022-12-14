@@ -63,11 +63,15 @@ div.row {
 }
 
 .cancel-button {
-  @apply h-[34px] border-1 border-black rounded-5 px-[10px] text-15 hover:border-secondary hover:text-secondary
+  @apply h-[34px] border-1 border-black rounded-5 px-[10px] text-15 hover:border-secondary hover:text-secondary;
 }
 
 .confirm-button {
   @apply h-[34px] bg-[#F9AF5EE5] rounded-5 px-[10px] text-15 text-white ml-5 hover:bg-[#C85A27];
+}
+
+.import-button {
+  @apply w-[100px] h-[34px] rounded-5 border-1 font-inter font-semibold text-14
 }
 
 .table-cell {
@@ -104,7 +108,7 @@ div.row {
 }
 
 .select-option {
-  @apply font-inter font-medium text-[16px] mb-0
+  @apply font-inter font-medium text-[16px] mb-0;
 }
 
 .ant-segmented-item-label {
@@ -127,10 +131,10 @@ div.row {
   @apply font-semibold text-[25px] mb-0;
 }
 
-.modal-table{
+.modal-table {
   border-collapse: separate;
   border-spacing: 15px 25px;
-  @apply table-auto w-full
+  @apply table-auto w-full;
 }
 
 .modal-table th {
@@ -175,16 +179,61 @@ div.row {
 } */
 
 .required::before {
-  color: #FF0000;
-  content: '*';
-  display:inline;
+  color: #ff0000;
+  content: "*";
+  display: inline;
   margin-right: 4px;
 }
 
 .ant-form-item .ant-form-item-explain-error {
-  @apply text-[16px] 
+  @apply text-[16px];
 }
 
 .ant-form-item {
-  @apply mb-0
+  @apply mb-0;
+}
+
+.ant-tabs,
+.ant-tabs .ant-tabs-content,
+.ant-tabs .ant-tabs-tabpane {
+  @apply h-full;
+}
+
+.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
+  @apply justify-end;
+}
+
+.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab {
+  border-radius: 10px 10px 0 0;
+  height: 40px;
+  width: 100px;
+  @apply justify-center;
+}
+
+.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active {
+  background-color: white;
+}
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+  @apply border-none bg-transparent;
+}
+
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  @apply text-[#E0A184];
+}
+
+.ant-tabs .ant-tabs-tab .ant-tabs-tab-btn {
+  @apply font-bold text-[14px] font-inter;
+}
+
+.ant-tabs-top > .ant-tabs-nav {
+  @apply mb-0;
+}
+
+.ant-tooltip {
+  @apply pb-0;
+}
+
+.tab-container {
+  @apply w-full bg-white rounded-10 rounded-tr-none p-5 h-full overflow-y-auto;
 }
