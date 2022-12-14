@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { DatePicker, Table, Segmented } from "antd";
-import getStatus from '../utils/getStatus';
+import { DatePicker, Table, Segmented, Tooltip } from "antd";
+import getStatus from "../utils/getStatus";
 import { viewIcon, checkIcon, cancelIcon } from "../images/actions";
 import CancelOrderModal from "../modals/order/CancelOrderModal";
+import OrderDetailModal from "../modals/order/OrderDetailModal";
 
 const options = ["All Order", "Completed", "Pading", "Cancel"];
 
@@ -109,41 +110,43 @@ const data = [
 ];
 
 const Orders = () => {
-  const [cancelModal,setCancelModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false);
+  const [detailModal, setDetailModal] = useState(false);
+
   const columns = [
     {
       title: "Order ID",
       dataIndex: "orderId",
       sorter: (a, b) => a.orderId.localeCompare(b.orderId),
-      defaultSortOrder: 'descend',
+      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Name",
       dataIndex: "name",
       sorter: (a, b) => a.name.localeCompare(b.name),
-      defaultSortOrder: 'descend',
+      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Address",
       dataIndex: "address",
       sorter: (a, b) => a.address.localeCompare(b.address),
-      defaultSortOrder: 'descend',
+      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Date",
       dataIndex: "date",
       sorter: (a, b) => a.date.localeCompare(b.date),
-      defaultSortOrder: 'descend',
+      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Total",
       dataIndex: "total",
       sorter: (a, b) => a.total.localeCompare(b.total),
-      defaultSortOrder: 'descend',
+      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"$" + value}</p>,
     },
     {
@@ -151,7 +154,7 @@ const Orders = () => {
       dataIndex: "status",
       align: "center",
       sorter: (a, b) => a.status.localeCompare(b.status),
-      defaultSortOrder: 'descend',
+      defaultSortOrder: "descend",
       render: (value) => getStatus(value),
     },
     {
@@ -160,31 +163,40 @@ const Orders = () => {
       align: "center",
       render: (_) => (
         <div className="flex gap-x-[11px] justify-center">
-          <button
-            className="action-button"
-            style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
-          >
-            <center>
-              <img src={viewIcon} alt="View" />
-            </center>
-          </button>
-          <button
-            className="action-button"
-            style={{ backgroundColor: "#60BE80" }}
-          >
-            <center>
-              <img src={checkIcon} alt="Check" />
-            </center>
-          </button>
-          <button
-            className="action-button"
-            style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
-            onClick={()=>{setCancelModal(true)}}
-          >
-            <center>
-              <img src={cancelIcon} alt="Cancel" />
-            </center>
-          </button>
+          <Tooltip title="View order's detail">
+            <button
+              className="action-button"
+              style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
+              onClick={()=>setDetailModal(true)}
+            >
+              <center>
+                <img src={viewIcon} alt="View" />
+              </center>
+            </button>
+          </Tooltip>
+          <Tooltip title="">
+            <button
+              className="action-button"
+              style={{ backgroundColor: "#60BE80" }}
+            >
+              <center>
+                <img src={checkIcon} alt="Check" />
+              </center>
+            </button>
+          </Tooltip>
+          <Tooltip title="Cancel order">
+            <button
+              className="action-button"
+              style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
+              onClick={() => {
+                setCancelModal(true);
+              }}
+            >
+              <center>
+                <img src={cancelIcon} alt="Cancel" />
+              </center>
+            </button>
+          </Tooltip>
         </div>
       ),
     },
@@ -217,10 +229,8 @@ const Orders = () => {
             </button>
           ))}
         </div> */}
-        <Segmented options={options} className='options'/>
-        <button
-          className="clear-button"
-        >
+        <Segmented options={options} className="options" />
+        <button className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>
@@ -230,7 +240,14 @@ const Orders = () => {
         onChange={onChange}
         className="mt-5 pagination-active table-header"
       />
-      <CancelOrderModal open={cancelModal} handleCancel={()=>setCancelModal(false)}/>
+      <OrderDetailModal
+        open={detailModal}
+        handleCancel={() => setDetailModal(false)}
+      />
+      <CancelOrderModal
+        open={cancelModal}
+        handleCancel={() => setCancelModal(false)}
+      />
     </div>
   );
 };

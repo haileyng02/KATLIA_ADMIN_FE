@@ -38,7 +38,7 @@ const ProductDetailModal = ({ open, handleCancel }) => {
       open={open}
       onCancel={handleCancel}
       centered
-      width={800}
+      width={1000}
       footer={null}
     >
       <table className="table-auto modal-table">
