@@ -1,48 +1,55 @@
 import React from "react";
 import { Divider, Modal } from "antd";
 import ModalTitle from "../../components/ModalTitle";
-import OrderDetailTable from "../../components/tables/OrderDetailTable";
+import ColorIcon from "../../components/ColorIcon";
+import ImportDetailTable from "../../components/tables/ImportDetailTable";
 
 const data = {
-  id: "327842",
-  name: "Nguyen Huu Trung Kien",
-  address: "University Of Information Technology",
+  id: 327842,
+  staffName: "Basic Knit Sweater",
   date: "17/10/2022",
+  surcharge: 54,
   total: 54,
   status: "Completed",
 };
 
-const OrderDetailModal = ({ open, handleCancel }) => {
+const ImportDetailModal = ({ open, handleCancel }) => {
   return (
     <Modal
-      title={<ModalTitle text={"Order Detail"} />}
+      title={<ModalTitle text={"Import Detail"} />}
       open={open}
       onCancel={handleCancel}
       centered
       footer={null}
+      width={1000}
     >
       <div className="overflow-modal">
+        <div className="flex">
           <table className="modal-table">
             <tbody>
               <tr>
-                <th>Order ID:</th>
+                <th>Import ID:</th>
                 <td>{data.id}</td>
               </tr>
               <tr>
-                <th>Customer’s Name:</th>
-                <td>{data.name}</td>
-              </tr>
-              <tr>
-                <th>Address:</th>
-                <td>{data.address}</td>
+                <th>Staff’s Name:</th>
+                <td>{data.staffName}</td>
               </tr>
               <tr>
                 <th>Date:</th>
                 <td>{data.date}</td>
               </tr>
+            </tbody>
+          </table>
+          <table className="modal-table">
+            <tbody>
+              <tr>
+                <th>Surcharge:</th>
+                <td>{data.surcharge}</td>
+              </tr>
               <tr>
                 <th>Total:</th>
-                <td>{'$'+data.total}</td>
+                <td>{data.total}</td>
               </tr>
               <tr>
                 <th>Status:</th>
@@ -50,11 +57,12 @@ const OrderDetailModal = ({ open, handleCancel }) => {
               </tr>
             </tbody>
           </table>
-          <Divider/>
-          <OrderDetailTable/>
+        </div>
+        <Divider />
+        <ImportDetailTable />
       </div>
     </Modal>
   );
 };
 
-export default OrderDetailModal;
+export default ImportDetailModal;

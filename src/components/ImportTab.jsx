@@ -2,7 +2,7 @@ import React from "react";
 import { Divider, Form, Input } from "antd";
 import ReadOnlySuffix from "./ReadOnlySuffix";
 import DollarPrefix from "./DollarPrefix";
-import ImportTable from "./ImportTable";
+import ImportTable from "./tables/ImportTable";
 
 const ImportTab = () => {
   return (

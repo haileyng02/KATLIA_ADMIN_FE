@@ -1,6 +1,5 @@
 import React from "react";
 import { Table } from "antd";
-import { editIcon, deleteIcon } from "../images/actions";
 
 const data = [
   {
@@ -199,41 +198,16 @@ const columns = [
       </center>
     ),
   },
-  {
-    title: "Action",
-    key: "action",
-    align: "center",
-    render: (_) => (
-      <div className="flex gap-x-5 justify-center">
-        <button
-          className="action-button"
-          style={{ backgroundColor: "#F9AF5EE5" }}
-        >
-          <center>
-            <img src={editIcon} alt="Edit" />
-          </center>
-        </button>
-        <button
-          className="action-button"
-          style={{ backgroundColor: "#FD3838E5" }}
-        >
-          <center>
-            <img src={deleteIcon} alt="Delete" />
-          </center>
-        </button>
-      </div>
-    ),
-  },
 ];
 
-const ImportTable = () => {
+const ImportDetailTable = () => {
   return (
     <Table
       columns={columns}
       dataSource={data}
       className="mt-5 pagination-active table-header"
     />
-  );
-};
+  )
+}
 
-export default ImportTable;
+export default ImportDetailTable
