@@ -14,7 +14,7 @@ const ImportTab = () => {
               <th>Import ID:</th>
               <td>
                 <Form.Item>
-                  <Input suffix={<ReadOnlySuffix />} className="input" />
+                  <Input readOnly suffix={<ReadOnlySuffix />} className="input" />
                 </Form.Item>
               </td>
             </tr>
@@ -34,7 +34,7 @@ const ImportTab = () => {
               <th>Staff’s Name:</th>
               <td>
                 <Form.Item>
-                  <Input suffix={<ReadOnlySuffix />} className="input" />
+                  <Input readOnly suffix={<ReadOnlySuffix />} className="input" />
                 </Form.Item>
               </td>
             </tr>
@@ -44,7 +44,7 @@ const ImportTab = () => {
                 <Form.Item>
                   <Input
                     prefix={<DollarPrefix />}
-                    suffix={<ReadOnlySuffix />}
+                    readOnly suffix={<ReadOnlySuffix />}
                     className="input"
                   />
                 </Form.Item>

@@ -1,7 +1,8 @@
-import React from "react";
-import { Table } from "antd";
+import React, {useState} from "react";
+import { Table, Tooltip } from "antd";
 import getRole from "../utils/getRole";
 import { profileIcon } from "../images/actions";
+import ProfileModal from "../modals/user/ProfileModal";
 
 const data = [
   {
@@ -23,6 +24,8 @@ const data = [
 ];
 
 const User = () => {
+  const [profileOpen,setProfileOpen] = useState(false);
+
   const columns = [
     {
       title: "User ID",
@@ -65,14 +68,17 @@ const User = () => {
       align: "center",
       render: (_) => (
         <div className="flex gap-x-[11px] justify-center">
-          <button
-            className="action-button"
-            style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-          >
-            <center>
-              <img src={profileIcon} alt="Profile" />
-            </center>
-          </button>
+          <Tooltip title='View Profile'>
+            <button
+              className="action-button"
+              style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
+              onClick={()=>setProfileOpen(true)}
+            >
+              <center>
+                <img src={profileIcon} alt="Profile" />
+              </center>
+            </button>
+          </Tooltip>
         </div>
       ),
     },
@@ -94,6 +100,7 @@ const User = () => {
         dataSource={data}
         className="mt-5 pagination-active table-header"
       />
+      <ProfileModal open={profileOpen} handleCancel={()=>setProfileOpen(false)}/>
     </div>
   );
 };
