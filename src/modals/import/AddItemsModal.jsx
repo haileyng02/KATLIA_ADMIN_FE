@@ -72,11 +72,11 @@ const AddItemsModal = ({ open, handleCancel }) => {
             <th className="required">Product:</th>
             <td>
               <Form.Item
-                name={"role"}
+                name={"product"}
                 rules={[
                   {
                     required: true,
-                    message: "Please choose role",
+                    message: "Please select product",
                   },
                 ]}
               >
@@ -108,15 +108,11 @@ const AddItemsModal = ({ open, handleCancel }) => {
             <th className="required">Unit price:</th>
             <td>
               <Form.Item
-                name={"email"}
+                name={"price"}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter email",
-                  },
-                  {
-                    type: "email",
-                    message: "This is not a valid email",
+                    message: "Please enter unit price",
                   },
                 ]}
               >
@@ -128,11 +124,11 @@ const AddItemsModal = ({ open, handleCancel }) => {
             <th className="required">Color:</th>
             <td>
               <Form.Item
-                name={"role"}
+                name={"color"}
                 rules={[
                   {
                     required: true,
-                    message: "Please choose role",
+                    message: "Please select color",
                   },
                 ]}
               >
@@ -162,7 +158,7 @@ const AddItemsModal = ({ open, handleCancel }) => {
           </tr>
           <tr>
             <th className="required align-top">Quantity:</th>
-            <td className="end">
+            <td>
               <div className="grid grid-cols-2 gap-4">
                 {sizes.map((size, i) => (
                   <div key={i} className="row gap-x-1">
