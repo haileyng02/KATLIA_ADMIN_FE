@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Divider, Form, Input } from "antd";
 import ReadOnlySuffix from "./ReadOnlySuffix";
 import DollarPrefix from "./DollarPrefix";
 import ImportTable from "./tables/ImportTable";
+import AddItemsModal from "../modals/import/AddItemsModal";
 
 const ImportTab = () => {
+  const [addOpen, setAddOpen] = useState(false);
+
   return (
     <div className="tab-container">
       <Form className="flex gap-x-[9%]">
@@ -14,7 +17,11 @@ const ImportTab = () => {
               <th>Import ID:</th>
               <td>
                 <Form.Item>
-                  <Input readOnly suffix={<ReadOnlySuffix />} className="input" />
+                  <Input
+                    readOnly
+                    suffix={<ReadOnlySuffix />}
+                    className="input"
+                  />
                 </Form.Item>
               </td>
             </tr>
@@ -34,7 +41,11 @@ const ImportTab = () => {
               <th>Staff’s Name:</th>
               <td>
                 <Form.Item>
-                  <Input readOnly suffix={<ReadOnlySuffix />} className="input" />
+                  <Input
+                    readOnly
+                    suffix={<ReadOnlySuffix />}
+                    className="input"
+                  />
                 </Form.Item>
               </td>
             </tr>
@@ -44,7 +55,8 @@ const ImportTab = () => {
                 <Form.Item>
                   <Input
                     prefix={<DollarPrefix />}
-                    readOnly suffix={<ReadOnlySuffix />}
+                    readOnly
+                    suffix={<ReadOnlySuffix />}
                     className="input"
                   />
                 </Form.Item>
@@ -58,7 +70,10 @@ const ImportTab = () => {
         <button className="w-[189px] h-[34px] rounded-5 bg-secondary text-white font-inter font-bold text-15">
           CONFIRM IMPORT
         </button>
-        <button className="import-button border-customer-primary text-customer-primary">
+        <button
+          onClick={() => setAddOpen(true)}
+          className="import-button border-customer-primary text-customer-primary"
+        >
           Add items
         </button>
         <button className="import-button border-[#FF0000] text-[#FF0000]">
@@ -66,6 +81,7 @@ const ImportTab = () => {
         </button>
       </div>
       <ImportTable />
+      <AddItemsModal open={addOpen} handleCancel={() => setAddOpen(false)} />
     </div>
   );
 };

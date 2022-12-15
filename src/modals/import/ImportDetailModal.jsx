@@ -45,11 +45,11 @@ const ImportDetailModal = ({ open, handleCancel }) => {
             <tbody>
               <tr>
                 <th>Surcharge:</th>
-                <td>{data.surcharge}</td>
+                <td>{'$'+data.surcharge}</td>
               </tr>
               <tr>
                 <th>Total:</th>
-                <td>{data.total}</td>
+                <td>{'$'+data.total}</td>
               </tr>
               <tr>
                 <th>Status:</th>
