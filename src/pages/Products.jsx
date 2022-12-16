@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import {viewIcon,editIcon,deleteIcon} from '../images/actions';
 import ProductDetailModal from "../modals/product/ProductDetailModal";
@@ -116,6 +116,9 @@ const Products = () => {
       }
     }
   }
+  useEffect(() => {
+    getAllProducts()
+  }, [])
 
   //Get undeleted products
   const getUndeletedProducts = async () => {
@@ -156,11 +159,11 @@ const Products = () => {
         console.log(err.message)
       }
     }
-  }
+  } 
   return (
     <div>
       <div className="row">
-        <h1 onClick={getAllProducts} className="title">Product</h1>
+        <h1 className="title">Product</h1>
         <p onClick={getUndeletedProducts} className="subtitle">1 Product found</p>
       </div>
       <div className="mt-[15px] buttons-row justify-end">

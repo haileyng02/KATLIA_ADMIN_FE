@@ -25,6 +25,15 @@ export const getAddProductBody = (productId, name, description, categoryId, pric
 //GET ALL STAFF
 export const GET_ALL_STAFF = '/staff/getAllStaff'
 
+//ADD STAFF
+export const ADD_STAFF = '/staff/addStaff'
+export const getAddStaffBody = (email, role, startAt, status) => ({
+  email: email,
+  role: role,
+  startAt: startAt,
+  status: status
+})
+
 //GET ALL USER
 export const GET_ALL_USER = '/user/getAllUser'
 
