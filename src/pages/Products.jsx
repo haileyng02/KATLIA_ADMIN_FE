@@ -116,11 +116,34 @@ const Products = () => {
       }
     }
   }
+
+  //Get undeleted products
   const getUndeletedProducts = async () => {
     try {
       const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
       const result = await appApi.get(
         routes.GET_UNDELETED_PRODUCTS,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  //Add product
+  const addProduct = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const result = await appApi.post(
+        routes.ADD_PRODUCT,
+        routes.getAddProductBody(694574, "Basic Shirt", "", 1, 39.99, "S", [1]),
         routes.getAccessTokenHeader(token)
       );
       console.log(result);
@@ -142,7 +165,7 @@ const Products = () => {
       </div>
       <div className="mt-[15px] buttons-row justify-end">
         <button onClick={()=>setModifyOpen(true)} className="button">Add Item</button>
-        <button className="clear-button">
+        <button onClick={addProduct} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>
