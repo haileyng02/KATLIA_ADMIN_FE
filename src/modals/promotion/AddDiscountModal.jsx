@@ -13,9 +13,10 @@ const AddDiscountModal = ({ open, handleCancel, currentItem }) => {
     readOnly: readOnly,
     suffix: readOnly ? <ReadOnlySuffix /> : null,
   };
-  const dateTimeProps = { disabled: readOnly};
+  const dateTimeProps = { disabled: readOnly };
 
   useEffect(() => {
+    if (!open) return;
     setReadOnly(false);
     if (currentItem) {
       form.setFieldsValue({
@@ -32,7 +33,7 @@ const AddDiscountModal = ({ open, handleCancel, currentItem }) => {
     } else {
       form.resetFields();
     }
-  }, [currentItem, form]);
+  }, [currentItem, form, open]);
 
   return (
     <Modal
@@ -85,7 +86,11 @@ const AddDiscountModal = ({ open, handleCancel, currentItem }) => {
               <th className="required">Start At:</th>
               <td>
                 <Form.Item name="startDate" initialValue={dayjs()}>
-                  <DatePicker className="input w-full" format="DD-MM-YYYY" {...dateTimeProps}/>
+                  <DatePicker
+                    className="input w-full"
+                    format="DD-MM-YYYY"
+                    {...dateTimeProps}
+                  />
                 </Form.Item>
               </td>
               <td>
@@ -93,7 +98,11 @@ const AddDiscountModal = ({ open, handleCancel, currentItem }) => {
                   name="startTime"
                   initialValue={dayjs("00:00", "HH:mm")}
                 >
-                  <TimePicker format={"HH:mm"} className="input w-full" {...dateTimeProps}/>
+                  <TimePicker
+                    format={"HH:mm"}
+                    className="input w-full"
+                    {...dateTimeProps}
+                  />
                 </Form.Item>
               </td>
             </tr>
@@ -101,7 +110,11 @@ const AddDiscountModal = ({ open, handleCancel, currentItem }) => {
               <th className="required">End At:</th>
               <td>
                 <Form.Item name="endDate" initialValue={dayjs()}>
-                  <DatePicker className="input w-full" format="DD-MM-YYYY" {...dateTimeProps}/>
+                  <DatePicker
+                    className="input w-full"
+                    format="DD-MM-YYYY"
+                    {...dateTimeProps}
+                  />
                 </Form.Item>
               </td>
               <td>
@@ -109,7 +122,11 @@ const AddDiscountModal = ({ open, handleCancel, currentItem }) => {
                   name="endTime"
                   initialValue={dayjs("00:00", "HH:mm")}
                 >
-                  <TimePicker format={"HH:mm"} className="input w-full" {...dateTimeProps}/>
+                  <TimePicker
+                    format={"HH:mm"}
+                    className="input w-full"
+                    {...dateTimeProps}
+                  />
                 </Form.Item>
               </td>
             </tr>
