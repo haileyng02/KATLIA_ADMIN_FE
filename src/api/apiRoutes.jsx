@@ -15,3 +15,6 @@ export const GET_ALL_STAFF = '/staff/getAllStaff'
 
 //GET ALL USER
 export const GET_ALL_USER = '/user/getAllUser'
+
+//GET ALL ORDER
+export const GET_ALL_ORDER = '/staff-order/getAllOrder'
