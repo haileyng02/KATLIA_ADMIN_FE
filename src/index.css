@@ -47,7 +47,7 @@ div.row {
 }
 
 .button {
-  @apply h-[40px] w-[100px] rounded-10 bg-primary text-[#9098B1] font-bold text-14;
+  @apply h-[40px] w-[100px] rounded-5 bg-primary text-[#9098B1] font-bold text-14;
 }
 
 .clear-button {
