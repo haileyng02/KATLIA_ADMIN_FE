@@ -3,6 +3,8 @@ import { Table, Tooltip } from "antd";
 import getRole from "../utils/getRole";
 import { profileIcon } from "../images/actions";
 import ProfileModal from "../modals/user/ProfileModal";
+import appApi from "../api/appApi";
+import * as routes from '../api/apiRoutes'
 
 const data = [
   {
@@ -84,10 +86,30 @@ const User = () => {
     },
   ];
 
+  //Get all user
+  const getAllUser = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const result = await appApi.get(
+        routes.GET_ALL_USER,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
   return (
     <div>
       <div className="row">
-        <h1 className="title">User</h1>
+        <h1 onClick={getAllUser} className="title">User</h1>
         <p className="subtitle">2 Users found</p>
       </div>
       <div className="mt-[12px] flex justify-end">
