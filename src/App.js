@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import 'antd/dist/reset.css';
 import { Main, Orders, Products, Import, Staff, User, Promotion, Statistic } from './pages';
 
 function App() {
