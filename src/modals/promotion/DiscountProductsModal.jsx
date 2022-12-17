@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { ConfigProvider, Modal, Table } from "antd";
+import WarningModal from "../WarningModal";
 import getModalFooter from "../../utils/getModalFooter";
 
 const data = [
@@ -72,6 +73,8 @@ const data = [
 ];
 
 const DiscountProductsModal = ({ open, handleCancel, id }) => {
+  const [warningOpen, setWarningOpen] = useState(false);
+
   const columns = [
     {
       title: "Product ID",
@@ -97,6 +100,11 @@ const DiscountProductsModal = ({ open, handleCancel, id }) => {
       );
     },
   };
+
+  const handleOk = () => {
+    setWarningOpen(true);
+  };
+
   return (
     <Modal
       title={
@@ -108,7 +116,7 @@ const DiscountProductsModal = ({ open, handleCancel, id }) => {
       open={open}
       onCancel={handleCancel}
       centered
-      footer={getModalFooter({ handleCancel })}
+      footer={getModalFooter({ handleCancel, handleOk })}
       width={"50%"}
     >
       <div className="overflow-modal">
@@ -123,6 +131,13 @@ const DiscountProductsModal = ({ open, handleCancel, id }) => {
             className="mt-5 pagination-active table-header"
           />
         </ConfigProvider>
+        <WarningModal
+          text={
+            "Current discount for all selection products will be changed! Confirm?"
+          }
+          open={warningOpen}
+          handleCancel={() => setWarningOpen(false)}
+        />
       </div>
     </Modal>
   );
