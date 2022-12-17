@@ -2,17 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, DatePicker, TimePicker } from "antd";
 import dayjs from "dayjs";
 import ModalTitle from "../../components/ModalTitle";
-import ReadOnlySuffix from "../../components/ReadOnlySuffix";
+import getReadOnlyProps from '../../utils/readOnlyProps';
 import getModalFooter from "../../utils/getModalFooter";
 
 const AddDiscountModal = ({ open, handleCancel, currentItem }) => {
   const [form] = Form.useForm();
   const [readOnly, setReadOnly] = useState(false);
 
-  const readOnlyProps = {
-    readOnly: readOnly,
-    suffix: readOnly ? <ReadOnlySuffix /> : null,
-  };
   const dateTimeProps = { disabled: readOnly };
 
   useEffect(() => {
@@ -61,7 +57,7 @@ const AddDiscountModal = ({ open, handleCancel, currentItem }) => {
                     },
                   ]}
                 >
-                  <Input {...readOnlyProps} className="input" />
+                  <Input {...getReadOnlyProps(readOnly)} className="input" />
                 </Form.Item>
               </td>
             </tr>
@@ -77,7 +73,7 @@ const AddDiscountModal = ({ open, handleCancel, currentItem }) => {
                     },
                   ]}
                 >
-                  <Input {...readOnlyProps} className="input" />
+                  <Input {...getReadOnlyProps(readOnly)} className="input" />
                 </Form.Item>
               </td>
               <td className="font-inter font-medium">%</td>

@@ -150,12 +150,24 @@ div.row {
   @apply text-right font-inter font-medium w-0 whitespace-nowrap;
 }
 
+.modal-table.input-table th  {
+  @apply align-top pt-[5px]
+}
+
 .overflow-modal {
   @apply overflow-y-auto h-[70vh] px-4
 }
 
 .input {
   @apply h-[40px] text-[16px] border-black;
+}
+
+.ant-input-number {
+  @apply flex items-center
+}
+
+.ant-input-number-input-wrap {
+  @apply text-[16px]
 }
 
 .ant-select-selector {
