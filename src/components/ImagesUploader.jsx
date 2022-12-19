@@ -99,7 +99,7 @@ const ImagesUploader = () => {
         //   ),
         // }}
       >
-        {fileList.length >= 8 ? null : uploadButton}
+        {fileList.length >= 10 ? null : uploadButton}
       </Upload>
       <Modal
         open={previewOpen}

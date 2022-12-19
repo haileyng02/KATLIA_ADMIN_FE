@@ -47,7 +47,7 @@ div.row {
 }
 
 .button {
-  @apply h-[40px] w-[100px] rounded-10 bg-primary text-[#9098B1] font-bold text-14;
+  @apply h-[40px] w-[100px] rounded-5 bg-primary text-[#9098B1] font-bold text-14;
 }
 
 .clear-button {
@@ -72,6 +72,10 @@ div.row {
 
 .import-button {
   @apply w-[100px] h-[34px] rounded-5 border-1 font-inter font-semibold text-14;
+}
+
+.add-color-button {
+  @apply w-[90px] h-[34px] border-1 border-black50 text-15 text-black50 rounded-5 hover:border-secondary hover:text-secondary
 }
 
 .table-cell {
@@ -146,12 +150,24 @@ div.row {
   @apply text-right font-inter font-medium w-0 whitespace-nowrap;
 }
 
+.modal-table.input-table th  {
+  @apply align-top pt-[5px]
+}
+
 .overflow-modal {
-  @apply overflow-y-auto h-[75vh] px-4
+  @apply overflow-y-auto h-[70vh] px-4
 }
 
 .input {
   @apply h-[40px] text-[16px] border-black;
+}
+
+.ant-input-number {
+  @apply flex items-center
+}
+
+.ant-input-number-input-wrap {
+  @apply text-[16px]
 }
 
 .ant-select-selector {
@@ -247,6 +263,6 @@ div.row {
   @apply w-full  bg-white rounded-10 rounded-tr-none p-5 overflow-y-auto;
 }
 
-.ant-modal-root .ant-modal-centered .ant-modal {
+.ant-modal-root .ant-modal-centered .ant-modal:not(.width-modal) {
   @apply min-w-fit
 }

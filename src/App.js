@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import 'antd/dist/reset.css';
-import { Main, Orders, Products, Import, Staff, User, Promotion, Statistic } from './pages';
+import { Main, Orders, Products, Import, Staff, User, Promotion, Statistic, Login } from './pages';
 
 function App() {
   return (
@@ -15,6 +14,7 @@ function App() {
         <Route path='promotion' element={<Promotion />} />
         <Route path='statistic' element={<Statistic />} />
       </Route>
+      <Route path='/login' element={<Login />} />
     </Routes>
   );
 }

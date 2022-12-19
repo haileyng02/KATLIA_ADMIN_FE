@@ -38,10 +38,11 @@ const ProductDetailModal = ({ open, handleCancel }) => {
       open={open}
       onCancel={handleCancel}
       centered
-      width={1000}
       footer={null}
+      width={'50%'}
+      className='width-modal'
     >
-      <table className="table-auto modal-table">
+      <table className="modal-table">
         <tbody>
           <tr>
             <th>Name:</th>
@@ -73,7 +74,7 @@ const ProductDetailModal = ({ open, handleCancel }) => {
           </tr>
           <tr>
             <th>Images:</th>
-            <td className="flex overflow-x-auto pb-2 gap-x-3">
+            <td className="flex overflow-x-auto pb-2 gap-x-3 ">
               {data.images.map((image, i) => (
                 <img key={i} src={image} alt="Product" className="w-[100px] h-[150px] object-cover object-center flex-none"/>
               ))}
