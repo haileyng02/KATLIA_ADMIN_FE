@@ -4,6 +4,8 @@ import getStatus from "../utils/getStatus";
 import { viewIcon, checkIcon, cancelIcon } from "../images/actions";
 import CancelOrderModal from "../modals/order/CancelOrderModal";
 import OrderDetailModal from "../modals/order/OrderDetailModal";
+import appApi from "../api/appApi";
+import * as routes from '../api/apiRoutes'
 
 const options = ["All Order", "Completed", "Pading", "Cancel"];
 
@@ -206,11 +208,30 @@ const Orders = () => {
     // console.log("params", pagination, filters, sorter, extra);
   };
 
+  //Get all order
+  const getAllOrder = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const result = await appApi.get(
+        routes.GET_ALL_ORDER,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
   return (
     <div>
       <div className="between-row">
         <div className="row">
-          <h1 className="title">Order</h1>
+          <h1 onClick={getAllOrder} className="title">Order</h1>
           <p className="subtitle">15 Orders found</p>
         </div>
         <DatePicker className="bg-primary font-bold " />

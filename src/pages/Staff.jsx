@@ -1,9 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Table } from "antd";
 import getRole from "../utils/getRole";
 import { editIcon } from "../images/actions";
 import AddStaffModal from "../modals/staff/AddStaffModal";
 import ActionModal from "../modals/staff/ActionModal";
+import appApi from "../api/appApi";
+import * as routes from '../api/apiRoutes'
 
 const data = [
   {
@@ -120,10 +122,53 @@ const Staff = () => {
     }
   };
 
+  //Get all staff
+  const getAllStaff = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const result = await appApi.get(
+        routes.GET_ALL_STAFF,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+  useEffect(() => {
+    getAllStaff()
+  }, [])
+
+  //Add staff
+  const addStaff = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const result = await appApi.post(
+        routes.ADD_STAFF,
+        routes.getAddStaffBody("professional5298@gmail.com", "SALES", "2022-12-16T13:31:20.270Z", 1),
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result)
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
   return (
     <div>
       <div className="row">
-        <h1 className="title">Staff</h1>
+        <h1 onClick={addStaff} className="title">Staff</h1>
         <p className="subtitle">2 Staffs found</p>
       </div>
       <div className="buttons-row justify-end mt-[12px]">

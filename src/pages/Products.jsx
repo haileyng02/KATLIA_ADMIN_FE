@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Tooltip } from "antd";
-import { viewIcon, editIcon, deleteIcon } from "../images/actions";
+import {viewIcon,editIcon,deleteIcon} from '../images/actions';
 import ProductDetailModal from "../modals/product/ProductDetailModal";
 import ModifyProductModal from "../modals/product/ModifyProductModal";
+import appApi from "../api/appApi";
+import * as routes from '../api/apiRoutes'
 
 const data = [
   {
@@ -134,11 +136,74 @@ const Products = () => {
     setModifyOpen(true);
   };
 
+  //Get all products
+  const getAllProducts = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const result = await appApi.get(
+        routes.GET_ALL_PRODUCTS,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+  useEffect(() => {
+    getAllProducts()
+  }, [])
+
+  //Get undeleted products
+  const getUndeletedProducts = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const result = await appApi.get(
+        routes.GET_UNDELETED_PRODUCTS,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  //Add product
+  const addProduct = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const result = await appApi.post(
+        routes.ADD_PRODUCT,
+        routes.getAddProductBody(694574, "Basic Shirt", "", 1, 39.99, "S", [1]),
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
   return (
     <div>
       <div className="row">
         <h1 className="title">Product</h1>
-        <p className="subtitle">1 Product found</p>
+        <p onClick={getUndeletedProducts} className="subtitle">1 Product found</p>
       </div>
       <div className="mt-[15px] buttons-row justify-end">
         <button onClick={handleAdd} className="button">
