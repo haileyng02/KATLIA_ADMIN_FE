@@ -79,16 +79,17 @@ const DiscountProductsModal = ({ open, handleCancel, id }) => {
     {
       title: "Product ID",
       dataIndex: "id",
-      render: (text) => <p className="mb-0">{"#" + text}</p>,
+      render: (text) => <p className="">{"#" + text}</p>,
     },
     {
       title: "Product’s Name",
       dataIndex: "name",
+      // render: (text) => <p className="">{text}</p>,
     },
     {
       title: "Price",
       dataIndex: "price",
-      render: (text) => <p className="mb-0">{"$" + text}</p>,
+      render: (text) => <p className="">{"$" + text}</p>,
     },
   ];
   const rowSelection = {

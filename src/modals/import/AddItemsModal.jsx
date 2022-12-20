@@ -148,7 +148,7 @@ const AddItemsModal = ({ open, handleCancel }) => {
                     <Option key={i} value={color.name}>
                       <div className="row gap-x-[10px] font-inter font-[16px]">
                         <ColorIcon color={color.hex} />
-                        <p className="mb-0">{color.name}</p>
+                        <p className="mb-0 text-[18px]">{color.name}</p>
                       </div>
                     </Option>
                   ))}
