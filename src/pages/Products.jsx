@@ -6,6 +6,7 @@ import ProductDetailModal from "../modals/product/ProductDetailModal";
 import ModifyProductModal from "../modals/product/ModifyProductModal";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
+import categories from "../utils/categories";
 
 // const data = [
 //   {
@@ -40,6 +41,7 @@ const Products = () => {
   const [modifyOpen, setModifyOpen] = useState(false);
   const [currItem, setCurrItem] = useState(null);
   const [data, setData] = useState();
+  const [filteredInfo, setFilteredInfo] = useState({});
 
   const columns = [
     {
@@ -73,17 +75,8 @@ const Products = () => {
     {
       title: "Category",
       dataIndex: "category",
-      filters: [
-        { text: 'Accessories', value: 'Accessories' },
-        { text: 'Coats & Jackets', value: 'Coats & Jackets' },
-        { text: 'Dresses', value: 'Dresses' },
-        { text: 'Hoodies & Sweatshirts', value: 'Hoodies & Sweatshirts' },
-        { text: 'Pants, Leggings & Joggers', value: 'Pants, Leggings & Joggers' },
-        { text: 'Shirts', value: 'Shirts' },
-        { text: 'Shorts & Skirts', value: 'Shorts & Skirts' },
-        { text: 'T-Shirts', value: 'T-Shirts' },
-        { text: 'T-Shirts & Tops', value: 'T-Shirts & Tops' },
-      ],
+      filters: categories,
+      filteredValue: filteredInfo.category || null,
       onFilter: (value, record) => record.category?.indexOf(value) === 0,
       sorter: (a, b) => a.category?.localeCompare(b.category),
       defaultSortOrder: "descend",
@@ -138,7 +131,7 @@ const Products = () => {
   ];
 
   const onChange = (pagination, filters, sorter, extra) => {
-    // console.log("params", pagination, filters, sorter, extra);
+    setFilteredInfo(filters);
   };
 
   const handleAdd = () => {
@@ -200,27 +193,6 @@ const Products = () => {
     }
   };
 
-  //Add product
-  const addProduct = async () => {
-    try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
-      const result = await appApi.post(
-        routes.ADD_PRODUCT,
-        routes.getAddProductBody(694574, "Basic Shirt", "", 1, 39.99, "S", [1]),
-        routes.getAccessTokenHeader(token)
-      );
-      console.log(result);
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  };
   return (
     <div>
       <div className="row">
@@ -233,7 +205,7 @@ const Products = () => {
         <button onClick={handleAdd} className="button">
           Add Item
         </button>
-        <button className="clear-button">
+        <button onClick={()=>setFilteredInfo({})} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>
@@ -241,7 +213,7 @@ const Products = () => {
         columns={columns}
         dataSource={data}
         onChange={onChange}
-        pagination={{showSizeChanger:false}}
+        pagination={{ showSizeChanger: false }}
         loading={!data}
         className="mt-5 pagination-active table-header"
       />
