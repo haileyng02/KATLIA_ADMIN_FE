@@ -162,6 +162,10 @@ div.row {
   @apply h-[40px] text-[16px] border-black;
 }
 
+.login-input {
+  @apply w-full h-[52px] border-[0.6px] border-[#828282] rounded-lg mt-[30px] text-[20px] text-[#828282]
+}
+
 .ant-input-number {
   @apply flex items-center
 }
