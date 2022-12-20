@@ -1,28 +1,18 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Modal, Form, Input, Select, InputNumber } from "antd";
 import ModalTitle from "../../components/ModalTitle";
 import ColorList from "../../components/ColorList";
+import appApi from "../../api/appApi";
+import * as routes from "../../api/apiRoutes";
 import getModalFooter from "../../utils/getModalFooter";
 import getReadOnlyProps from "../../utils/readOnlyProps";
-
-const categories = [
-  {
-    value: "sweater",
-    label: "Sweater",
-  },
-  {
-    value: "dress",
-    label: "Dress",
-  },
-  {
-    value: "Shirt",
-    label: "shirt",
-  },
-];
+import categories from "../../utils/categories";
 
 const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   const [form] = Form.useForm();
-  
+  const { currentUser } = useSelector((state) => state.user);
+
   const handleOk = () => {
     form.validateFields().then((values) => {
       console.log(values);
@@ -40,6 +30,27 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   //   }
   // }, [currItem, form, open]);
 
+  //Add product
+  const addProduct = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.post(
+        routes.ADD_PRODUCT,
+        routes.getAddProductBody(694574, "Basic Shirt", "", 1, 39.99, "S", [1]),
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+  
   return (
     <Modal
       title={<ModalTitle text={currItem ? "Edit Product" : "Add Product"} />}
@@ -62,7 +73,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
                     {
                       required: true,
                       message: "Please enter product ID",
-                      whitespace:true
+                      whitespace: true,
                     },
                   ]}
                   className="form-item"
@@ -138,7 +149,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
                 </Form.Item>
               </td>
             </tr>
-            <ColorList data={currItem?.colors}/>
+            <ColorList data={currItem?.colors} />
           </tbody>
         </table>
       </Form>
