@@ -20,7 +20,6 @@ function App() {
       console.log(expiry)
       if (now < expiry) {
         dispatch(signIn(item));
-        navigate('/orders');
       }
       else {
         localStorage.removeItem('user');

@@ -134,6 +134,7 @@ const AppMenu = ({ drawerWidth }) => {
                     currNav === nav.title.toLocaleLowerCase()
                       ? "white"
                       : "black",
+                  fontSize: 20,
                 }}
               />
             </ListItemButton>
@@ -151,6 +152,7 @@ const AppMenu = ({ drawerWidth }) => {
             textTransform: "none",
             color: "black",
             fontFamily: "Inter",
+            fontSize:20
           }}
           onClick={() => setLogOutOpen(true)}
         >

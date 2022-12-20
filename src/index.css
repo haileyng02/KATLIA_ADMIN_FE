@@ -12,7 +12,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: 20px;
+}
+
+button, [type='button'], [type='submit'] {
+  -webkit-appearance: button;
+  background-color: #F9AF5E;
+  background-image: none;
 }
 
 body {
@@ -78,8 +83,12 @@ div.row {
   @apply w-[90px] h-[34px] border-1 border-black50 text-15 text-black50 rounded-5 hover:border-secondary hover:text-secondary
 }
 
+.ant-btn-link {
+  background-color: transparent;
+}
+
 .table-cell {
-  @apply mb-0 text-15 font-semibold font-inter;
+  @apply mb-0 text-15 font-medium font-inter;
 }
 
 .table-cell-medium {
@@ -106,6 +115,14 @@ div.row {
 
 .table-header .ant-table-column-sorter-down.active {
   color: rgba(249, 175, 94, 0.9);
+}
+
+.ant-table-column-title {
+  @apply text-[18px] font-semibold
+}
+
+.ant-table-thead {
+  @apply text-[18px]
 }
 
 .options .ant-segmented-group {
@@ -147,11 +164,15 @@ div.row {
 }
 
 .modal-table th {
-  @apply text-right font-inter font-medium w-0 whitespace-nowrap;
+  @apply text-right font-inter font-medium w-0 whitespace-nowrap text-20;
 }
 
 .modal-table.input-table th  {
   @apply align-top pt-[5px]
+}
+
+.modal-table td {
+  @apply text-20;
 }
 
 .overflow-modal {
