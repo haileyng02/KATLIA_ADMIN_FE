@@ -163,33 +163,6 @@ const Staff = () => {
     getAllStaff();
   }, [currentUser]);
 
-  //Add staff
-  const addStaff = async () => {
-    try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
-      const result = await appApi.post(
-        routes.ADD_STAFF,
-        routes.getAddStaffBody(
-          "professional5298@gmail.com",
-          "SALES",
-          "2022-12-16T13:31:20.270Z",
-          1
-        ),
-        routes.getAccessTokenHeader(token)
-      );
-      console.log(result);
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  };
-
   const onChange = (pagination, filters, sorter, extra) => {
     setFilteredInfo(filters);
   };
@@ -197,7 +170,7 @@ const Staff = () => {
   return (
     <div>
       <div className="row">
-        <h1 onClick={addStaff} className="title">
+        <h1 className="title">
           Staff
         </h1>
         <p className="subtitle">2 Staffs found</p>
@@ -217,7 +190,7 @@ const Staff = () => {
         onChange={onChange}
         className="mt-5 pagination-active table-header"
       />
-      <AddStaffModal open={addOpen} handleCancel={() => setAddOpen(false)} />
+      <AddStaffModal open={addOpen} handleCancel={() => setAddOpen(false)} getStaff={getAllStaff}/>
       <ActionModal
         open={actionOpen}
         handleCancel={() => setActionOpen(false)}
