@@ -1,66 +1,68 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Table, Tooltip } from "antd";
 import getRole from "../utils/getRole";
 import { profileIcon } from "../images/actions";
 import ProfileModal from "../modals/user/ProfileModal";
 import appApi from "../api/appApi";
-import * as routes from '../api/apiRoutes'
-
-const data = [
-  {
-    key: "1",
-    userId: "19877",
-    name: "Nguyen Huu Trung Kien",
-    email: "a@gmail.com",
-    phoneNumber: "0975305060",
-    role: "Admin",
-  },
-  {
-    key: "2",
-    userId: "19877",
-    name: "A",
-    email: "a@gmail.com",
-    phoneNumber: "0975305060",
-    role: "Customer",
-  },
-];
+import * as routes from "../api/apiRoutes";
 
 const User = () => {
-  const [profileOpen,setProfileOpen] = useState(false);
+  const { currentUser } = useSelector((state) => state.user);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [data, setData] = useState();
+  const [filteredInfo, setFilteredInfo] = useState({});
 
   const columns = [
     {
       title: "User ID",
-      dataIndex: "userId",
-      sorter: (a, b) => a.userId.localeCompare(b.userId),
+      dataIndex: "id",
+      sorter: (a, b) => a.id?.localeCompare(b.id),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Name",
-      dataIndex: "name",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      dataIndex: "fullName",
+      sorter: (a, b) => a.fullName?.localeCompare(b.fullName),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Email",
       dataIndex: "email",
-      sorter: (a, b) => a.email.localeCompare(b.email),
+      sorter: (a, b) => a.email?.localeCompare(b.email),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
-      sorter: (a, b) => a.phoneNumber.localeCompare(b.phoneNumber),
+      sorter: (a, b) => a.phoneNumber?.localeCompare(b.phoneNumber),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Role",
       dataIndex: "role",
-      sorter: (a, b) => a.role.localeCompare(b.role),
+      filters: [
+        {
+          text: "Admin",
+          value: "Admin",
+        },
+        {
+          text: "Sales",
+          value: "Sales",
+        },
+        {
+          text: "Storage",
+          value: "Storage",
+        },
+      ],
+      filteredValue: filteredInfo.role || null,
+      onFilter: (value, record) =>
+        record.role?.indexOf(value.toUpperCase()) === 0,
+      sorter: (a, b) => a.role?.localeCompare(b.role),
       defaultSortOrder: "descend",
       render: (value) => getRole(value),
     },
@@ -70,11 +72,11 @@ const User = () => {
       align: "center",
       render: (_) => (
         <div className="flex gap-x-[11px] justify-center">
-          <Tooltip title='View Profile'>
+          <Tooltip title="View Profile">
             <button
               className="action-button"
               style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-              onClick={()=>setProfileOpen(true)}
+              onClick={() => setProfileOpen(true)}
             >
               <center>
                 <img src={profileIcon} alt="Profile" />
@@ -89,40 +91,56 @@ const User = () => {
   //Get all user
   const getAllUser = async () => {
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const token = currentUser.token;
       const result = await appApi.get(
         routes.GET_ALL_USER,
         routes.getAccessTokenHeader(token)
       );
       console.log(result);
+      setData(result.data);
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
       } else {
-        console.log(err.message)
+        console.log(err.message);
       }
     }
-  }
+  };
+
+  useEffect(() => {
+    if (currentUser) getAllUser();
+  }, [currentUser]);
+
+  const onChange = (pagination, filters, sorter, extra) => {
+    setFilteredInfo(filters);
+  };
 
   return (
     <div>
       <div className="row">
-        <h1 onClick={getAllUser} className="title">User</h1>
-        <p className="subtitle">2 Users found</p>
+        <h1 className="title">User</h1>
+        {data ? (
+          <p className="subtitle">{data.length + " Users found"}</p>
+        ) : null}
       </div>
       <div className="mt-[12px] flex justify-end">
-        <button className="clear-button">
+        <button onClick={() => setFilteredInfo({})} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>
       <Table
         columns={columns}
         dataSource={data}
+        onChange={onChange}
+        loading={!data}
         className="mt-5 pagination-active table-header"
       />
-      <ProfileModal open={profileOpen} handleCancel={()=>setProfileOpen(false)}/>
+      <ProfileModal
+        open={profileOpen}
+        handleCancel={() => setProfileOpen(false)}
+      />
     </div>
   );
 };
