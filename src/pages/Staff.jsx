@@ -173,7 +173,9 @@ const Staff = () => {
         <h1 className="title">
           Staff
         </h1>
-        <p className="subtitle">2 Staffs found</p>
+        {data ? (
+          <p className="subtitle">{data.length + " Staffs found"}</p>
+        ) : null}
       </div>
       <div className="buttons-row justify-end mt-[12px]">
         <button onClick={() => setAddOpen(true)} className="button">

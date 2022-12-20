@@ -197,15 +197,15 @@ const Products = () => {
     <div>
       <div className="row">
         <h1 className="title">Product</h1>
-        <p onClick={getUndeletedProducts} className="subtitle">
-          1 Product found
-        </p>
+        {data ? (
+          <p className="subtitle">{data.length + " Products found"}</p>
+        ) : null}
       </div>
       <div className="mt-[15px] buttons-row justify-end">
         <button onClick={handleAdd} className="button">
           Add Item
         </button>
-        <button onClick={()=>setFilteredInfo({})} className="clear-button">
+        <button onClick={() => setFilteredInfo({})} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>
