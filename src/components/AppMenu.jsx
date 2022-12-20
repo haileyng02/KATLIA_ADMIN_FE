@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -10,7 +10,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import WarningModal from '../modals/WarningModal'
+import WarningModal from "../modals/WarningModal";
 import {
   ordersIcon,
   productsIcon,
@@ -29,6 +29,7 @@ import {
   promotionIcon2,
   statisticIcon2,
 } from "../images/main-nav-selected";
+import { logOut } from "../actions/auth";
 import logOutIcon from "../images/log-out.svg";
 
 const navItems = [
@@ -71,8 +72,9 @@ const navItems = [
 
 const AppMenu = ({ drawerWidth }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [logOutOpen,setLogOutOpen] = useState(false);
+  const [logOutOpen, setLogOutOpen] = useState(false);
   const [currNav, setCurrNav] = useState("orders");
 
   const handleNavClick = (path) => {
@@ -86,6 +88,12 @@ const AppMenu = ({ drawerWidth }) => {
     if (nav === "") nav = "orders";
     setCurrNav(nav);
   }, [navigate]);
+
+  const handleLogOut = () => {
+    localStorage.clear();
+    dispatch(logOut());
+    navigate("/login");
+  };
 
   const drawer = (
     <div className="flex flex-col h-full">
@@ -144,7 +152,7 @@ const AppMenu = ({ drawerWidth }) => {
             color: "black",
             fontFamily: "Inter",
           }}
-          onClick={()=>setLogOutOpen(true)}
+          onClick={() => setLogOutOpen(true)}
         >
           Log Out
         </Button>
@@ -193,7 +201,12 @@ const AppMenu = ({ drawerWidth }) => {
       >
         {drawer}
       </Drawer>
-      <WarningModal text='Are you sure you want to log out?' open={logOutOpen} handleCancel={()=>setLogOutOpen(false)}/>
+      <WarningModal
+        text="Are you sure you want to log out?"
+        open={logOutOpen}
+        handleCancel={() => setLogOutOpen(false)}
+        handleOk={handleLogOut}
+      />
     </Box>
   );
 };

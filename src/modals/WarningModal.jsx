@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import getModalFooter from "../utils/getModalFooter";
 import warningIcon from "../images/warning.svg";
 
-const WarningModal = ({ handleCancel, open, text }) => {
+const WarningModal = ({ handleOk, handleCancel, open, text }) => {
   return (
     <Modal
       title={
@@ -16,7 +16,7 @@ const WarningModal = ({ handleCancel, open, text }) => {
       onCancel={handleCancel}
       centered
       width={450}
-      footer={getModalFooter({ handleCancel })}
+      footer={getModalFooter({ handleCancel, handleOk })}
     >
       <p className="text-center">{text}</p>
     </Modal>
