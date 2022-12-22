@@ -159,7 +159,7 @@ const Products = () => {
         console.log(err.message)
       }
     }
-  } 
+  }
   return (
     <div>
       <div className="row">
