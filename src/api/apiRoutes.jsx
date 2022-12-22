@@ -78,3 +78,11 @@ export const getDetailOrderBody = (id) => ({
     id: id
   }
 });
+
+//GET PRICE ORDER
+export const GET_PRICE_ORDER = (id) => `/staff-order/getPriceOrder/${id}`;
+export const getPriceOrderBody = (id) => ({
+  params: {
+    id: id
+  }
+});
