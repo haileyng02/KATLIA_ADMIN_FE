@@ -1,6 +1,8 @@
-import React from "react";
-import { Table } from "antd";
+import React, { useState } from "react";
+import { Table, Tooltip } from "antd";
 import { viewIcon, editIcon, deleteIcon } from "../images/actions";
+import AddDiscountModal from "../modals/promotion/AddDiscountModal";
+import DiscountProductsModal from "../modals/promotion/DiscountProductsModal";
 
 const data = [
   {
@@ -14,6 +16,25 @@ const data = [
 ];
 
 const Promotion = () => {
+  const [addOpen, setAddOpen] = useState(false);
+  const [viewOpen, setViewOpen] = useState(false);
+  const [currItem, setCurrItem] = useState(null);
+
+  const handleAdd = () => {
+    setCurrItem(null);
+    setAddOpen(true);
+  };
+
+  const handleEdit = (value) => {
+    setCurrItem(value);
+    setAddOpen(true);
+  };
+
+  const handleView = (value) => {
+    setCurrItem(value);
+    setViewOpen(true);
+  };
+
   const columns = [
     {
       title: "Discount ID",
@@ -54,24 +75,30 @@ const Promotion = () => {
       title: "Action",
       key: "action",
       align: "center",
-      render: (_) => (
+      render: (value) => (
         <div className="flex gap-x-[20px] justify-center">
-          <button
-            className="action-button"
-            style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
-          >
-            <center>
-              <img src={viewIcon} alt="View" />
-            </center>
-          </button>
-          <button
-            className="action-button"
-            style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-          >
-            <center>
-              <img src={editIcon} alt="Edit" />
-            </center>
-          </button>
+          <Tooltip title="List products for discount">
+            <button
+              className="action-button"
+              style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
+              onClick={() => handleView(value)}
+            >
+              <center>
+                <img src={viewIcon} alt="View" />
+              </center>
+            </button>
+          </Tooltip>
+          <Tooltip title="Edit discount">
+            <button
+              className="action-button"
+              style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
+              onClick={() => handleEdit(value)}
+            >
+              <center>
+                <img src={editIcon} alt="Edit" />
+              </center>
+            </button>
+          </Tooltip>
           <button
             className="action-button"
             style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
@@ -91,7 +118,13 @@ const Promotion = () => {
         <h1 className="title">Promotion</h1>
         <p className="subtitle">2 Promotions found</p>
       </div>
-      <div className="mt-[12px] flex justify-end">
+      <div className="mt-[12px] flex justify-end gap-x-[10px]">
+        <button
+          onClick={handleAdd}
+          className="px-[17px] py-[11px] rounded-5 bg-primary text-[#9098B1] font-bold text-14"
+        >
+          Add Discount
+        </button>
         <button className="clear-button">
           <p>Clear Filter</p>
         </button>
@@ -99,7 +132,18 @@ const Promotion = () => {
       <Table
         columns={columns}
         dataSource={data}
+        s
         className="mt-5 pagination-active table-header"
+      />
+      <AddDiscountModal
+        open={addOpen}
+        handleCancel={() => setAddOpen(false)}
+        currentItem={currItem}
+      />
+      <DiscountProductsModal
+        open={viewOpen}
+        handleCancel={() => setViewOpen(false)}
+        id={currItem?.discountId}
       />
     </div>
   );

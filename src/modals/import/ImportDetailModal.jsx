@@ -1,7 +1,6 @@
 import React from "react";
 import { Divider, Modal } from "antd";
 import ModalTitle from "../../components/ModalTitle";
-import ColorIcon from "../../components/ColorIcon";
 import ImportDetailTable from "../../components/tables/ImportDetailTable";
 
 const data = {

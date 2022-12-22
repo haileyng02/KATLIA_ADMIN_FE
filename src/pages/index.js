@@ -6,5 +6,6 @@ import Staff from "./Staff";
 import User from "./User";
 import Promotion from "./Promotion";
 import Statistic from "./Statistic";
+import Login from './Login';
 
-export {Main,Orders,Products,Import,Staff,User,Promotion,Statistic}
+export {Main,Orders,Products,Import,Staff,User,Promotion,Statistic,Login}

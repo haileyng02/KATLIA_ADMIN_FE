@@ -12,7 +12,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: 20px;
 }
 
 body {
@@ -47,7 +46,7 @@ div.row {
 }
 
 .button {
-  @apply h-[40px] w-[100px] rounded-10 bg-primary text-[#9098B1] font-bold text-14;
+  @apply h-[40px] w-[100px] rounded-5 bg-primary text-[#9098B1] font-bold text-14;
 }
 
 .clear-button {
@@ -74,8 +73,20 @@ div.row {
   @apply w-[100px] h-[34px] rounded-5 border-1 font-inter font-semibold text-14;
 }
 
+.add-color-button {
+  @apply w-[90px] h-[34px] border-1 border-black50 text-15 text-black50 rounded-5 hover:border-secondary hover:text-secondary
+}
+
+.ant-btn-primary{
+  @apply bg-[#F9AF5E]
+}
+
+.ant-btn-link {
+  background-color: transparent;
+}
+
 .table-cell {
-  @apply mb-0 text-15 font-semibold font-inter;
+  @apply mb-0 text-15 font-medium font-inter;
 }
 
 .table-cell-medium {
@@ -104,6 +115,14 @@ div.row {
   color: rgba(249, 175, 94, 0.9);
 }
 
+.ant-table-column-title {
+  @apply text-[18px] font-semibold
+}
+
+.ant-table-thead {
+  @apply text-[18px]
+}
+
 .options .ant-segmented-group {
   @apply h-full;
 }
@@ -114,6 +133,10 @@ div.row {
 
 .select-option {
   @apply font-inter font-medium text-[16px] mb-0;
+}
+
+.ant-select-item-option-content {
+  @apply text-[16px]
 }
 
 .ant-segmented-item-label {
@@ -143,15 +166,35 @@ div.row {
 }
 
 .modal-table th {
-  @apply text-right font-inter font-medium w-0 whitespace-nowrap;
+  @apply text-right font-inter font-medium w-0 whitespace-nowrap text-20;
+}
+
+.modal-table.input-table th  {
+  @apply align-top pt-[5px]
+}
+
+.modal-table td {
+  @apply text-20;
 }
 
 .overflow-modal {
-  @apply overflow-y-auto h-[75vh] px-4
+  @apply overflow-y-auto h-[70vh] px-4
 }
 
 .input {
   @apply h-[40px] text-[16px] border-black;
+}
+
+.login-input {
+  @apply w-full h-[52px] border-[0.6px] border-[#828282] rounded-lg mt-[30px] text-[20px] text-[#828282]
+}
+
+.ant-input-number {
+  @apply flex items-center
+}
+
+.ant-input-number-input-wrap {
+  @apply text-[16px]
 }
 
 .ant-select-selector {
@@ -247,6 +290,6 @@ div.row {
   @apply w-full  bg-white rounded-10 rounded-tr-none p-5 overflow-y-auto;
 }
 
-.ant-modal-root .ant-modal-centered .ant-modal {
+.ant-modal-root .ant-modal-centered .ant-modal:not(.width-modal) {
   @apply min-w-fit
 }

@@ -1,86 +1,108 @@
-import React from "react";
-import { Modal, Form, Input, Select } from "antd";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Modal, Form, Input, Select, InputNumber } from "antd";
 import ModalTitle from "../../components/ModalTitle";
-import ImagesUploader from "../../components/ImagesUploader";
-import ColorIcon from "../../components/ColorIcon";
+import ColorList from "../../components/ColorList";
+import appApi from "../../api/appApi";
+import * as routes from "../../api/apiRoutes";
+import getModalFooter from "../../utils/getModalFooter";
+import getReadOnlyProps from "../../utils/readOnlyProps";
+import categories from "../../utils/categories";
 
-const { Option } = Select;
+const ModifyProductModal = ({ open, handleCancel, currItem }) => {
+  const [form] = Form.useForm();
+  const { currentUser } = useSelector((state) => state.user);
 
-const categories = [
-  {
-    value: "sweater",
-    label: "Sweater",
-  },
-  {
-    value: "dress",
-    label: "Dress",
-  },
-  {
-    value: "Shirt",
-    label: "shirt",
-  },
-];
+  const handleOk = () => {
+    form.validateFields().then((values) => {
+      console.log(values);
+    });
+  };
 
-const colors = [
-  {
-    name: "Black",
-    hex: "#000000",
-  },
-  {
-    name: "Mint",
-    hex: "#8FD9C4",
-  },
-  {
-    name: "Green",
-    hex: "#32CD32",
-  },
-  {
-    name: "Be",
-    hex: "#EDD3AB",
-  },
-  {
-    name: "Red",
-    hex: "#F81515",
-  },
-  {
-    name: "Gray",
-    hex: "#696969",
-  },
-];
+  // useEffect(() => {
+  //   if (currItem) {
+  //     form.setFieldsValue({
+  //       name: currItem.name,
+  //       percent: currItem.percent,
+  //     });
+  //   } else {
+  //     form.resetFields();
+  //   }
+  // }, [currItem, form, open]);
 
-const ModifyProductModal = ({ edit, open, handleCancel }) => {
+  //Add product
+  const addProduct = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.post(
+        routes.ADD_PRODUCT,
+        routes.getAddProductBody(694574, "Basic Shirt", "", 1, 39.99, "S", [1]),
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+  
   return (
     <Modal
-      title={<ModalTitle text={edit ? "Edit Product" : "Add Product"} />}
+      title={<ModalTitle text={currItem ? "Edit Product" : "Add Product"} />}
       open={open}
       onCancel={handleCancel}
       centered
-      width={800}
-      footer={null}
+      width={"45%"}
+      footer={getModalFooter({ handleCancel, handleOk })}
+      className="width-modal"
     >
-      <Form className="overflow-y-auto h-[75vh]">
-        <table className="modal-table table-auto w-full">
+      <Form form={form} className="overflow-y-auto max-h-[70vh]">
+        <table className="modal-table table-auto w-full input-table">
           <tbody>
             <tr>
               <th className="required">Product ID:</th>
               <td>
-                <Form.Item className="form-item">
-                  <Input className="input" />
+                <Form.Item
+                  name={"id"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter product ID",
+                      whitespace: true,
+                    },
+                  ]}
+                  className="form-item"
+                >
+                  <Input {...getReadOnlyProps(currItem)} className="input" />
                 </Form.Item>
               </td>
             </tr>
             <tr>
               <th className="required">Name:</th>
               <td>
-                <Form.Item className="form-item">
-                  <Input className="input" />
+                <Form.Item
+                  name={"name"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter product name",
+                    },
+                  ]}
+                  className="form-item"
+                >
+                  <Input className="input capitalize" />
                 </Form.Item>
               </td>
             </tr>
             <tr>
               <th>Description:</th>
               <td>
-                <Form.Item className="form-item">
+                <Form.Item name={"description"} className="form-item">
                   <Input className="input" />
                 </Form.Item>
               </td>
@@ -88,62 +110,46 @@ const ModifyProductModal = ({ edit, open, handleCancel }) => {
             <tr>
               <th>Category:</th>
               <td>
-                <Select
-                  options={categories}
-                  defaultValue={categories[0]}
-                  size="large"
-                  // suffixIcon={<img src={selectIcon} alt='Select' className="h-2"/>}
-                  className="w-full"
-                />
+                <Form.Item name={"category"} initialValue={categories[0]}>
+                  <Select
+                    options={categories}
+                    size="large"
+                    // suffixIcon={<img src={selectIcon} alt='Select' className="h-2"/>}
+                    className="w-full"
+                  />
+                </Form.Item>
               </td>
             </tr>
             <tr>
               <th>Size:</th>
               <td>
-                <Form.Item className="form-item">
-                  <Input className="input" />
+                <Form.Item name={"size"} className="form-item">
+                  <Input {...getReadOnlyProps(currItem)} className="input" />
                 </Form.Item>
+                <p className="mb-0 font-inter text-[12px] text-[#FD3838E5]">
+                  Note: Separate each size with comma. (Ex: S,M,L) Leave it
+                  blank if one size
+                </p>
               </td>
             </tr>
             <tr>
               <th className="required">Price:</th>
               <td>
-                <Form.Item className="form-item">
-                  <Input className="input" />
+                <Form.Item
+                  name={"price"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter price",
+                    },
+                  ]}
+                  className="form-item"
+                >
+                  <InputNumber controls={false} className="input w-full" />
                 </Form.Item>
               </td>
             </tr>
-            <tr>
-              <th className="required">Color:</th>
-              <td>
-                <Select
-                  defaultValue={colors[0].name}
-                  size="large"
-                  // suffixIcon={<img src={selectIcon} alt='Select' className="h-2"/>}
-                  className="w-full"
-                >
-                  {colors.map((color, i) => (
-                    <Option key={i} value={color.name}>
-                      <div className="row gap-x-[10px] font-inter font-[16px]">
-                        <ColorIcon color={color.hex}/>
-                        <p className="mb-0">{color.name}</p>
-                      </div>
-                    </Option>
-                  ))}
-                </Select>
-              </td>
-            </tr>
-            <tr>
-              <th>Images:</th>
-              <td>
-                <ImagesUploader />
-              </td>
-            </tr>
-            <tr>
-              <th><button className="w-[90px] h-[34px] border-1 border-black50 text-15 text-black50 rounded-5">Add Color</button></th>
-              <td>
-              </td>
-            </tr>
+            <ColorList data={currItem?.colors} />
           </tbody>
         </table>
       </Form>

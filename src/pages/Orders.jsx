@@ -1,153 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { DatePicker, Table, Segmented, Tooltip } from "antd";
-import getStatus from "../utils/getStatus";
+import getStatus, { getOrderStatusText } from "../utils/getStatus";
 import { viewIcon, checkIcon, cancelIcon } from "../images/actions";
 import CancelOrderModal from "../modals/order/CancelOrderModal";
 import OrderDetailModal from "../modals/order/OrderDetailModal";
 import appApi from "../api/appApi";
-import * as routes from '../api/apiRoutes'
+import * as routes from "../api/apiRoutes";
+import dayjs from "dayjs";
 
-const options = ["All Order", "Completed", "Pading", "Cancel"];
-
-const data = [
-  {
-    key: "1",
-    orderId: "2001",
-    name: "Nguyen Huu Trung Kien",
-    address: "University Of Information Technology",
-    date: "17/10/2022",
-    total: "54.00",
-    status: "Completed",
-  },
-  {
-    key: "2",
-    orderId: "2002",
-    name: "A",
-    address: "University Of Information Technology",
-    date: "17/10/2022",
-    total: "52.00",
-    status: "Pending",
-  },
-  {
-    key: "3",
-    orderId: "2003",
-    name: "B",
-    address: "University Of Information Technology",
-    date: "18/10/2022",
-    total: "54.00",
-    status: "Canceled",
-  },
-  {
-    key: "4",
-    orderId: "2002",
-    name: "AB",
-    address: "University Of Information Technology",
-    date: "17/10/2022",
-    total: "53.00",
-    status: "Completed",
-  },
-  {
-    key: "5",
-    orderId: "2002",
-    name: "Nguyen Huu Trung Kien",
-    address: "University Of Information Technology",
-    date: "17/10/2022",
-    total: "54.00",
-    status: "Pending",
-  },
-  {
-    key: "6",
-    orderId: "2004",
-    name: "Nguyen Huu Trung Kien",
-    address: "University Of Information Technology",
-    date: "10/10/2022",
-    total: "54.00",
-    status: "Canceled",
-  },
-  {
-    key: "7",
-    orderId: "2002",
-    name: "Nguyen Huu Trung Kien",
-    address: "University Of Information Technology",
-    date: "19/10/2022",
-    total: "54.00",
-    status: "Completed",
-  },
-  {
-    key: "8",
-    orderId: "2002",
-    name: "Nguyen Huu Trung Kien",
-    address: "University Of Information Technology",
-    date: "17/10/2022",
-    total: "54.00",
-    status: "Pending",
-  },
-  {
-    key: "9",
-    orderId: "2002",
-    name: "Nguyen Huu Trung Kien",
-    address: "University Of Information Technology",
-    date: "17/10/2022",
-    total: "54.00",
-    status: "Canceled",
-  },
-  {
-    key: "10",
-    orderId: "2002",
-    name: "Nguyen Huu Trung Kien",
-    address: "University Of Information Technology",
-    date: "17/10/2022",
-    total: "54.00",
-    status: "Canceled",
-  },
-  {
-    key: "11",
-    orderId: "2002",
-    name: "Nguyen Huu Trung Kien",
-    address: "University Of Information Technology",
-    date: "17/10/2022",
-    total: "54.00",
-    status: "Canceled",
-  },
+const options = [
+  "All Order",
+  "Cart",
+  "Ordered",
+  "Confirmed",
+  "Shipping",
+  "Arrived",
+  "Canceled",
 ];
 
 const Orders = () => {
   const [cancelModal, setCancelModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
+  const [data, setData] = useState();
+  const [filteredInfo, setFilteredInfo] = useState({});
+  const { currentUser } = useSelector((state) => state.user);
 
   const columns = [
     {
       title: "Order ID",
       dataIndex: "orderId",
-      sorter: (a, b) => a.orderId.localeCompare(b.orderId),
+      sorter: (a, b) => a.orderId?.localeCompare(b.orderId),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      title: "Customer's Name",
+      dataIndex: "customerName",
+      sorter: (a, b) => a.customerName?.localeCompare(b.customerName),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Address",
       dataIndex: "address",
-      sorter: (a, b) => a.address.localeCompare(b.address),
+      sorter: (a, b) => a.address?.localeCompare(b.address),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Date",
-      dataIndex: "date",
-      sorter: (a, b) => a.date.localeCompare(b.date),
+      dataIndex: "createDate",
+      sorter: (a, b) => a.createDate?.localeCompare(b.createDate),
       defaultSortOrder: "descend",
-      render: (value) => <p className="table-cell">{value}</p>,
+      render: (value) => (
+        <p className="table-cell">{dayjs(value).format("DD-MM-YYYY")}</p>
+      ),
     },
     {
       title: "Total",
       dataIndex: "total",
-      sorter: (a, b) => a.total.localeCompare(b.total),
+      sorter: (a, b) => a.total - b.total,
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"$" + value}</p>,
     },
@@ -155,7 +68,13 @@ const Orders = () => {
       title: "Status",
       dataIndex: "status",
       align: "center",
-      sorter: (a, b) => a.status.localeCompare(b.status),
+      filteredValue: filteredInfo.status || null,
+      onFilter: (value, record) =>
+        getOrderStatusText(record.status)?.indexOf(value) === 0,
+      sorter: (a, b) =>
+        getOrderStatusText(a.status)?.localeCompare(
+          getOrderStatusText(b.status)
+        ),
       defaultSortOrder: "descend",
       render: (value) => getStatus(value),
     },
@@ -169,7 +88,7 @@ const Orders = () => {
             <button
               className="action-button"
               style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
-              onClick={()=>setDetailModal(true)}
+              onClick={() => setDetailModal(true)}
             >
               <center>
                 <img src={viewIcon} alt="View" />
@@ -205,36 +124,51 @@ const Orders = () => {
   ];
 
   const onChange = (pagination, filters, sorter, extra) => {
-    // console.log("params", pagination, filters, sorter, extra);
+    setFilteredInfo(filters);
+  };
+
+  const handleChooseStatus = (value) => {
+    if (value === "All Order") setFilteredInfo({});
+    else setFilteredInfo({ ...filteredInfo, status: [value] });
   };
 
   //Get all order
   const getAllOrder = async () => {
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const token = currentUser.token;
       const result = await appApi.get(
         routes.GET_ALL_ORDER,
         routes.getAccessTokenHeader(token)
       );
       console.log(result);
+      setData(result.data);
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
       } else {
-        console.log(err.message)
+        console.log(err.message);
       }
     }
-  }
+  };
+
+  useEffect(() => {
+    if (currentUser) getAllOrder();
+  }, [currentUser]);
+
   return (
     <div>
       <div className="between-row">
         <div className="row">
-          <h1 onClick={getAllOrder} className="title">Order</h1>
-          <p className="subtitle">15 Orders found</p>
+          <h1 onClick={getAllOrder} className="title">
+            Order
+          </h1>
+          {data ? (
+            <p className="subtitle">{data.length + " Orders found"}</p>
+          ) : null}
         </div>
-        <DatePicker className="bg-primary font-bold " />
+        <DatePicker className="bg-primary font-semibold" />
       </div>
       <div className="flex justify-between mt-[37px]">
         {/* <div className="flex">
@@ -250,7 +184,11 @@ const Orders = () => {
             </button>
           ))}
         </div> */}
-        <Segmented options={options} className="options" />
+        <Segmented
+          options={options}
+          className="options"
+          onChange={(value) => handleChooseStatus(value)}
+        />
         <button className="clear-button">
           <p>Clear Filter</p>
         </button>
@@ -259,6 +197,7 @@ const Orders = () => {
         columns={columns}
         dataSource={data}
         onChange={onChange}
+        loading={!data}
         className="mt-5 pagination-active table-header"
       />
       <OrderDetailModal

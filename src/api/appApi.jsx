@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
 const appApi = axios.create({
-  baseURL: 'https://katlia-server.onrender.com'
-})
+  baseURL: "http://localhost:2041", //https://katlia-server.onrender.com
+});
 
-export default appApi
+export default appApi;
