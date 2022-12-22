@@ -37,6 +37,14 @@ export const getAddProductBody = (
   colorIdList: colorIdList,
 });
 
+//DELETE PRODUCT
+export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
+export const getDeleteProductBody = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //GET ALL STAFF
 export const GET_ALL_STAFF = "/staff/getAllStaff";
 

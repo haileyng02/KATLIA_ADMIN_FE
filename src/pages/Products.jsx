@@ -213,6 +213,33 @@ const Products = () => {
       }
     }
   }
+
+  //Delete product
+  const deleteProduct = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(
+        routes.DELETE_PRODUCT("694575"), {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDeleteProductBody("694575")
+        }
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(currentUser) deleteProduct()
+  }, [currentUser])
+
   return (
     <div>
       <div className="row">
