@@ -49,12 +49,12 @@ export const getDeleteProductBody = (id) => ({
 export const GET_ALL_STAFF = "/staff/getAllStaff";
 
 //UPDATE STAFF
-export const UPDATE_STAFF = (id) => `/staff/updateStaff/${id}`
+export const UPDATE_STAFF = (id) => `/staff/updateStaff/${id}`;
 export const getUpdateStaffIdParams = (id) => ({
   params: {
     id: id
   }
-})
+});
 
 //ADD STAFF
 export const ADD_STAFF = "/staff/addStaff";
@@ -70,3 +70,11 @@ export const GET_ALL_USER = "/user/getAllUser";
 
 //GET ALL ORDER
 export const GET_ALL_ORDER = "/staff-order/getAllOrder";
+
+//GET DETAIL ORDER
+export const GET_DETAIL_ORDER = (id) => `/staff-order/getDetailOrder/${id}`;
+export const getDetailOrderBody = (id) => ({
+  params: {
+    id: id
+  }
+});
