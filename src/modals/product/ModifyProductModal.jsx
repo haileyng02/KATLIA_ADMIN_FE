@@ -15,7 +15,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      console.log(values);
+      handleUploadImages(values.images.file);
     });
   };
 
@@ -50,6 +50,12 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
       }
     }
   };
+
+  const handleUploadImages = (file) => {
+    if (file) {
+      //Call api upload image
+    }
+  }
   
   return (
     <Modal
