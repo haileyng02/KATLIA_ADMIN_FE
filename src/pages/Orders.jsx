@@ -89,7 +89,7 @@ const Orders = () => {
             <button
               className="action-button"
               style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
-              onClick={()=>handleViewDetail(value)}
+              onClick={() => handleViewDetail(value)}
             >
               <center>
                 <img src={viewIcon} alt="View" />
@@ -132,7 +132,6 @@ const Orders = () => {
         routes.GET_ALL_ORDER,
         routes.getAccessTokenHeader(token)
       );
-      console.log(result);
       setData(
         result.data.map((d, i) => {
           return { ...d, key: i };
@@ -159,7 +158,7 @@ const Orders = () => {
   };
 
   const handleViewDetail = (value) => {
-    setCurrItem(value)
+    setCurrItem(value);
     setDetailModal(true);
   };
 

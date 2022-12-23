@@ -152,7 +152,7 @@ const Products = () => {
         routes.GET_ALL_PRODUCTS,
         routes.getAccessTokenHeader(token)
       );
-      console.log(result);
+      result.data.pop();
       setData(
         result.data.map((d, i) => {
           return { ...d, key: i };
