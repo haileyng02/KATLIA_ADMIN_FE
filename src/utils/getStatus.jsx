@@ -59,4 +59,22 @@ export const getOrderStatusText = (statusID) => {
     }
 };
 
+export const getOrderStatusTextAndColor = (statusID) => {
+  switch (statusID) {
+      case 0:
+          return {text:"Cart",color:'#696969'};
+      case 1:
+          return {text:"Ordered",color:'#694BDB'};
+      case 2:
+          return {text:"Confirmed",color:'#F59607'};
+      case 3:
+          return {text:"Shipping",color:'#43CCF8'};
+      case 4:
+          return {text:"Arrived",color:'#60BE80'};
+      case 5:
+          return {text:"Canceled",color:'#FA4E28'};
+      default:
+  }
+};
+
 export default getStatus;

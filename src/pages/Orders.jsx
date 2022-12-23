@@ -20,11 +20,12 @@ const options = [
 ];
 
 const Orders = () => {
+  const { currentUser } = useSelector((state) => state.user);
   const [cancelModal, setCancelModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [data, setData] = useState();
   const [filteredInfo, setFilteredInfo] = useState({});
-  const { currentUser } = useSelector((state) => state.user);
+  const [currItem, setCurrItem] = useState();
 
   const columns = [
     {
@@ -82,13 +83,13 @@ const Orders = () => {
       title: "Action",
       key: "action",
       align: "center",
-      render: (_) => (
+      render: (value) => (
         <div className="flex gap-x-[11px] justify-center">
           <Tooltip title="View order's detail">
             <button
               className="action-button"
               style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
-              onClick={() => setDetailModal(true)}
+              onClick={()=>handleViewDetail(value)}
             >
               <center>
                 <img src={viewIcon} alt="View" />
@@ -123,15 +124,6 @@ const Orders = () => {
     },
   ];
 
-  const onChange = (pagination, filters, sorter, extra) => {
-    setFilteredInfo(filters);
-  };
-
-  const handleChooseStatus = (value) => {
-    if (value === "All Order") setFilteredInfo({});
-    else setFilteredInfo({ ...filteredInfo, status: [value] });
-  };
-
   //Get all order
   const getAllOrder = async () => {
     try {
@@ -141,7 +133,11 @@ const Orders = () => {
         routes.getAccessTokenHeader(token)
       );
       console.log(result);
-      setData(result.data);
+      setData(
+        result.data.map((d, i) => {
+          return { ...d, key: i };
+        })
+      );
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -153,10 +149,23 @@ const Orders = () => {
     }
   };
 
+  const onChange = (pagination, filters, sorter, extra) => {
+    setFilteredInfo(filters);
+  };
+
+  const handleChooseStatus = (value) => {
+    if (value === "All Order") setFilteredInfo({});
+    else setFilteredInfo({ ...filteredInfo, status: [value] });
+  };
+
+  const handleViewDetail = (value) => {
+    setCurrItem(value)
+    setDetailModal(true);
+  };
+
   useEffect(() => {
     if (currentUser) getAllOrder();
   }, [currentUser]);
-
 
   //Get price order
   const getPriceOrder = async () => {
@@ -166,10 +175,10 @@ const Orders = () => {
         routes.GET_PRICE_ORDER("638ff3bdb1a8e896eafcabe1"),
         {
           ...routes.getAccessTokenHeader(token),
-          ...routes.getPriceOrderBody("638ff3bdb1a8e896eafcabe1")
+          ...routes.getPriceOrderBody("638ff3bdb1a8e896eafcabe1"),
         }
       );
-      console.log(result);
+      // console.log(result)
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -179,11 +188,7 @@ const Orders = () => {
         console.log(err.message);
       }
     }
-  }
-
-  useEffect(() => {
-    if (currentUser) getPriceOrder();
-  }, [currentUser]);
+  };
 
   return (
     <div>
@@ -232,6 +237,7 @@ const Orders = () => {
         open={detailModal}
         handleCancel={() => setDetailModal(false)}
         currentUser={currentUser}
+        currItem={currItem}
       />
       <CancelOrderModal
         open={cancelModal}
