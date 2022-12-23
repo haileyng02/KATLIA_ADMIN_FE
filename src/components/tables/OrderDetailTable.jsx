@@ -13,8 +13,8 @@ const columns = [
   },
   {
     title: "Product's Name",
-    dataIndex: "name",
-    sorter: (a, b) => a.name?.localeCompare(b.name),
+    dataIndex: "productName",
+    sorter: (a, b) => a.productName?.localeCompare(b.productName),
     defaultSortOrder: "descend",
     render: (value) => <p className="table-cell">{value}</p>,
   },
@@ -44,9 +44,9 @@ const columns = [
   },
   {
     title: "Unit price",
-    dataIndex: "price",
+    dataIndex: "unitPrice",
     align: "center",
-    sorter: (a, b) => a.price - b.price,
+    sorter: (a, b) => a.unitPrice - b.unitPrice,
     defaultSortOrder: "descend",
     render: (value) => (
       <center>
@@ -56,9 +56,9 @@ const columns = [
   },
   {
     title: "Quantity",
-    dataIndex: "quantity",
+    dataIndex: "quatity",
     align: "center",
-    sorter: (a, b) => a.quantity - b.quantity,
+    sorter: (a, b) => a.quatity - b.quatity,
     defaultSortOrder: "descend",
     render: (value) => (
       <center>
@@ -82,6 +82,7 @@ const columns = [
 
 const OrderDetailTable = ({ currentUser, id }) => {
   const [data,setData] = useState();
+  const [loading,setLoading] = useState(false);
 
   useEffect(() => {
     if (id) getDetailOrder(id);
@@ -89,6 +90,7 @@ const OrderDetailTable = ({ currentUser, id }) => {
 
   //Get detail order
   const getDetailOrder = async () => {
+    setLoading(true)
     try {
       const token = currentUser.token;
       const result = await appApi.get(routes.GET_DETAIL_ORDER(id), {
@@ -110,12 +112,13 @@ const OrderDetailTable = ({ currentUser, id }) => {
         console.log(err.message);
       }
     }
+    setLoading(false)
   };
   return (
     <Table
       columns={columns}
       dataSource={data}
-      loading={!data}
+      loading={loading}
       className="mt-5 pagination-active table-header"
     />
   );
