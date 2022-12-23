@@ -15,6 +15,7 @@ const Staff = () => {
   const [actionOpen, setActionOpen] = useState(false);
   const [data, setData] = useState();
   const [filteredInfo, setFilteredInfo] = useState({});
+  const [curStaff, setCurStaff] = useState();
 
   const columns = [
     {
@@ -101,12 +102,12 @@ const Staff = () => {
       title: "Action",
       key: "action",
       align: "center",
-      render: (_) => (
+      render: (value) => (
         <div className="flex gap-x-[11px] justify-center">
           <button
             className="action-button"
             style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-            onClick={() => setActionOpen(true)}
+            onClick={() => handleUpdateStaff(value)}
           >
             <center>
               <img src={editIcon} alt="Edit" />
@@ -121,7 +122,7 @@ const Staff = () => {
     switch (status) {
       case 1:
         return <p className={"table-cell-medium text-[#60BE80]"}>Working</p>;
-      case 2:
+      case 0:
         return (
           <p
             className={"table-cell-medium"}
@@ -160,47 +161,23 @@ const Staff = () => {
     }
   };
   useEffect(() => {
-    getAllStaff();
+    if (currentUser) getAllStaff();
   }, [currentUser]);
 
   const onChange = (pagination, filters, sorter, extra) => {
     setFilteredInfo(filters);
   };
 
-  //Update staff
-  const updateStaff = async () => {
-    try {
-      const token =  currentUser.token;
-      const result =  await appApi.put(
-        routes.UPDATE_STAFF("636291653d31027f23baed13"),
-        routes.getAddStaffBody("saovayta2131@gmail.com", "SALES", "2022-12-22T08:02:48.992Z", 1), 
-        {
-          ...routes.getAccessTokenHeader(token),
-          ...routes.getUpdateStaffIdParams("636291653d31027f23baed13")
-        }
-      );
-      console.log(result);
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  }
-
-  useEffect(() => {
-    if(currentUser) updateStaff()
-  }, [currentUser])
+  const handleUpdateStaff = (value) => {
+    console.log(value);
+    setCurStaff(value);
+    setActionOpen(true);
+  };
 
   return (
     <div>
       <div className="row">
-        <h1 className="title">
-          Staff
-        </h1>
+        <h1 className="title">Staff</h1>
         {data ? (
           <p className="subtitle">{data.length + " Staffs found"}</p>
         ) : null}
@@ -209,7 +186,7 @@ const Staff = () => {
         <button onClick={() => setAddOpen(true)} className="button">
           Add Staff
         </button>
-        <button onClick={()=>setFilteredInfo({})} className="clear-button">
+        <button onClick={() => setFilteredInfo({})} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>
@@ -220,10 +197,17 @@ const Staff = () => {
         onChange={onChange}
         className="mt-5 pagination-active table-header"
       />
-      <AddStaffModal open={addOpen} handleCancel={() => setAddOpen(false)} getStaff={getAllStaff}/>
+      <AddStaffModal
+        open={addOpen}
+        handleCancel={() => setAddOpen(false)}
+        getStaff={getAllStaff}
+      />
       <ActionModal
         open={actionOpen}
         handleCancel={() => setActionOpen(false)}
+        currentStaff={curStaff}
+        currentUser={currentUser}
+        getStaff={getAllStaff}
       />
     </div>
   );

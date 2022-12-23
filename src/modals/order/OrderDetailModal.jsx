@@ -1,5 +1,7 @@
 import React from "react";
 import { Divider, Modal } from "antd";
+import appApi from "../../api/appApi";
+import * as routes from "../../api/apiRoutes";
 import ModalTitle from "../../components/ModalTitle";
 import OrderDetailTable from "../../components/tables/OrderDetailTable";
 
@@ -12,7 +14,30 @@ const data = {
   status: "Completed",
 };
 
-const OrderDetailModal = ({ open, handleCancel }) => {
+const OrderDetailModal = ({ open, handleCancel,currentUser }) => {
+   //Get detail order
+   const getDetailOrder = async () => {
+    try {
+      const token = currentUser.token;
+      const result =  await appApi.get(
+        routes.GET_DETAIL_ORDER("638ff3bdb1a8e896eafcabe1"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDetailOrderBody("638ff3bdb1a8e896eafcabe1")
+        }
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  }
   return (
     <Modal
       title={<ModalTitle text={"Order Detail"} />}
