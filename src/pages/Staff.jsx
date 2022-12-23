@@ -167,6 +167,34 @@ const Staff = () => {
     setFilteredInfo(filters);
   };
 
+  //Update staff
+  const updateStaff = async () => {
+    try {
+      const token =  currentUser.token;
+      const result =  await appApi.put(
+        routes.UPDATE_STAFF("636291653d31027f23baed13"),
+        routes.getAddStaffBody("saovayta2131@gmail.com", "SALES", "2022-12-22T08:02:48.992Z", 1), 
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getUpdateStaffIdParams("636291653d31027f23baed13")
+        }
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(currentUser) updateStaff()
+  }, [currentUser])
+
   return (
     <div>
       <div className="row">

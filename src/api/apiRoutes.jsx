@@ -37,8 +37,24 @@ export const getAddProductBody = (
   colorIdList: colorIdList,
 });
 
+//DELETE PRODUCT
+export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
+export const getDeleteProductBody = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //GET ALL STAFF
 export const GET_ALL_STAFF = "/staff/getAllStaff";
+
+//UPDATE STAFF
+export const UPDATE_STAFF = (id) => `/staff/updateStaff/${id}`;
+export const getUpdateStaffIdParams = (id) => ({
+  params: {
+    id: id
+  }
+});
 
 //ADD STAFF
 export const ADD_STAFF = "/staff/addStaff";
@@ -54,3 +70,19 @@ export const GET_ALL_USER = "/user/getAllUser";
 
 //GET ALL ORDER
 export const GET_ALL_ORDER = "/staff-order/getAllOrder";
+
+//GET DETAIL ORDER
+export const GET_DETAIL_ORDER = (id) => `/staff-order/getDetailOrder/${id}`;
+export const getDetailOrderBody = (id) => ({
+  params: {
+    id: id
+  }
+});
+
+//GET PRICE ORDER
+export const GET_PRICE_ORDER = (id) => `/staff-order/getPriceOrder/${id}`;
+export const getPriceOrderBody = (id) => ({
+  params: {
+    id: id
+  }
+});

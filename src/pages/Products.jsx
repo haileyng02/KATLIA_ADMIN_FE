@@ -193,6 +193,53 @@ const Products = () => {
     }
   };
 
+  //Add product
+  const addProduct = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
+      const result = await appApi.post(
+        routes.ADD_PRODUCT,
+        routes.getAddProductBody(694574, "Basic Shirt", "", 1, 39.99, "S", [1]),
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  //Delete product
+  const deleteProduct = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(
+        routes.DELETE_PRODUCT("694575"), {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDeleteProductBody("694575")
+        }
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(currentUser) deleteProduct()
+  }, [currentUser])
+
   return (
     <div>
       <div className="row">

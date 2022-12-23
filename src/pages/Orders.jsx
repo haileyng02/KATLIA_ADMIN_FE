@@ -157,6 +157,61 @@ const Orders = () => {
     if (currentUser) getAllOrder();
   }, [currentUser]);
 
+  //Get detail order
+  const getDetailOrder = async () => {
+    try {
+      const token = currentUser.token;
+      const result =  await appApi.get(
+        routes.GET_DETAIL_ORDER("638ff3bdb1a8e896eafcabe1"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDetailOrderBody("638ff3bdb1a8e896eafcabe1")
+        }
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) getDetailOrder();
+  }, [currentUser]);
+
+  //Get price order
+  const getPriceOrder = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_PRICE_ORDER("638ff3bdb1a8e896eafcabe1"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getPriceOrderBody("638ff3bdb1a8e896eafcabe1")
+        }
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) getPriceOrder();
+  }, [currentUser]);
+
   return (
     <div>
       <div className="between-row">
