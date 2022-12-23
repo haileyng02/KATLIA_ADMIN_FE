@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PlusOutlined, CameraOutlined } from "@ant-design/icons";
-import { Modal, Upload } from "antd";
+import { Form, Modal, Upload } from "antd";
 
 const getBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -57,7 +57,9 @@ const ImagesUploader = () => {
     // temp[foundIndex] = file;
     // setFileList(temp);
   };
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -78,29 +80,31 @@ const ImagesUploader = () => {
   };
   return (
     <>
-      <Upload
-        customRequest={handleUpload}
-        listType="picture-card"
-        fileList={fileList}
-        onPreview={handlePreview}
-        onChange={handleChange}
-        // showUploadList={{
-        //   showPreviewIcon: true,
-        //   previewIcon: (
-        //     <Upload name="file" id="custom-upload">
-        //       <CameraOutlined
-        //         style={{
-        //           color: "#fff",
-        //         }}
-        //         title="Change Picture"
-        //         className="opacity-50 hover:opacity-100"
-        //       />
-        //     </Upload>
-        //   ),
-        // }}
-      >
-        {fileList.length >= 10 ? null : uploadButton}
-      </Upload>
+      <Form.Item name={'images'}>
+        <Upload
+          customRequest={handleUpload}
+          listType="picture-card"
+          fileList={fileList}
+          onPreview={handlePreview}
+          onChange={handleChange}
+          // showUploadList={{
+          //   showPreviewIcon: true,
+          //   previewIcon: (
+          //     <Upload name="file" id="custom-upload">
+          //       <CameraOutlined
+          //         style={{
+          //           color: "#fff",
+          //         }}
+          //         title="Change Picture"
+          //         className="opacity-50 hover:opacity-100"
+          //       />
+          //     </Upload>
+          //   ),
+          // }}
+        >
+          {fileList.length >= 10 ? null : uploadButton}
+        </Upload>
+      </Form.Item>
       <Modal
         open={previewOpen}
         title={previewTitle}
