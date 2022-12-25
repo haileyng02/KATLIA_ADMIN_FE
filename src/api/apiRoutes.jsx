@@ -107,3 +107,11 @@ export const REVENUE_OF_MONTH = '/statistics/revenueOfMonth'
 
 //REVENUE PERCENT GROWTH
 export const REVENUE_PERCENT_GROWTH = '/statistics/revenuePercentGrowth'
+
+//ORDER PER MONTH
+export const ORDER_PER_MONTH = (year) => `/statistics/orderPerMonth/${year}`
+export const getOrderPerMonthBody = (year) => ({
+  params: {
+    year: year
+  }
+})
