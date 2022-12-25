@@ -90,6 +90,31 @@ const Statistic = () => {
     if (currentUser) orderPercentGrowth();
   }, [currentUser]);
 
+  //Revenue of month
+  const revenueOfMonth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.REVENUE_OF_MONTH,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) revenueOfMonth();
+  }, [currentUser]);
+
   return (
     <div>
       <div className="row">
