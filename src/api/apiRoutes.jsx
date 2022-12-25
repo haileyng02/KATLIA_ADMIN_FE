@@ -104,3 +104,6 @@ export const ORDER_PERCENT_GROWTH = '/statistics/orderPercentGrowth'
 
 //REVENUE OF MONTH
 export const REVENUE_OF_MONTH = '/statistics/revenueOfMonth'
+
+//REVENUE PERCENT GROWTH
+export const REVENUE_PERCENT_GROWTH = '/statistics/revenuePercentGrowth'
