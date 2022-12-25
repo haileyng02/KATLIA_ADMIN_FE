@@ -98,3 +98,6 @@ export const GET_STATISTIC_USER = '/statistics/statisticsUser'
 
 //NEW ORDER OF MONTH 
 export const NEW_ORDER_OF_MONTH = '/statistics/newOrderOfMonth'
+
+//ORDER PERCENT GROWTH
+export const ORDER_PERCENT_GROWTH = '/statistics/orderPercentGrowth'
