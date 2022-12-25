@@ -123,3 +123,6 @@ export const getRevenuePerMonthBody = (year) => ({
     year: year
   }
 })
+
+//EXPENDITURE OF MONTH
+export const EXPENDITURE_OF_MONTH = '/statistics/expenditureOfMonth'

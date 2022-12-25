@@ -195,6 +195,31 @@ const Statistic = () => {
     if (currentUser) revenuePerMonth();
   }, [currentUser]);
 
+  //Expenditure of month
+  const expenditureOfMonth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.EXPENDITURE_OF_MONTH,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) expenditureOfMonth();
+  }, [currentUser]);
+
   return (
     <div>
       <div className="row">
