@@ -215,9 +215,34 @@ const Products = () => {
     }
   }
 
+  // useEffect(() => {
+  //   if(currentUser) deleteProduct()
+  // }, [currentUser])
+
+  //Get all colors
+  const getAllColors = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_ALL_COLORS,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
   useEffect(() => {
-    if(currentUser) deleteProduct()
-  }, [currentUser])
+    if (currentUser) getAllColors();
+  }, [currentUser]);
 
   return (
     <div>

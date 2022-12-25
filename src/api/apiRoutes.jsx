@@ -86,3 +86,9 @@ export const getPriceOrderBody = (id) => ({
     id: id
   }
 });
+
+//GET ALL COLORS
+export const GET_ALL_COLORS = '/filter/getAllColors'
+
+//GET ALL CATEGORY
+export const GET_ALL_CATEGORY = '/category/getAll'
