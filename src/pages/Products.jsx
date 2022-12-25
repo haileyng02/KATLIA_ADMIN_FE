@@ -244,6 +244,31 @@ const Products = () => {
     if (currentUser) getAllColors();
   }, [currentUser]);
 
+  //Get all category
+  const getAllCategory = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_ALL_CATEGORY,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) getAllCategory();
+  }, [currentUser]);
+
   return (
     <div>
       <div className="row">
