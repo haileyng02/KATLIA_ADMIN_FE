@@ -167,6 +167,34 @@ const Statistic = () => {
     if (currentUser) orderPerMonth();
   }, [currentUser]);
 
+  //Revenue per month
+  const revenuePerMonth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.REVENUE_PER_MONTH("2022"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getRevenuePerMonthBody("2022")
+        }
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) revenuePerMonth();
+  }, [currentUser]);
+
   return (
     <div>
       <div className="row">

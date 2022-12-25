@@ -115,3 +115,11 @@ export const getOrderPerMonthBody = (year) => ({
     year: year
   }
 })
+
+//REVENUE PER MONTH
+export const REVENUE_PER_MONTH = (year) => `/statistics/revenuePerMonth/${year}`
+export const getRevenuePerMonthBody = (year) => ({
+  params: {
+    year: year
+  }
+})
