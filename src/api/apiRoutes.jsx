@@ -92,3 +92,9 @@ export const GET_ALL_COLORS = '/filter/getAllColors'
 
 //GET ALL CATEGORY
 export const GET_ALL_CATEGORY = '/category/getAll'
+
+//GET STATISTIC USER
+export const GET_STATISTIC_USER = '/statistics/statisticsUser'
+
+//NEW ORDER OF MONTH 
+export const NEW_ORDER_OF_MONTH = '/statistics/newOrderOfMonth'

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import MonthlyRevenue from "../components/MonthlyRevenue";
 import OrdersAmount from "../components/OrdersAmount";
 import PieChart from "../components/PieChart";
 import StatisticCard from "../components/StatisticCard";
+import appApi from "../api/appApi";
+import * as routes from "../api/apiRoutes";
 
 const data = {
   newCustomers: 3123,
@@ -10,6 +13,58 @@ const data = {
 };
 
 const Statistic = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
+  //Get statistic user
+  const getStatisticUser = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_STATISTIC_USER,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) getStatisticUser();
+  }, [currentUser]);
+
+  //New order of month
+  const newOrderOfMonth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.NEW_ORDER_OF_MONTH,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) newOrderOfMonth();
+  }, [currentUser]);
+
   return (
     <div>
       <div className="row">
