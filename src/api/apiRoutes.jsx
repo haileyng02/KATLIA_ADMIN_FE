@@ -136,6 +136,14 @@ export const getEditDiscountInfoIdParams = (id) => ({
   }
 })
 
+//DELETE DISCOUNT
+export const DELETE_DISCOUNT = (id) => `/discount/deleteDiscount/${id}`
+export const getDeleteDiscountIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //GET ALL CATEGORY
 export const GET_ALL_CATEGORY = '/category/getAll'
 
