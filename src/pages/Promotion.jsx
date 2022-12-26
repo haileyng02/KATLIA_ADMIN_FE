@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Table, Tooltip } from "antd";
 import { viewIcon, editIcon, deleteIcon } from "../images/actions";
 import AddDiscountModal from "../modals/promotion/AddDiscountModal";
 import DiscountProductsModal from "../modals/promotion/DiscountProductsModal";
+import appApi from "../api/appApi";
+import * as routes from "../api/apiRoutes";
 
 const data = [
   {
@@ -16,6 +19,7 @@ const data = [
 ];
 
 const Promotion = () => {
+  const { currentUser } = useSelector((state) => state.user);
   const [addOpen, setAddOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
   const [currItem, setCurrItem] = useState(null);
@@ -111,6 +115,31 @@ const Promotion = () => {
       ),
     },
   ];
+
+  //Get all discount list
+  const getAllDiscountList = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjA2NjYyMX0.DghrX5Qt0oUmiG4gO47pktnmM5364Kwq6x1rO1FAS8o";
+      const result = await appApi.get(
+        routes.GET_ALL_DISCOUNT_LIST,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) getAllDiscountList();
+  }, [currentUser]);
 
   return (
     <div>

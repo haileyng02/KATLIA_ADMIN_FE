@@ -114,6 +114,9 @@ export const GET_ALL_COLORS = '/filter/getAllColors'
 //GET ALL CATEGORY
 export const GET_ALL_CATEGORY = '/category/getAll'
 
+//GET ALL DISCOUNT
+export const GET_ALL_DISCOUNT_LIST = '/discount/getAllDiscountList'
+
 //GET STATISTIC USER
 export const GET_STATISTIC_USER = '/statistics/statisticsUser'
 
