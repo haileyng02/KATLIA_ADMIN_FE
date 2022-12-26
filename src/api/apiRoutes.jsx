@@ -120,6 +120,14 @@ export const getAddNewDiscountBody = (discountName, percent, startAt, endAt) => 
   endAt: endAt
 })
 
+//EDIT LIST PRODUCTS FOR DISCOUNT
+export const EDIT_LIST_PRODUCTS_FOR_DISCOUNT = (id) => `/discount/editListProductsForDiscount/${id}`
+export const getEditListProductsForDiscountIdPrams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //GET ALL CATEGORY
 export const GET_ALL_CATEGORY = '/category/getAll'
 
