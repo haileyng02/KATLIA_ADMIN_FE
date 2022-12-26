@@ -129,14 +129,14 @@ const Orders = () => {
     try {
       const token = currentUser.token;
       const result = await appApi.put(
-        `/staff-order/updateOrderStatus/639f0d76de53e560ccf20b9d`,
+        `/staff-order/updateOrderStatus/638ff3bdb1a8e896eafcabe1`,
         null,
         {
           headers: {
             Authorization: "Bearer " + token,
           },
           params: {
-            id: "639f0d76de53e560ccf20b9d"
+            id: "638ff3bdb1a8e896eafcabe1"
           }
         }
       );
@@ -152,10 +152,6 @@ const Orders = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (currentUser) updateOrderStatus();
-  }, [currentUser]);
 
   //Get all order
   const getAllOrder = async () => {
