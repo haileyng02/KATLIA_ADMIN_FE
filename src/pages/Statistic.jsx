@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import MonthlyRevenue from "../components/MonthlyRevenue";
 import OrdersAmount from "../components/OrdersAmount";
 import PieChart from "../components/PieChart";
 import StatisticCard from "../components/StatisticCard";
+import appApi from "../api/appApi";
+import * as routes from "../api/apiRoutes";
 
 const data = {
   newCustomers: 3123,
@@ -10,6 +13,213 @@ const data = {
 };
 
 const Statistic = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
+  //Get statistic user
+  const getStatisticUser = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_STATISTIC_USER,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) getStatisticUser();
+  }, [currentUser]);
+
+  //New order of month
+  const newOrderOfMonth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.NEW_ORDER_OF_MONTH,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) newOrderOfMonth();
+  }, [currentUser]);
+
+  //Order percent growth
+  const orderPercentGrowth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.ORDER_PERCENT_GROWTH,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) orderPercentGrowth();
+  }, [currentUser]);
+
+  //Revenue of month
+  const revenueOfMonth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.REVENUE_OF_MONTH,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) revenueOfMonth();
+  }, [currentUser]);
+
+  //Revenue percent growth
+  const revenuePercentGrowth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.REVENUE_PERCENT_GROWTH,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) revenuePercentGrowth();
+  }, [currentUser]);
+
+  //Order per month
+  const orderPerMonth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.ORDER_PER_MONTH("2022"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getOrderPerMonthBody("2022")
+        }
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) orderPerMonth();
+  }, [currentUser]);
+
+  //Revenue per month
+  const revenuePerMonth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.REVENUE_PER_MONTH("2022"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getRevenuePerMonthBody("2022")
+        }
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) revenuePerMonth();
+  }, [currentUser]);
+
+  //Expenditure of month
+  const expenditureOfMonth = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.EXPENDITURE_OF_MONTH,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) expenditureOfMonth();
+  }, [currentUser]);
+
   return (
     <div>
       <div className="row">

@@ -124,6 +124,56 @@ const Orders = () => {
     },
   ];
 
+  //Update order status
+  const updateOrderStatus = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.put(
+        routes.UPDATE_ORDER_STATUS("638223bbe2da185bcd91c815"),
+        null,
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getUpdateOrderStatusBody("638223bbe2da185bcd91c815")
+        }
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  //Cancel order
+  const cancelOrder = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.put(
+        routes.CANCEL_ORDER("63821a95e2da185bcd91c812"),
+        routes.getCancelOrderBody("Doi dia chi"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getCancelOrderParams("63821a95e2da185bcd91c812")
+        }
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  }
+
   //Get all order
   const getAllOrder = async () => {
     try {

@@ -68,6 +68,27 @@ export const getAddStaffBody = (email, role, startAt, status) => ({
 //GET ALL USER
 export const GET_ALL_USER = "/user/getAllUser";
 
+//UPDATE ORDER STATUS
+export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
+export const getUpdateOrderStatusBody = (id) => ({
+  params: {
+    id: id
+  }
+})
+
+//CANCEL ORDER
+export const CANCEL_ORDER = (id) => `/staff-order/cancelOrder/${id}`
+export const getCancelOrderParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+export const getCancelOrderBody = (cancelReason) => ({
+  body: {
+    cancelReason: cancelReason
+  }
+})
+
 //GET ALL ORDER
 export const GET_ALL_ORDER = "/staff-order/getAllOrder";
 
@@ -86,3 +107,43 @@ export const getPriceOrderBody = (id) => ({
     id: id
   }
 });
+
+//GET ALL COLORS
+export const GET_ALL_COLORS = '/filter/getAllColors'
+
+//GET ALL CATEGORY
+export const GET_ALL_CATEGORY = '/category/getAll'
+
+//GET STATISTIC USER
+export const GET_STATISTIC_USER = '/statistics/statisticsUser'
+
+//NEW ORDER OF MONTH 
+export const NEW_ORDER_OF_MONTH = '/statistics/newOrderOfMonth'
+
+//ORDER PERCENT GROWTH
+export const ORDER_PERCENT_GROWTH = '/statistics/orderPercentGrowth'
+
+//REVENUE OF MONTH
+export const REVENUE_OF_MONTH = '/statistics/revenueOfMonth'
+
+//REVENUE PERCENT GROWTH
+export const REVENUE_PERCENT_GROWTH = '/statistics/revenuePercentGrowth'
+
+//ORDER PER MONTH
+export const ORDER_PER_MONTH = (year) => `/statistics/orderPerMonth/${year}`
+export const getOrderPerMonthBody = (year) => ({
+  params: {
+    year: year
+  }
+})
+
+//REVENUE PER MONTH
+export const REVENUE_PER_MONTH = (year) => `/statistics/revenuePerMonth/${year}`
+export const getRevenuePerMonthBody = (year) => ({
+  params: {
+    year: year
+  }
+})
+
+//EXPENDITURE OF MONTH
+export const EXPENDITURE_OF_MONTH = '/statistics/expenditureOfMonth'
