@@ -128,6 +128,14 @@ export const getEditListProductsForDiscountIdPrams = (id) => ({
   }
 })
 
+//EDIT DISCOUNT INFO
+export const EDIT_DISCOUNT_INFO = (id) => `/discount/editDiscountInfo/${id}`
+export const getEditDiscountInfoIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //GET ALL CATEGORY
 export const GET_ALL_CATEGORY = '/category/getAll'
 
