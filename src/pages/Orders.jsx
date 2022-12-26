@@ -124,6 +124,38 @@ const Orders = () => {
     },
   ];
 
+  //Update order status
+  const updateOrderStatus = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.put(
+        `/staff-order/updateOrderStatus/639f0d76de53e560ccf20b9d`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          params: {
+            id: "639f0d76de53e560ccf20b9d"
+          }
+        }
+      );
+      console.log(result);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser) updateOrderStatus();
+  }, [currentUser]);
+
   //Get all order
   const getAllOrder = async () => {
     try {

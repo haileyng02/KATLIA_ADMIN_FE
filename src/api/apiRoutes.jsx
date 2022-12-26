@@ -68,6 +68,14 @@ export const getAddStaffBody = (email, role, startAt, status) => ({
 //GET ALL USER
 export const GET_ALL_USER = "/user/getAllUser";
 
+//UPDATE ORDER STATUS
+export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
+export const getUpdateOrderStatusBody = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //GET ALL ORDER
 export const GET_ALL_ORDER = "/staff-order/getAllOrder";
 
