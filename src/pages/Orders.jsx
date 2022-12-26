@@ -130,6 +130,7 @@ const Orders = () => {
       const token = currentUser.token;
       const result = await appApi.put(
         `/staff-order/updateOrderStatus/639f0d76de53e560ccf20b9d`,
+        null,
         {
           headers: {
             Authorization: "Bearer " + token,
