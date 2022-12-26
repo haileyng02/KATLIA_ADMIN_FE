@@ -76,6 +76,19 @@ export const getUpdateOrderStatusBody = (id) => ({
   }
 })
 
+//CANCEL ORDER
+export const CANCEL_ORDER = (id) => `/staff-order/cancelOrder/${id}`
+export const getCancelOrderParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+export const getCancelOrderBody = (cancelReason) => ({
+  body: {
+    cancelReason: cancelReason
+  }
+})
+
 //GET ALL ORDER
 export const GET_ALL_ORDER = "/staff-order/getAllOrder";
 
