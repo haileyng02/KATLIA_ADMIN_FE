@@ -129,15 +129,11 @@ const Orders = () => {
     try {
       const token = currentUser.token;
       const result = await appApi.put(
-        `/staff-order/updateOrderStatus/638ff3bdb1a8e896eafcabe1`,
+        routes.UPDATE_ORDER_STATUS("638223bbe2da185bcd91c815"),
         null,
         {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-          params: {
-            id: "638ff3bdb1a8e896eafcabe1"
-          }
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getUpdateOrderStatusBody("638223bbe2da185bcd91c815")
         }
       );
       console.log(result);
@@ -177,10 +173,6 @@ const Orders = () => {
       }
     }
   }
-
-  useEffect(() => {
-    if (currentUser) cancelOrder();
-  }, [currentUser]);
 
   //Get all order
   const getAllOrder = async () => {
