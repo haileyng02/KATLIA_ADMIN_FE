@@ -111,6 +111,15 @@ export const getPriceOrderBody = (id) => ({
 //GET ALL COLORS
 export const GET_ALL_COLORS = '/filter/getAllColors'
 
+//ADD NEW DISCOUNT
+export const ADD_NEW_DISCOUNT = '/discount/addNewDiscount'
+export const getAddNewDiscountBody = (discountName, percent, startAt, endAt) => ({
+  discountName: discountName,
+  percent: percent,
+  startAt: startAt,
+  endAt: endAt
+})
+
 //GET ALL CATEGORY
 export const GET_ALL_CATEGORY = '/category/getAll'
 
