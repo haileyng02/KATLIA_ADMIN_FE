@@ -4,6 +4,10 @@ import getModalFooter from "../utils/getModalFooter";
 import warningIcon from "../images/warning.svg";
 
 const WarningModal = ({ handleOk, handleCancel, open, text }) => {
+  const onOk = () => {
+    handleOk();
+    handleCancel();
+  }
   return (
     <Modal
       title={
@@ -16,7 +20,7 @@ const WarningModal = ({ handleOk, handleCancel, open, text }) => {
       onCancel={handleCancel}
       centered
       width={450}
-      footer={getModalFooter({ handleCancel, handleOk })}
+      footer={getModalFooter({ handleCancel, handleOk:onOk })}
     >
       <p className="text-center text-20">{text}</p>
     </Modal>
