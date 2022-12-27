@@ -8,9 +8,6 @@ const signInProcess = ({
   dispatch,
   navigate,
 }) => {
-  //App state
-  dispatch(signIn(token));
-
   //Local storage for user remembering
   const date = new Date();
   // if (isChecked) date.setDate(date.getDate() + 30);
@@ -20,6 +17,7 @@ const signInProcess = ({
     token: token,
     expiry: date,
   };
+  dispatch(signIn(item));
   localStorage.setItem("user", JSON.stringify(item));
 
   //Navigate to home

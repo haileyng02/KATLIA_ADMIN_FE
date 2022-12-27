@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { DatePicker, Table, Segmented, Tooltip } from "antd";
+import { useSnackbar } from "notistack";
 import getStatus, { getOrderStatusText } from "../utils/getStatus";
 import { viewIcon, checkIcon, cancelIcon } from "../images/actions";
 import CancelOrderModal from "../modals/order/CancelOrderModal";
@@ -11,7 +12,6 @@ import dayjs from "dayjs";
 
 const options = [
   "All Order",
-  "Cart",
   "Ordered",
   "Confirmed",
   "Shipping",
@@ -21,11 +21,15 @@ const options = [
 
 const Orders = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
   const [cancelModal, setCancelModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(true);
   const [filteredInfo, setFilteredInfo] = useState({});
   const [currItem, setCurrItem] = useState();
+  const [option, setOption] = useState();
+  const [date, setDate] = useState();
 
   const columns = [
     {
@@ -52,6 +56,9 @@ const Orders = () => {
     {
       title: "Date",
       dataIndex: "createDate",
+      filteredValue: filteredInfo.createDate || null,
+      onFilter: (value, record) =>
+        dayjs(value).isSame(dayjs(record.createDate), "date"),
       sorter: (a, b) => a.createDate?.localeCompare(b.createDate),
       defaultSortOrder: "descend",
       render: (value) => (
@@ -96,23 +103,41 @@ const Orders = () => {
               </center>
             </button>
           </Tooltip>
-          <Tooltip title="">
+          <Tooltip
+            title={
+              value.status < 4
+                ? `Update to ${getOrderStatusText(value.status + 1)}`
+                : null
+            }
+          >
             <button
-              className="action-button"
-              style={{ backgroundColor: "#60BE80" }}
+              className={`action-button ${
+                value.status >= 4 && "cursor-not-allowed"
+              }`}
+              style={{
+                backgroundColor: value.status < 4 ? "#60BE80" : "#CDCDCD",
+              }}
+              onClick={
+                value.status < 4
+                  ? () => handleUpdateOrderStatus(value.orderId)
+                  : null
+              }
             >
               <center>
                 <img src={checkIcon} alt="Check" />
               </center>
             </button>
           </Tooltip>
-          <Tooltip title="Cancel order">
+          <Tooltip title={value.status < 3 ? "Cancel order" : null}>
             <button
-              className="action-button"
-              style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
-              onClick={() => {
-                setCancelModal(true);
+              className={`action-button ${
+                value.status >= 3 && "cursor-not-allowed"
+              }`}
+              style={{
+                backgroundColor:
+                  value.status < 3 ? "rgba(253, 56, 56, 0.9)" : "#CDCDCD",
               }}
+              onClick={value.status < 3 ? () => handleCancelOrder(value) : null}
             >
               <center>
                 <img src={cancelIcon} alt="Cancel" />
@@ -125,19 +150,19 @@ const Orders = () => {
   ];
 
   //Update order status
-  const updateOrderStatus = async () => {
+  const updateOrderStatus = async (id) => {
+    setLoading(true);
     try {
       const token = currentUser.token;
-      const result = await appApi.put(
-        routes.UPDATE_ORDER_STATUS("638223bbe2da185bcd91c815"),
-        null,
-        {
-          ...routes.getAccessTokenHeader(token),
-          ...routes.getUpdateOrderStatusBody("638223bbe2da185bcd91c815")
-        }
-      );
+      const result = await appApi.put(routes.UPDATE_ORDER_STATUS(id), null, {
+        ...routes.getAccessTokenHeader(token),
+        ...routes.getUpdateOrderStatusBody(id),
+      });
       console.log(result);
-
+      enqueueSnackbar("Updated order status successfully!", {
+        variant: "success",
+      });
+      getAllOrder();
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -149,33 +174,9 @@ const Orders = () => {
     }
   };
 
-  //Cancel order
-  const cancelOrder = async () => {
-    try {
-      const token = currentUser.token;
-      const result = await appApi.put(
-        routes.CANCEL_ORDER("63821a95e2da185bcd91c812"),
-        routes.getCancelOrderBody("Doi dia chi"),
-        {
-          ...routes.getAccessTokenHeader(token),
-          ...routes.getCancelOrderParams("63821a95e2da185bcd91c812")
-        }
-      );
-      console.log(result);
-
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  }
-
   //Get all order
   const getAllOrder = async () => {
+    setLoading(true);
     try {
       const token = currentUser.token;
       const result = await appApi.get(
@@ -196,6 +197,7 @@ const Orders = () => {
         console.log(err.message);
       }
     }
+    setLoading(false);
   };
 
   const onChange = (pagination, filters, sorter, extra) => {
@@ -203,8 +205,7 @@ const Orders = () => {
   };
 
   const handleChooseStatus = (value) => {
-    if (value === "All Order") setFilteredInfo({});
-    else setFilteredInfo({ ...filteredInfo, status: [value] });
+    setOption(value);
   };
 
   const handleViewDetail = (value) => {
@@ -212,32 +213,39 @@ const Orders = () => {
     setDetailModal(true);
   };
 
+  const handleCancelOrder = (value) => {
+    setCancelModal(true);
+    setCurrItem(value);
+  };
+
+  const handleUpdateOrderStatus = (id) => {
+    updateOrderStatus(id);
+  };
+
+  const handleClearFilter = () => {
+    setOption("All Order");
+    setDate(null);
+    setFilteredInfo({ ...filteredInfo, createDate: null });
+  };
+
   useEffect(() => {
     if (currentUser) getAllOrder();
   }, [currentUser]);
 
-  //Get price order
-  const getPriceOrder = async () => {
-    try {
-      const token = currentUser.token;
-      const result = await appApi.get(
-        routes.GET_PRICE_ORDER("638ff3bdb1a8e896eafcabe1"),
-        {
-          ...routes.getAccessTokenHeader(token),
-          ...routes.getPriceOrderBody("638ff3bdb1a8e896eafcabe1"),
-        }
-      );
-      // console.log(result)
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
+  useEffect(() => {
+    if (!option) return;
+    if (option === "All Order")
+      setFilteredInfo({ ...filteredInfo, status: null });
+    else setFilteredInfo({ ...filteredInfo, status: [option] });
+  }, [option]);
+
+  useEffect(() => {
+    if (!date) {
+      return;
     }
-  };
+    console.log(filteredInfo);
+    setFilteredInfo({ ...filteredInfo, createDate: [date] });
+  }, [date]);
 
   return (
     <div>
@@ -250,7 +258,11 @@ const Orders = () => {
             <p className="subtitle">{data.length + " Orders found"}</p>
           ) : null}
         </div>
-        <DatePicker className="bg-primary font-semibold" />
+        <DatePicker
+          value={date}
+          onChange={setDate}
+          className="bg-primary font-semibold"
+        />
       </div>
       <div className="flex justify-between mt-[37px]">
         {/* <div className="flex">
@@ -268,10 +280,11 @@ const Orders = () => {
         </div> */}
         <Segmented
           options={options}
+          value={option}
           className="options"
           onChange={(value) => handleChooseStatus(value)}
         />
-        <button className="clear-button">
+        <button onClick={handleClearFilter} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>
@@ -279,7 +292,7 @@ const Orders = () => {
         columns={columns}
         dataSource={data}
         onChange={onChange}
-        loading={!data}
+        loading={loading}
         className="mt-5 pagination-active table-header"
       />
       <OrderDetailModal
@@ -291,6 +304,9 @@ const Orders = () => {
       <CancelOrderModal
         open={cancelModal}
         handleCancel={() => setCancelModal(false)}
+        id={currItem?.orderId}
+        currentUser={currentUser}
+        getAllOrder={getAllOrder}
       />
     </div>
   );
