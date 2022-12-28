@@ -71,6 +71,14 @@ export const GET_ALL_USER = "/user/getAllUser";
 //STAFF IMPORT HISTORY
 export const STAFF_IMPORT_HISTORY = '/staff-import/history'
 
+//STAFF-IMPORT/ IMPORT INFO
+export const IMPORT_INFO = (id) => `/staff-import/importInfo/${id}`
+export const getImportInfo = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
 export const getUpdateOrderStatusBody = (id) => ({

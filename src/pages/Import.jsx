@@ -43,6 +43,30 @@ const Import = () => {
     }
   }
 
+  //Import info
+  const importInfo = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjE4ODk2Mn0.DhhxF4AI3qmM0yhEPjidNICcust1GAaZ54YyDc4Q3XQ";
+      const result = await appApi.get(
+        routes.IMPORT_INFO("6398ae78ad95dbd875c75c5d"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getImportInfo("6398ae78ad95dbd875c75c5d")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
   return (
     <div>
       <div className="row">
