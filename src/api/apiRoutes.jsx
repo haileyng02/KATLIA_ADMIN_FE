@@ -68,6 +68,9 @@ export const getAddStaffBody = (email, role, startAt, status) => ({
 //GET ALL USER
 export const GET_ALL_USER = "/user/getAllUser";
 
+//STAFF IMPORT HISTORY
+export const STAFF_IMPORT_HISTORY = '/staff-import/history'
+
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
 export const getUpdateOrderStatusBody = (id) => ({
