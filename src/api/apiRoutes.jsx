@@ -79,6 +79,14 @@ export const getImportInfo = (id) => ({
   }
 })
 
+//STAFF-IMPORT/ DETAIL
+export const STAFF_IMPORT_DETAIL = (id) => `/staff-import/detail/${id}`
+export const getStaffImportDetail = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
 export const getUpdateOrderStatusBody = (id) => ({
