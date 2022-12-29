@@ -14,9 +14,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   const { currentUser } = useSelector((state) => state.user);
 
   const handleOk = () => {
-    form.validateFields().then((values) => {
-      handleUploadImages(values.images.file);
-    });
+      handleUploadImages(form.getFieldValue('images').file);
   };
 
   // useEffect(() => {
@@ -51,11 +49,27 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     }
   };
 
-  const handleUploadImages = (file) => {
+  const handleUploadImages = async (file) => {
     if (file) {
       //Call api upload image
+      console.log(file);
+      const token = currentUser.token;
+      const formData = new FormData();
+      // formData.append('productId', 694575);
+      // formData.append('colorId', 1);
+
+      formData.append("file", file);
+      const result = await appApi.post(routes.ADD_AN_IMAGE_FOR_PRODUCT("694575", 2), formData, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        ...routes.getAddAnImageForProductBody("694575", 2)
+      });
+      console.log(result);
+      
     }
-  }
+  };
+  
   
   return (
     <Modal

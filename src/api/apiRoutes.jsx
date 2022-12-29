@@ -37,6 +37,22 @@ export const getAddProductBody = (
   colorIdList: colorIdList,
 });
 
+//ADD AN IMAGE FOR PRODUCT
+// export const ADD_AN_IMAGE_FOR_PRODUCT = '/product-admin/addAnImageForProduct'
+// export const getAddAnImageForProductBody = (productId, colorId) => ({
+//   params: {
+//     productId: productId,
+//     colorId: colorId
+//   }
+// })
+export const ADD_AN_IMAGE_FOR_PRODUCT = (productId, colorId) => `/product-admin/addAnImageForProduct?productId=${productId}&colorId=${colorId}`
+export const getAddAnImageForProductBody = (productId, colorId) => ({
+  params: {
+    productId: productId,
+    colorId: colorId
+  }
+})
+
 //DELETE PRODUCT
 export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
 export const getDeleteProductBody = (id) => ({
