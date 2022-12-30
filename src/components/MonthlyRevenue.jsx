@@ -1,15 +1,7 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import { Spin } from "antd";
 
-const series = [
-  {
-    name: "Monthly Revenue",
-    data: [
-      5000, 16000, 17000, 10000, 9000, 22000, 17000, 16500, 18000, 15000, 8000,
-      18000,
-    ],
-  },
-];
 const options = {
   chart: {
     width: "100%",
@@ -75,18 +67,26 @@ const options = {
   },
 };
 
-const MonthlyRevenue = () => {
+const MonthlyRevenue = ({data}) => {
+  const series = [
+    {
+      name: "Monthly Revenue",
+      data: data
+    },
+  ];
   return (
     <div className="chart-card drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] mt-5">
       <h2 className="chart-title">
         Monthly Revenue
       </h2>
-      <ReactApexChart
-        options={options}
-        series={series}
-        type="area"
-        height={350}
-      />
+      <Spin spinning={!data}>
+        <ReactApexChart
+          options={options}
+          series={series}
+          type="area"
+          height={350}
+        />
+      </Spin>
     </div>
   );
 };
