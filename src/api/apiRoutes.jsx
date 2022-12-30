@@ -37,6 +37,22 @@ export const getAddProductBody = (
   colorIdList: colorIdList,
 });
 
+//ADD AN IMAGE FOR PRODUCT
+// export const ADD_AN_IMAGE_FOR_PRODUCT = '/product-admin/addAnImageForProduct'
+// export const getAddAnImageForProductBody = (productId, colorId) => ({
+//   params: {
+//     productId: productId,
+//     colorId: colorId
+//   }
+// })
+export const ADD_AN_IMAGE_FOR_PRODUCT = (productId, colorId) => `/product-admin/addAnImageForProduct?productId=${productId}&colorId=${colorId}`
+export const getAddAnImageForProductBody = (productId, colorId) => ({
+  params: {
+    productId: productId,
+    colorId: colorId
+  }
+})
+
 //DELETE PRODUCT
 export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
 export const getDeleteProductBody = (id) => ({
@@ -67,6 +83,25 @@ export const getAddStaffBody = (email, role, startAt, status) => ({
 
 //GET ALL USER
 export const GET_ALL_USER = "/user/getAllUser";
+
+//STAFF IMPORT HISTORY
+export const STAFF_IMPORT_HISTORY = '/staff-import/history'
+
+//STAFF-IMPORT/ IMPORT INFO
+export const IMPORT_INFO = (id) => `/staff-import/importInfo/${id}`
+export const getImportInfo = (id) => ({
+  params: {
+    id: id
+  }
+})
+
+//STAFF-IMPORT/ DETAIL
+export const STAFF_IMPORT_DETAIL = (id) => `/staff-import/detail/${id}`
+export const getStaffImportDetail = (id) => ({
+  params: {
+    id: id
+  }
+})
 
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
@@ -111,8 +146,44 @@ export const getPriceOrderBody = (id) => ({
 //GET ALL COLORS
 export const GET_ALL_COLORS = '/filter/getAllColors'
 
+//ADD NEW DISCOUNT
+export const ADD_NEW_DISCOUNT = '/discount/addNewDiscount'
+export const getAddNewDiscountBody = (discountName, percent, startAt, endAt) => ({
+  discountName: discountName,
+  percent: percent,
+  startAt: startAt,
+  endAt: endAt
+})
+
+//EDIT LIST PRODUCTS FOR DISCOUNT
+export const EDIT_LIST_PRODUCTS_FOR_DISCOUNT = (id) => `/discount/editListProductsForDiscount/${id}`
+export const getEditListProductsForDiscountIdPrams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
+//EDIT DISCOUNT INFO
+export const EDIT_DISCOUNT_INFO = (id) => `/discount/editDiscountInfo/${id}`
+export const getEditDiscountInfoIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
+//DELETE DISCOUNT
+export const DELETE_DISCOUNT = (id) => `/discount/deleteDiscount/${id}`
+export const getDeleteDiscountIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //GET ALL CATEGORY
 export const GET_ALL_CATEGORY = '/category/getAll'
+
+//GET ALL DISCOUNT
+export const GET_ALL_DISCOUNT_LIST = '/discount/getAllDiscountList'
 
 //GET STATISTIC USER
 export const GET_STATISTIC_USER = '/statistics/statisticsUser'
