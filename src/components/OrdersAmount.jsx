@@ -1,12 +1,7 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import { Spin } from "antd";
 
-const series = [
-  {
-    name: "Amount of Orders",
-    data: [96, 142, 130, 117, 185, 130, 135, 182, 196, 205, 215, 175],
-  },
-];
 const options = {
   chart: {
     type: "bar",
@@ -65,16 +60,24 @@ const options = {
   },
 };
 
-const OrdersAmount = () => {
+const OrdersAmount = ({data}) => {
+  const series = [
+    {
+      name: "Amount of Orders",
+      data: data,
+    },
+  ];
   return (
     <div className="chart-card basis-[64%]">
       <h2 className="chart-title">Amount of Orders</h2>
-      <ReactApexChart
-        options={options}
-        series={series}
-        type="bar"
-        height={350}
-      />
+      <Spin spinning={!data}>
+        <ReactApexChart
+          options={options}
+          series={series}
+          type="bar"
+          height={350}
+        />
+      </Spin>
     </div>
   );
 };

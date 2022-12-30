@@ -11,7 +11,12 @@ const Statistic = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [newCustomers, setNewCustomers] = useState(0);
   const [newOrders, setNewOrders] = useState(0);
-  const [orderPercent,setOrderPercent] = useState(0);
+  const [orderPercent, setOrderPercent] = useState(0);
+  const [growth, setGrowth] = useState(0);
+  const [growthPercent, setGrowthPercent] = useState(0);
+  const [revenue, setRevenue] = useState(0);
+  const [orders, setOrders] = useState(0);
+  const [expenditure, setExpenditure] = useState(0);
 
   //Get statistic user
   const getStatisticUser = async () => {
@@ -61,6 +66,7 @@ const Statistic = () => {
         routes.ORDER_PERCENT_GROWTH,
         routes.getAccessTokenHeader(token)
       );
+      setOrderPercent(result.data);
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -80,6 +86,7 @@ const Statistic = () => {
         routes.REVENUE_OF_MONTH,
         routes.getAccessTokenHeader(token)
       );
+      setGrowth(result.data);
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -99,6 +106,7 @@ const Statistic = () => {
         routes.REVENUE_PERCENT_GROWTH,
         routes.getAccessTokenHeader(token)
       );
+      setGrowthPercent(result.data);
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -118,6 +126,7 @@ const Statistic = () => {
         ...routes.getAccessTokenHeader(token),
         ...routes.getOrderPerMonthBody("2022"),
       });
+      setOrders(result.data)
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -137,6 +146,7 @@ const Statistic = () => {
         ...routes.getAccessTokenHeader(token),
         ...routes.getRevenuePerMonthBody("2022"),
       });
+      setRevenue(result.data)
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -156,6 +166,7 @@ const Statistic = () => {
         routes.EXPENDITURE_OF_MONTH,
         routes.getAccessTokenHeader(token)
       );
+      setExpenditure(result.data)
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -194,14 +205,18 @@ const Statistic = () => {
         <StatisticCard
           title={"NEW ORDERS"}
           value={newOrders?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          percent={-2.8}
+          percent={orderPercent}
         />
-        <StatisticCard title={"GROWTH"} value={89.87 + "%"} percent={2.8} />
+        <StatisticCard
+          title={"GROWTH"}
+          value={"$"+growth}
+          percent={growthPercent.toFixed(1)}
+        />
       </div>
-      <MonthlyRevenue />
+      <MonthlyRevenue data={revenue}/>
       <div className="mt-5 flex justify-between">
-        <OrdersAmount />
-        <PieChart />
+        <OrdersAmount data={orders}/>
+        <PieChart expenditure={expenditure}/>
       </div>
     </div>
   );
