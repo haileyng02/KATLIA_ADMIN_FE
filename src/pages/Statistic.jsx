@@ -14,8 +14,6 @@ const Statistic = () => {
   const [orderPercent, setOrderPercent] = useState(0);
   const [growth, setGrowth] = useState(0);
   const [growthPercent, setGrowthPercent] = useState(0);
-  const [revenue, setRevenue] = useState(0);
-  const [orders, setOrders] = useState(0);
   const [expenditure, setExpenditure] = useState(0);
 
   //Get statistic user
@@ -118,46 +116,6 @@ const Statistic = () => {
     }
   };
 
-  //Order per month
-  const orderPerMonth = async () => {
-    try {
-      const token = currentUser.token;
-      const result = await appApi.get(routes.ORDER_PER_MONTH("2022"), {
-        ...routes.getAccessTokenHeader(token),
-        ...routes.getOrderPerMonthBody("2022"),
-      });
-      setOrders(result.data)
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  };
-
-  //Revenue per month
-  const revenuePerMonth = async () => {
-    try {
-      const token = currentUser.token;
-      const result = await appApi.get(routes.REVENUE_PER_MONTH("2022"), {
-        ...routes.getAccessTokenHeader(token),
-        ...routes.getRevenuePerMonthBody("2022"),
-      });
-      setRevenue(result.data)
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  };
-
   //Expenditure of month
   const expenditureOfMonth = async () => {
     try {
@@ -185,8 +143,6 @@ const Statistic = () => {
       orderPercentGrowth();
       revenueOfMonth();
       revenuePercentGrowth();
-      orderPerMonth();
-      revenuePerMonth();
       expenditureOfMonth();
     }
   }, [currentUser]);
@@ -213,9 +169,9 @@ const Statistic = () => {
           percent={growthPercent.toFixed(1)}
         />
       </div>
-      <MonthlyRevenue data={revenue}/>
+      <MonthlyRevenue currentUser={currentUser}/>
       <div className="mt-5 flex justify-between">
-        <OrdersAmount data={orders}/>
+        <OrdersAmount currentUser={currentUser}/>
         <PieChart expenditure={expenditure}/>
       </div>
     </div>
