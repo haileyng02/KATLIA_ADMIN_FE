@@ -174,7 +174,6 @@ const Promotion = () => {
         ...routes.getAccessTokenHeader(token),
         ...routes.getDeleteDiscountIdParams(id),
       });
-      console.log(result);
       enqueueSnackbar("Discount deleted!", { variant: "success" });
       getAllDiscountList();
     } catch (err) {
@@ -224,6 +223,7 @@ const Promotion = () => {
         handleCancel={() => setViewOpen(false)}
         id={currItem?.id}
         currentUser={currentUser}
+        getAllDiscountList={getAllDiscountList}
       />
     </div>
   );
