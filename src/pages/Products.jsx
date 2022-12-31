@@ -132,7 +132,6 @@ const Products = () => {
         return { ...d, key: i };
       });
       setData(products);
-      dispatch(getAllProducts(products));
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);

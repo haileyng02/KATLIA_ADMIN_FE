@@ -146,8 +146,9 @@ const Promotion = () => {
         routes.GET_ALL_DISCOUNT_LIST,
         routes.getAccessTokenHeader(token)
       );
-      console.log(result.data);
-      setData(result.data);
+      setData(result.data.map((d, i) => {
+        return { ...d, key: i };
+      }));
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
