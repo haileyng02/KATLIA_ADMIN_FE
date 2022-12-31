@@ -167,9 +167,6 @@ export const getProductColorForImportIdParams = (id) => ({
   }
 })
 
-//GET ITEMS IN EXISTING FORM
-export const ITEMS_IN_EXISTING_FORM = '/items/getItemsInExistingForm'
-
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
 export const getUpdateOrderStatusBody = (id) => ({

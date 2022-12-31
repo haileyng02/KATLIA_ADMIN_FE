@@ -166,9 +166,7 @@ const Import = () => {
       const result = await appApi.get(
         routes.ITEMS_IN_EXISTING_FORM,
         routes.getAccessTokenHeader(token)
-      );
-      console.log(result.data);
-
+      )
     } catch (err) {
       if (err.response) {
         console.log(err.response.data)
@@ -183,7 +181,7 @@ const Import = () => {
   return (
     <div>
       <div className="row">
-        <h1 onClick={getItemsInExistingForm} className="title">Import</h1>
+        <h1 onClick={getProductColorForImport} className="title">Import</h1>
         <p className="subtitle">1 Import found</p>
       </div>
       <Tabs

@@ -164,11 +164,8 @@ const Import = () => {
     try {
       const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjE4ODk2Mn0.DhhxF4AI3qmM0yhEPjidNICcust1GAaZ54YyDc4Q3XQ";
       const result = await appApi.get(
-        routes.ITEMS_IN_EXISTING_FORM,
-        routes.getAccessTokenHeader(token)
-      );
-      console.log(result.data);
-
+        
+      )
     } catch (err) {
       if (err.response) {
         console.log(err.response.data)
@@ -183,7 +180,7 @@ const Import = () => {
   return (
     <div>
       <div className="row">
-        <h1 onClick={getItemsInExistingForm} className="title">Import</h1>
+        <h1 onClick={getProductColorForImport} className="title">Import</h1>
         <p className="subtitle">1 Import found</p>
       </div>
       <Tabs
