@@ -62,7 +62,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         formData,
         {
           ...routes.getAccessTokenHeader(token),
-          ...routes.getAddAnImageForProductBody("694575", "1")
+          ...routes.getAddAnImageForProductBody("694573", "1")
         }
       );
       console.log(result);
@@ -153,6 +153,30 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         {
           ...routes.getAccessTokenHeader(token),
           ...routes.getDeleteAllImageOfProductParams("694575")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  //Delete an image
+  const deleteAnImage = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(
+        routes.DELETE_AN_IMAGE("63afb83bbdb1e33bbb599877"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDeleteAnImageParams("63afb83bbdb1e33bbb599877")
         }
       );
       console.log(result.data);
