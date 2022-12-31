@@ -170,6 +170,18 @@ export const getProductColorForImportIdParams = (id) => ({
 //GET ITEMS IN EXISTING FORM
 export const ITEMS_IN_EXISTING_FORM = '/items/getItemsInExistingForm'
 
+//EDIT AN ITEM 
+export const EDIT_AN_ITEMS = (id) => `/items/editAnItem/${id}`
+export const getEditAnItemIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+export const getEditAnItemBody = (quantity, unitPrice) => ({
+  quantity: quantity,
+  unitPrice: unitPrice
+})
+
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
 export const getUpdateOrderStatusBody = (id) => ({
