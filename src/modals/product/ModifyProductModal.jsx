@@ -70,6 +70,30 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     }
   };
   
+  //Set default pic for product
+  const setDefaultPicForProduct = async (id) => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.patch(
+        routes.SET_DEFAULT_PIC_FOR_PRODUCT("694575"),
+        null,
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getSetDefaultPicForProductIdParams("694575")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
   
   return (
     <Modal

@@ -46,6 +46,14 @@ export const getAddAnImageForProductBody = (productId, colorId) => ({
   }
 })
 
+//SET DEFAULT PIC FOR PRODUCT
+export const SET_DEFAULT_PIC_FOR_PRODUCT = (id) => `/product-admin/setDefaultPicForProduct/${id}`
+export const getSetDefaultPicForProductIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //DELETE PRODUCT
 export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
 export const getDeleteProductBody = (id) => ({
