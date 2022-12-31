@@ -94,6 +94,31 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
       }
     }
   }
+
+  //Edit product info
+  const editProductInfo = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.patch(
+        routes.EDIT_PRODUCT_INFO("694575"),
+        routes.getEditProductInfoBody("Basic T-shirt", "limited", 20.99),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getEditProductInfoIdParams("694575")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
   
   return (
     <Modal

@@ -54,6 +54,19 @@ export const getSetDefaultPicForProductIdParams = (id) => ({
   }
 })
 
+//EDIT PRODUCT INFO
+export const EDIT_PRODUCT_INFO = (id) => `/product-admin/editProductInfo/${id}`
+export const getEditProductInfoIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+export const getEditProductInfoBody = (name, description, price) => ({
+  name: name,
+  description: description,
+  price: price
+})
+
 //DELETE PRODUCT
 export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
 export const getDeleteProductBody = (id) => ({
