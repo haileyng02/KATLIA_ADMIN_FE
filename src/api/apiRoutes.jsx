@@ -14,6 +14,8 @@ export const getSigninBody = (email, password) => ({
 //GET ALL PRODUCTS
 export const GET_ALL_PRODUCTS = "/product-admin/getAllProducts";
 
+export const GET_PRODUCTS_FOR_DISCOUNT = "/discount/getProductsForDiscount";
+
 //GET UNDELETED PRODUCTS
 export const GET_UNDELETED_PRODUCTS = "/product-admin/getUndeletedProducts";
 

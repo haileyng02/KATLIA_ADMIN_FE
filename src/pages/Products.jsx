@@ -1,42 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Table, Tooltip } from "antd";
 import { viewIcon, editIcon, deleteIcon } from "../images/actions";
 import ProductDetailModal from "../modals/product/ProductDetailModal";
 import ModifyProductModal from "../modals/product/ModifyProductModal";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
+import { getProducts } from "../actions/products";
 import categories from "../utils/categories";
-
-// const data = [
-//   {
-//     key: "1",
-//     productId: "19877",
-//     name: "Basic Knit Sweater",
-//     colors: [
-//       {
-//         name: 'Black',
-//         hex:'#000000',
-//         images: [
-//           "https://s3-alpha-sig.figma.com/img/9dc6/0187/73e519eac52bc99a49165c3c81ea8f3d?Expires=1672012800&Signature=RwRmvmwg78wbBG98I~Gz7v46bofzo8vGa~f-9v6nNRh1YdU~9K4c1wZN0H5HefCnv~y~WyOuikpF2nN33F41J76VBIBGyOUJU8tvc2q5hMat9HsLslQRO5Bi2llyj0kEpx-JnOQ~40ytC0DrMRG9p9QKH6F44IX995Ediz4DpQI9uDZHrY4~sFHuuw~ut4k-r3inJicuJ0piqRaFpq6SF7HebaQbkhHFD8iFHe8cbzeIEtC-3eav-1ppUCnWJkIH~maxbjM7mgQTd1zZCQOWq8mIOcyB3kkit4bPQ3HElZrVqrQpLpUd2RLLniHXLgKcLiAJLH4X7BIKBRbxEBRdnQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-//           "https://s3-alpha-sig.figma.com/img/73e0/29d7/890601079278ee127f39245e003e99b3?Expires=1672012800&Signature=W-eIrLBQUwnYzHAo-ir6cye2OQ90d-nDDeeMuX8-tpDxGNNJ3RTNuSFhKqlCL8enxWHdN5JxSwz4yiOJtwzLfMrV2fxmDfhtCaxBpHTF5zy6GmhJUyoWuUuujNAVXUaGr-C3xW6QWnAv63ewOyrN8tq1V8O2QZogqQ5LxquBr7Z5PrhpTVnFx0D4xgrchgVx5P2Sdfzmld1jN-u7NBNJvLQc0jpoAiwmORC8iBH1lKe09ciLayLermsb3nAzpdWMmBZwHZtDbABGqzD7ydOC90P6dmvPfBh14r2FdoJ4f6DlrXK-d0U8hEqiGmaViwybi3P-74mW-Xev6KwWXtD4iw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-//           "https://s3-alpha-sig.figma.com/img/67db/ce9c/d415b4898573bd669191818ec45ab57e?Expires=1672012800&Signature=hqTdRX819Jqu~tc5GuY9qlAc0QTbixJPvz~lCBLUeo7ior5Jy1owRdcfAI~~zusaaWLLnc2YsZH4aQW0LGA3ZRqmaeVYxnNyY9MIjqtqCMPD1Upjo8jiScjJA1NV3efPWFzSs3c6~qjK1RJGNWT5weboQbNHHpxsAKHQzn4FLmSKnAXce75VzUqatm1P4Fx9KXov4irE1y8xSgBcG4pDevRAmf3ET484hGurX2DAPob-5wyS538aWF~28IvXfqeVUJMiTm9u5pWdq1KkWnJ2kMSimGVX6ntLNWmQWYy~yHpSdIJfyppuJdmdjzJOhpamm0Ntb5eHhK~JMocFhIUKgQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-//           "https://s3-alpha-sig.figma.com/img/9dc6/0187/73e519eac52bc99a49165c3c81ea8f3d?Expires=1672012800&Signature=RwRmvmwg78wbBG98I~Gz7v46bofzo8vGa~f-9v6nNRh1YdU~9K4c1wZN0H5HefCnv~y~WyOuikpF2nN33F41J76VBIBGyOUJU8tvc2q5hMat9HsLslQRO5Bi2llyj0kEpx-JnOQ~40ytC0DrMRG9p9QKH6F44IX995Ediz4DpQI9uDZHrY4~sFHuuw~ut4k-r3inJicuJ0piqRaFpq6SF7HebaQbkhHFD8iFHe8cbzeIEtC-3eav-1ppUCnWJkIH~maxbjM7mgQTd1zZCQOWq8mIOcyB3kkit4bPQ3HElZrVqrQpLpUd2RLLniHXLgKcLiAJLH4X7BIKBRbxEBRdnQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-//           "https://s3-alpha-sig.figma.com/img/73e0/29d7/890601079278ee127f39245e003e99b3?Expires=1672012800&Signature=W-eIrLBQUwnYzHAo-ir6cye2OQ90d-nDDeeMuX8-tpDxGNNJ3RTNuSFhKqlCL8enxWHdN5JxSwz4yiOJtwzLfMrV2fxmDfhtCaxBpHTF5zy6GmhJUyoWuUuujNAVXUaGr-C3xW6QWnAv63ewOyrN8tq1V8O2QZogqQ5LxquBr7Z5PrhpTVnFx0D4xgrchgVx5P2Sdfzmld1jN-u7NBNJvLQc0jpoAiwmORC8iBH1lKe09ciLayLermsb3nAzpdWMmBZwHZtDbABGqzD7ydOC90P6dmvPfBh14r2FdoJ4f6DlrXK-d0U8hEqiGmaViwybi3P-74mW-Xev6KwWXtD4iw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-//           "https://s3-alpha-sig.figma.com/img/67db/ce9c/d415b4898573bd669191818ec45ab57e?Expires=1672012800&Signature=hqTdRX819Jqu~tc5GuY9qlAc0QTbixJPvz~lCBLUeo7ior5Jy1owRdcfAI~~zusaaWLLnc2YsZH4aQW0LGA3ZRqmaeVYxnNyY9MIjqtqCMPD1Upjo8jiScjJA1NV3efPWFzSs3c6~qjK1RJGNWT5weboQbNHHpxsAKHQzn4FLmSKnAXce75VzUqatm1P4Fx9KXov4irE1y8xSgBcG4pDevRAmf3ET484hGurX2DAPob-5wyS538aWF~28IvXfqeVUJMiTm9u5pWdq1KkWnJ2kMSimGVX6ntLNWmQWYy~yHpSdIJfyppuJdmdjzJOhpamm0Ntb5eHhK~JMocFhIUKgQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-//           "https://s3-alpha-sig.figma.com/img/9dc6/0187/73e519eac52bc99a49165c3c81ea8f3d?Expires=1672012800&Signature=RwRmvmwg78wbBG98I~Gz7v46bofzo8vGa~f-9v6nNRh1YdU~9K4c1wZN0H5HefCnv~y~WyOuikpF2nN33F41J76VBIBGyOUJU8tvc2q5hMat9HsLslQRO5Bi2llyj0kEpx-JnOQ~40ytC0DrMRG9p9QKH6F44IX995Ediz4DpQI9uDZHrY4~sFHuuw~ut4k-r3inJicuJ0piqRaFpq6SF7HebaQbkhHFD8iFHe8cbzeIEtC-3eav-1ppUCnWJkIH~maxbjM7mgQTd1zZCQOWq8mIOcyB3kkit4bPQ3HElZrVqrQpLpUd2RLLniHXLgKcLiAJLH4X7BIKBRbxEBRdnQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-//           "https://s3-alpha-sig.figma.com/img/73e0/29d7/890601079278ee127f39245e003e99b3?Expires=1672012800&Signature=W-eIrLBQUwnYzHAo-ir6cye2OQ90d-nDDeeMuX8-tpDxGNNJ3RTNuSFhKqlCL8enxWHdN5JxSwz4yiOJtwzLfMrV2fxmDfhtCaxBpHTF5zy6GmhJUyoWuUuujNAVXUaGr-C3xW6QWnAv63ewOyrN8tq1V8O2QZogqQ5LxquBr7Z5PrhpTVnFx0D4xgrchgVx5P2Sdfzmld1jN-u7NBNJvLQc0jpoAiwmORC8iBH1lKe09ciLayLermsb3nAzpdWMmBZwHZtDbABGqzD7ydOC90P6dmvPfBh14r2FdoJ4f6DlrXK-d0U8hEqiGmaViwybi3P-74mW-Xev6KwWXtD4iw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-//           "https://s3-alpha-sig.figma.com/img/67db/ce9c/d415b4898573bd669191818ec45ab57e?Expires=1672012800&Signature=hqTdRX819Jqu~tc5GuY9qlAc0QTbixJPvz~lCBLUeo7ior5Jy1owRdcfAI~~zusaaWLLnc2YsZH4aQW0LGA3ZRqmaeVYxnNyY9MIjqtqCMPD1Upjo8jiScjJA1NV3efPWFzSs3c6~qjK1RJGNWT5weboQbNHHpxsAKHQzn4FLmSKnAXce75VzUqatm1P4Fx9KXov4irE1y8xSgBcG4pDevRAmf3ET484hGurX2DAPob-5wyS538aWF~28IvXfqeVUJMiTm9u5pWdq1KkWnJ2kMSimGVX6ntLNWmQWYy~yHpSdIJfyppuJdmdjzJOhpamm0Ntb5eHhK~JMocFhIUKgQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-//         ],
-//       },
-//     ],
-//     category: "Sweater",
-//     price: "28.58",
-//   },
-// ];
 
 const Products = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [detailOpen, setDetailOpen] = useState(false);
   const [modifyOpen, setModifyOpen] = useState(false);
   const [currItem, setCurrItem] = useState(null);
@@ -153,11 +128,10 @@ const Products = () => {
         routes.getAccessTokenHeader(token)
       );
       result.data.pop();
-      setData(
-        result.data.map((d, i) => {
-          return { ...d, key: i };
-        })
-      );
+      const products = result.data.map((d, i) => {
+        return { ...d, key: i };
+      });
+      setData(products);
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -197,23 +171,21 @@ const Products = () => {
   const deleteProduct = async () => {
     try {
       const token = currentUser.token;
-      const result = await appApi.delete(
-        routes.DELETE_PRODUCT("694575"), {
-          ...routes.getAccessTokenHeader(token),
-          ...routes.getDeleteProductBody("694575")
-        }
-      );
+      const result = await appApi.delete(routes.DELETE_PRODUCT("694575"), {
+        ...routes.getAccessTokenHeader(token),
+        ...routes.getDeleteProductBody("694575"),
+      });
       console.log(result);
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
       } else {
-        console.log(err.message)
+        console.log(err.message);
       }
     }
-  }
+  };
 
   // useEffect(() => {
   //   if(currentUser) deleteProduct()
@@ -228,17 +200,16 @@ const Products = () => {
         routes.getAccessTokenHeader(token)
       );
       console.log(result);
-
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
       } else {
-        console.log(err.message)
+        console.log(err.message);
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (currentUser) getAllColors();
@@ -253,17 +224,16 @@ const Products = () => {
         routes.getAccessTokenHeader(token)
       );
       console.log(result);
-
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
       } else {
-        console.log(err.message)
+        console.log(err.message);
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (currentUser) getAllCategory();
