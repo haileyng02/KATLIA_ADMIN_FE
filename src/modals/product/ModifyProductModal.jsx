@@ -192,6 +192,30 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     }
   }
 
+  //Delete some images
+  const deleteSomeImages = async () => {
+    try {
+      const token = currentUser.token;
+      console.log(routes.getDeleteSomeImages(["63afc1289b799b86f0b8d484", "63afc6c39b799b86f0b8d485"]))
+      const result = await appApi.delete(
+        routes.DELETE_SOME_IMAGES,
+        routes.getDeleteSomeImages(["63afc1289b799b86f0b8d484", "63afc6c39b799b86f0b8d485"]),
+        routes.getAccessTokenHeader(token)
+        //["63afc1289b799b86f0b8d484", "63afb843bdb1e33bbb599878"]
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
   return (
     <Modal
       title={<ModalTitle text={currItem ? "Edit Product" : "Add Product"} />}
@@ -206,7 +230,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         <table className="modal-table table-auto w-full input-table">
           <tbody>
             <tr>
-              <th className="required">Product ID:</th>
+              <th onClick={deleteSomeImages} className="required">Product ID:</th>
               <td>
                 <Form.Item
                   name={"id"}

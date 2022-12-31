@@ -92,6 +92,12 @@ export const getDeleteAnImageParams = (id) => ({
   }
 })
 
+//DELETE SOME IMAGES
+export const DELETE_SOME_IMAGES = '/product-admin/deleteSomeImages'
+export const getDeleteSomeImages = (idList) => ({
+  idList: idList
+})
+
 //DELETE PRODUCT
 export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
 export const getDeleteProductBody = (id) => ({
