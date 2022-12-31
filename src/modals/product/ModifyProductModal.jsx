@@ -312,6 +312,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
                 <Form.Item name={"category"} initialValue={1}>
                   <Select
                     size="large"
+                    loading={!categoriesData}
                     className="w-full"
                   >
                     {categoriesData?.map((category, i) => (
