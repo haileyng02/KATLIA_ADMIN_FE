@@ -38,14 +38,7 @@ export const getAddProductBody = (
 });
 
 //ADD AN IMAGE FOR PRODUCT
-// export const ADD_AN_IMAGE_FOR_PRODUCT = '/product-admin/addAnImageForProduct'
-// export const getAddAnImageForProductBody = (productId, colorId) => ({
-//   params: {
-//     productId: productId,
-//     colorId: colorId
-//   }
-// })
-export const ADD_AN_IMAGE_FOR_PRODUCT = (productId, colorId) => `/product-admin/addAnImageForProduct?productId=${productId}&colorId=${colorId}`
+export const ADD_AN_IMAGE_FOR_PRODUCT = '/product-admin/addAnImageForProduct'
 export const getAddAnImageForProductBody = (productId, colorId) => ({
   params: {
     productId: productId,
