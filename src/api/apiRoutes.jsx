@@ -76,6 +76,14 @@ export const getDeleteProductImageByColorParams = (productId, colorId) => ({
   }
 })
 
+//DELETE ALL IMAGE OF PRODUCT
+export const DELETE_ALL_IMAGE_OF_PRODUCT = (id) => `/product-admin/deleteAllImageOfProduct/${id}`
+export const getDeleteAllImageOfProductParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //DELETE PRODUCT
 export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
 export const getDeleteProductBody = (id) => ({

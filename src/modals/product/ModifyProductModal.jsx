@@ -144,6 +144,30 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     }
   }
   
+  //Delete all image of product
+  const deleteAllImageOfProduct = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(
+        routes.DELETE_ALL_IMAGE_OF_PRODUCT("694575"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDeleteAllImageOfProductParams("694575")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
   return (
     <Modal
       title={<ModalTitle text={currItem ? "Edit Product" : "Add Product"} />}
