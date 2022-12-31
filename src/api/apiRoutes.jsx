@@ -170,6 +170,14 @@ export const getProductColorForImportIdParams = (id) => ({
 //GET ITEMS IN EXISTING FORM
 export const ITEMS_IN_EXISTING_FORM = '/items/getItemsInExistingForm'
 
+//DELETE AN ITEM
+export const DELETE_AN_ITEM = (id) => `/items/deleteAnItem/${id}`
+export const getDeleteAnItemIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //EDIT AN ITEM 
 export const EDIT_AN_ITEMS = (id) => `/items/editAnItem/${id}`
 export const getEditAnItemIdParams = (id) => ({
