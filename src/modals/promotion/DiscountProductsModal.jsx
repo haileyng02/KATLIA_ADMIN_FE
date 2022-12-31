@@ -7,7 +7,7 @@ import { useSnackbar } from "notistack";
 import WarningModal from "../WarningModal";
 import appApi from "../../api/appApi";
 import * as routes from "../../api/apiRoutes";
-import { getProducts } from "../../actions/products";
+import { getPromotionProducts } from "../../actions/products";
 import getModalFooter from "../../utils/getModalFooter";
 
 const DiscountProductsModal = ({
@@ -28,7 +28,7 @@ const DiscountProductsModal = ({
   const [loading, setLoading] = useState(false);
   const [tableLoading, setTableLoading] = useState(false);
   const searchInput = useRef(null);
-  const { products } = useSelector((state) => state.products);
+  const { promoProducts } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -208,7 +208,7 @@ const DiscountProductsModal = ({
         return { ...d, key: i };
       });
       setData(productsData);
-      dispatch(getProducts(productsData));
+      dispatch(getPromotionProducts(productsData));
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -265,8 +265,8 @@ const DiscountProductsModal = ({
 
   useEffect(() => {
     if (currentUser) {
-      if (products) {
-        setData(products);
+      if (promoProducts) {
+        setData(promoProducts);
       } else {
         getProductsForDiscount();
       }
