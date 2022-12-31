@@ -182,6 +182,14 @@ export const getEditAnItemBody = (quantity, unitPrice) => ({
   unitPrice: unitPrice
 })
 
+//GET ITEM DETAIL FOR UPDATE
+export const ITEM_DETAIL_FOR_UPDATE = (id) => `/items/getItemDetailForUpdate/${id}`
+export const getItemDetailForUpdateIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
 export const getUpdateOrderStatusBody = (id) => ({
