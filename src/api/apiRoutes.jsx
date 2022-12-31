@@ -159,6 +159,14 @@ export const getProductSizeForImportIdParams = (id) => ({
   }
 }) 
 
+//PRODUCT COLOR FOR IMPORT
+export const PRODUCT_COLOR_FOR_IMPORT = (id) => `/items/getProductColorForImport/${id}`
+export const getProductColorForImportIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
 export const getUpdateOrderStatusBody = (id) => ({
