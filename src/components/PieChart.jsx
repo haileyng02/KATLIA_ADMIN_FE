@@ -2,7 +2,6 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 import ChartLegend from "./ChartLegend";
 
-const series = [70, 30];
 const options = {
   chart: {
     type: "donut",
@@ -28,7 +27,7 @@ const options = {
   },
 };
 
-const PieChart = () => {
+const PieChart = ({expenditure}) => {
   return (
     <div className="chart-card basis-[34%] flex flex-col">
       <h2 className="chart-title">Revenue and Expenditure Ratio</h2>
@@ -36,12 +35,12 @@ const PieChart = () => {
         <ReactApexChart
           height={250}
           options={options}
-          series={series}
+          series={[100-expenditure,expenditure]}
           type="donut"
         />
         <div className="flex justify-around mt-[35px]">
-          <ChartLegend name={"Revenue"} value={70} color="bg-[#5A6ACF]" />
-          <ChartLegend name={"Expenditure"} value={30} color="bg-[#F9AF5E91]" />
+          <ChartLegend name={"Revenue"} value={100-expenditure} color="bg-[#5A6ACF]" />
+          <ChartLegend name={"Expenditure"} value={expenditure} color="bg-[#F9AF5E91]" />
         </div>
       </div>
     </div>
