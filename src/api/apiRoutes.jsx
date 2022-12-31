@@ -151,6 +151,14 @@ export const getStaffImportDetail = (id) => ({
 //IMPORT FORM INFO
 export const IMPORT_FORM_INFO = '/items/getImportFormInfo'
 
+//PRODUCT SIZE FOR IMPORT
+export const PRODUCT_SIZE_FOR_IMPORT = (id) => `/items/getProductSizeForImport/${id}`
+export const getProductSizeForImportIdParams = (id) => ({
+  params: {
+    id: id
+  }
+}) 
+
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
 export const getUpdateOrderStatusBody = (id) => ({
