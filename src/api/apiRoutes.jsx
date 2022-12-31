@@ -178,6 +178,9 @@ export const getDeleteAnItemIdParams = (id) => ({
   }
 })
 
+//DELETE ALL ITEM
+export const DELETE_ALL_ITEMS = '/items/deleteAllItems'
+
 //EDIT AN ITEM 
 export const EDIT_AN_ITEMS = (id) => `/items/editAnItem/${id}`
 export const getEditAnItemIdParams = (id) => ({
