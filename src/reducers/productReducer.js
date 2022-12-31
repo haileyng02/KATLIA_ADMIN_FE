@@ -1,12 +1,19 @@
 const initialState = {
-    products: null
+    promoProducts: null,
+    allProducts: null
 }
 
 export const productReducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'GET_PROMOTION_PRODUCTS':
+            return {
+                ...state,
+                promoProducts: action.payload,
+            }
         case 'GET_PRODUCTS':
             return {
-                products: action.payload,
+                ...state,
+                allProducts: action.payload,
             }
         default:
             return state;

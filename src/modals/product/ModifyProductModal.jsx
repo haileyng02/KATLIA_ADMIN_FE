@@ -1,21 +1,28 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Modal, Form, Input, Select, InputNumber } from "antd";
 import ModalTitle from "../../components/ModalTitle";
 import ColorList from "../../components/ColorList";
 import appApi from "../../api/appApi";
 import * as routes from "../../api/apiRoutes";
+import { getCategories } from "../../actions/categories";
 import getModalFooter from "../../utils/getModalFooter";
 import getReadOnlyProps from "../../utils/readOnlyProps";
-import categories from "../../utils/categories";
-import axios from "axios";
+
+const { Option } = Select; /*  */
 
 const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   const [form] = Form.useForm();
   const { currentUser } = useSelector((state) => state.user);
+  const { categories } = useSelector((state) => state.categories);
+  const dispatch = useDispatch();
+  const [categoriesData, setCategoriesData] = useState();
 
   const handleOk = () => {
-    handleUploadImages(form.getFieldValue("images")?.file?.originFileObj);
+    form.validateFields().then((values) => {
+      console.log(values);
+    });
+    // handleUploadImages(form.getFieldValue("images")?.file?.originFileObj);
   };
 
   // useEffect(() => {
@@ -28,6 +35,28 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   //     form.resetFields();
   //   }
   // }, [currItem, form, open]);
+
+  //Get all category
+  const getAllCategory = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_ALL_CATEGORY,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result);
+      setCategoriesData(result.data);
+      dispatch(getCategories(result.data));
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
 
   //Add product
   const addProduct = async () => {
@@ -211,6 +240,16 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     }
   };
 
+  useEffect(() => {
+    if (currentUser) {
+      if (categories) {
+        setCategoriesData(categories);
+      } else {
+        getAllCategory();
+      }
+    }
+  }, [currentUser]);
+
   return (
     <Modal
       title={<ModalTitle text={currItem ? "Edit Product" : "Add Product"} />}
@@ -225,9 +264,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         <table className="modal-table table-auto w-full input-table">
           <tbody>
             <tr>
-              <th onClick={deleteSomeImages} className="required">
-                Product ID:
-              </th>
+              <th className="required">Product ID:</th>
               <td>
                 <Form.Item
                   name={"id"}
@@ -272,13 +309,18 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
             <tr>
               <th>Category:</th>
               <td>
-                <Form.Item name={"category"} initialValue={categories[0]}>
+                <Form.Item name={"category"} initialValue={1}>
                   <Select
-                    options={categories}
                     size="large"
-                    // suffixIcon={<img src={selectIcon} alt='Select' className="h-2"/>}
+                    loading={!categoriesData}
                     className="w-full"
-                  />
+                  >
+                    {categoriesData?.map((category, i) => (
+                      <Option key={i} value={category.categoryId}>
+                        {category.category}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
               </td>
             </tr>
