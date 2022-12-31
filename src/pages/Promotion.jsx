@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Table, Tooltip } from "antd";
+import { useSnackbar } from "notistack";
 import { viewIcon, editIcon, deleteIcon } from "../images/actions";
 import AddDiscountModal from "../modals/promotion/AddDiscountModal";
 import DiscountProductsModal from "../modals/promotion/DiscountProductsModal";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
-
-const data = [
-  {
-    key: "1",
-    discountId: "66o84akdbafasd",
-    name: "Black Friday Sale",
-    percent: "28.58",
-    start: "00:00 13-11-2022",
-    end: "00:00 13-11-2022",
-  },
-];
+import dayjs from "dayjs";
 
 const Promotion = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
   const [addOpen, setAddOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
   const [currItem, setCurrItem] = useState(null);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState([]);
 
   const handleAdd = () => {
     setCurrItem(null);
@@ -42,38 +36,42 @@ const Promotion = () => {
   const columns = [
     {
       title: "Discount ID",
-      dataIndex: "discountId",
-      sorter: (a, b) => a.discountId.localeCompare(b.discountId),
+      dataIndex: "id",
+      sorter: (a, b) => a.id?.localeCompare(b.id),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Discount Name",
-      dataIndex: "name",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      dataIndex: "discountName",
+      sorter: (a, b) => a.discountName?.localeCompare(b.discountName),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Percent",
       dataIndex: "percent",
-      sorter: (a, b) => a.percent.localeCompare(b.percent),
+      sorter: (a, b) => a.percent - b.percent,
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value + "%"}</p>,
     },
     {
       title: "Start At",
-      dataIndex: "start",
-      sorter: (a, b) => a.start.localeCompare(b.start),
+      dataIndex: "startAt",
+      sorter: (a, b) => a.startAt?.localeCompare(b.startAt),
       defaultSortOrder: "descend",
-      render: (value) => <p className="table-cell">{value}</p>,
+      render: (value) => (
+        <p className="table-cell">{dayjs(value).format("HH:mm DD-MM-YYYY")}</p>
+      ),
     },
     {
       title: "End At",
-      dataIndex: "end",
-      sorter: (a, b) => a.end.localeCompare(b.end),
+      dataIndex: "endAt",
+      sorter: (a, b) => a.endAt?.localeCompare(b.endAt),
       defaultSortOrder: "descend",
-      render: (value) => <p className="table-cell">{value}</p>,
+      render: (value) => (
+        <p className="table-cell">{dayjs(value).format("HH:mm DD-MM-YYYY")}</p>
+      ),
     },
     {
       title: "Action",
@@ -92,25 +90,48 @@ const Promotion = () => {
               </center>
             </button>
           </Tooltip>
-          <Tooltip title="Edit discount">
+          <Tooltip title={value.message !== "Can't edit" && "Edit discount"}>
             <button
-              className="action-button"
-              style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-              onClick={() => handleEdit(value)}
+              className={`action-button ${
+                value.message === "Can't edit" && "cursor-not-allowed"
+              }`}
+              style={{
+                backgroundColor:
+                  value.message !== "Can't edit"
+                    ? "rgba(249, 175, 94, 0.9)"
+                    : "#CDCDCD",
+              }}
+              onClick={
+                value.message !== "Can't edit" ? () => handleEdit(value) : null
+              }
             >
               <center>
                 <img src={editIcon} alt="Edit" />
               </center>
             </button>
           </Tooltip>
-          <button
-            className="action-button"
-            style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
-          >
-            <center>
-              <img src={deleteIcon} alt="Cancel" />
-            </center>
-          </button>
+          <Tooltip title={value.message !== "Can't edit" && "Delete discount"}>
+            <button
+              className={`action-button ${
+                value.message === "Can't edit" && "cursor-not-allowed"
+              }`}
+              style={{
+                backgroundColor:
+                  value.message !== "Can't edit"
+                    ? "rgba(253, 56, 56, 0.9)"
+                    : "#CDCDCD",
+              }}
+              onClick={
+                value.message !== "Can't edit"
+                  ? () => deleteDiscount(value.id)
+                  : null
+              }
+            >
+              <center>
+                <img src={deleteIcon} alt="Delte" />
+              </center>
+            </button>
+          </Tooltip>
         </div>
       ),
     },
@@ -118,14 +139,15 @@ const Promotion = () => {
 
   //Get all discount list
   const getAllDiscountList = async () => {
+    setLoading(true);
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjA2NjYyMX0.DghrX5Qt0oUmiG4gO47pktnmM5364Kwq6x1rO1FAS8o";
+      const token = currentUser.token;
       const result = await appApi.get(
         routes.GET_ALL_DISCOUNT_LIST,
         routes.getAccessTokenHeader(token)
       );
-      console.log(result);
-
+      console.log(result.data);
+      setData(result.data);
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -135,97 +157,25 @@ const Promotion = () => {
         console.log(err.message);
       }
     }
-  }
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (currentUser) getAllDiscountList();
   }, [currentUser]);
 
-  //Add new discount
-  const addNewDiscount = async () => {
-    try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjA2NjYyMX0.DghrX5Qt0oUmiG4gO47pktnmM5364Kwq6x1rO1FAS8o";
-      const result = await appApi.post(
-        routes.ADD_NEW_DISCOUNT,
-        routes.getAddNewDiscountBody("30/12 Sale", 25, "2022-12-30T14:10:55.531Z", "2022-12-31T14:10:55.531Z"),
-        routes.getAccessTokenHeader(token)
-      );
-      console.log(result);
-      
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  } 
-
-  //Edit list products for discount
-  const editListProductsForDiscount = async () => {
-    try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjA2NjYyMX0.DghrX5Qt0oUmiG4gO47pktnmM5364Kwq6x1rO1FAS8o";
-      const result = await appApi.put(
-        routes.EDIT_LIST_PRODUCTS_FOR_DISCOUNT("63a9c2bb9fcabd7e6fc710e4"),
-        [694575, 611643],
-        {
-          ...routes.getAccessTokenHeader(token),
-          ...routes.getEditListProductsForDiscountIdPrams("63a9c2bb9fcabd7e6fc710e4")
-        }
-      );
-      console.log(result);
-
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  }
-
-  //Edit discount info
-  const editDiscountInfo = async () => {
-    try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjA2NjYyMX0.DghrX5Qt0oUmiG4gO47pktnmM5364Kwq6x1rO1FAS8o";
-      const result = await appApi.patch(
-        routes.EDIT_DISCOUNT_INFO("63a9c31b9fcabd7e6fc710e5"),
-        routes.getAddNewDiscountBody("31/12 Sale", 35, "2022-12-30T14:10:55.531Z", "2022-12-31T14:10:55.531Z"),
-        {
-          ...routes.getAccessTokenHeader(token),
-          ...routes.getEditDiscountInfoIdParams("63a9c31b9fcabd7e6fc710e5")
-        }
-      );
-      console.log(result);
-
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  }
-
   //Delete discount
-  const deleteDiscount = async () => {
+  const deleteDiscount = async (id) => {
+    setLoading(true);
     try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjA2NjYyMX0.DghrX5Qt0oUmiG4gO47pktnmM5364Kwq6x1rO1FAS8o";
-      const result = await appApi.delete(
-        routes.DELETE_DISCOUNT("63a9c31b9fcabd7e6fc710e5"),
-        {
-          ...routes.getAccessTokenHeader(token),
-          ...routes.getDeleteDiscountIdParams("63a9c31b9fcabd7e6fc710e5")
-        }
-      );
+      const token = currentUser.token;
+      const result = await appApi.delete(routes.DELETE_DISCOUNT(id), {
+        ...routes.getAccessTokenHeader(token),
+        ...routes.getDeleteDiscountIdParams(id),
+      });
       console.log(result);
-
+      enqueueSnackbar("Discount deleted!", { variant: "success" });
+      getAllDiscountList();
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -235,13 +185,14 @@ const Promotion = () => {
         console.log(err.message);
       }
     }
-  }
+    setLoading(false);
+  };
 
   return (
     <div>
       <div className="row">
         <h1 className="title">Promotion</h1>
-        <p className="subtitle">2 Promotions found</p>
+        <p className="subtitle">{data.length + " Promotions found"}</p>
       </div>
       <div className="mt-[12px] flex justify-end gap-x-[10px]">
         <button
@@ -257,18 +208,21 @@ const Promotion = () => {
       <Table
         columns={columns}
         dataSource={data}
-        s
         className="mt-5 pagination-active table-header"
+        loading={loading}
       />
       <AddDiscountModal
         open={addOpen}
         handleCancel={() => setAddOpen(false)}
         currentItem={currItem}
+        currentUser={currentUser}
+        getAllDiscountList={getAllDiscountList}
       />
       <DiscountProductsModal
         open={viewOpen}
         handleCancel={() => setViewOpen(false)}
-        id={currItem?.discountId}
+        id={currItem?.id}
+        currentUser={currentUser}
       />
     </div>
   );

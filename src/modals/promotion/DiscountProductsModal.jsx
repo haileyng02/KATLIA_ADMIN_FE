@@ -1,105 +1,88 @@
 import React, { useState } from "react";
 import { ConfigProvider, Modal, Table } from "antd";
 import WarningModal from "../WarningModal";
+import appApi from "../../api/appApi";
+import * as routes from "../../api/apiRoutes";
 import getModalFooter from "../../utils/getModalFooter";
 
-const data = [
+const columns = [
   {
-    key: "1",
-    id: 1,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
+    title: "Product ID",
+    dataIndex: "id",
+    render: (text) => <p className="">{"#" + text}</p>,
   },
   {
-    key: "2",
-    id: 2,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
+    title: "Product’s Name",
+    dataIndex: "name",
+    // render: (text) => <p className="">{text}</p>,
   },
   {
-    key: "3",
-    id: 3,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
-  },
-  {
-    key: "4",
-    id: 4,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
-  },
-  {
-    key: "5",
-    id: 5,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
-  },
-  {
-    key: "6",
-    id: 6,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
-  },
-  {
-    key: "7",
-    id: 7,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
-  },
-  {
-    key: "8",
-    id: 8,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
-  },
-  {
-    key: "9",
-    id: 9,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
-  },
-  {
-    key: "10",
-    id: 10,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
-  },
-  {
-    key: "11",
-    id: 11,
-    name: "Premium Striped Oxford Shirt",
-    price: 199.99,
+    title: "Price",
+    dataIndex: "price",
+    render: (text) => <p className="">{"$" + text}</p>,
   },
 ];
+const rowSelection = {
+  onChange: (selectedRowKeys, selectedRows) => {
+    console.log(
+      `selectedRowKeys: ${selectedRowKeys}`,
+      "selectedRows: ",
+      selectedRows
+    );
+  },
+};
 
-const DiscountProductsModal = ({ open, handleCancel, id }) => {
+const DiscountProductsModal = ({ open, handleCancel, id, currentUser }) => {
   const [warningOpen, setWarningOpen] = useState(false);
+  const [data, setData] = useState();
 
-  const columns = [
-    {
-      title: "Product ID",
-      dataIndex: "id",
-      render: (text) => <p className="">{"#" + text}</p>,
-    },
-    {
-      title: "Product’s Name",
-      dataIndex: "name",
-      // render: (text) => <p className="">{text}</p>,
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      render: (text) => <p className="">{"$" + text}</p>,
-    },
-  ];
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
+  //Edit list products for discount
+  const editListProductsForDiscount = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.put(
+        routes.EDIT_LIST_PRODUCTS_FOR_DISCOUNT(id),
+        [694575, 611643],
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getEditListProductsForDiscountIdPrams(id),
+        }
       );
-    },
+      console.log(result);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  //Get all products
+  const getAllProducts = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_ALL_PRODUCTS,
+        routes.getAccessTokenHeader(token)
+      );
+      result.data.pop();
+      setData(
+        result.data.map((d, i) => {
+          return { ...d, key: i };
+        })
+      );
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
   };
 
   const handleOk = () => {
