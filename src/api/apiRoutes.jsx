@@ -148,6 +148,9 @@ export const getStaffImportDetail = (id) => ({
   }
 })
 
+//IMPORT FORM INFO
+export const IMPORT_FORM_INFO = '/items/getImportFormInfo'
+
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
 export const getUpdateOrderStatusBody = (id) => ({
