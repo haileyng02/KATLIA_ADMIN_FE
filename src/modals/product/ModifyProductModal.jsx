@@ -119,6 +119,30 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
       }
     }
   }
+
+  //Delete product image by color
+  const deleteProductImageByColor = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(
+        routes.DELETE_PRODUCT_IMAGE_BY_COLOR,
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDeleteProductImageByColorParams("694575", "1")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
   
   return (
     <Modal

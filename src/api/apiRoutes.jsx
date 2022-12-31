@@ -67,6 +67,15 @@ export const getEditProductInfoBody = (name, description, price) => ({
   price: price
 })
 
+//DELETE PRODUCT IMAGE BY COLOR
+export const DELETE_PRODUCT_IMAGE_BY_COLOR = '/product-admin/deleteProductImageByColor'
+export const getDeleteProductImageByColorParams = (productId, colorId) => ({
+  params: {
+    productId: productId,
+    colorId: colorId
+  }
+})
+
 //DELETE PRODUCT
 export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
 export const getDeleteProductBody = (id) => ({
