@@ -14,8 +14,6 @@ export const getSigninBody = (email, password) => ({
 //GET ALL PRODUCTS
 export const GET_ALL_PRODUCTS = "/product-admin/getAllProducts";
 
-export const GET_PRODUCTS_FOR_DISCOUNT = "/discount/getProductsForDiscount";
-
 //GET UNDELETED PRODUCTS
 export const GET_UNDELETED_PRODUCTS = "/product-admin/getUndeletedProducts";
 
@@ -171,37 +169,6 @@ export const getProductColorForImportIdParams = (id) => ({
 
 //GET ITEMS IN EXISTING FORM
 export const ITEMS_IN_EXISTING_FORM = '/items/getItemsInExistingForm'
-
-//DELETE AN ITEM
-export const DELETE_AN_ITEM = (id) => `/items/deleteAnItem/${id}`
-export const getDeleteAnItemIdParams = (id) => ({
-  params: {
-    id: id
-  }
-})
-
-//DELETE ALL ITEM
-export const DELETE_ALL_ITEMS = '/items/deleteAllItems'
-
-//EDIT AN ITEM 
-export const EDIT_AN_ITEMS = (id) => `/items/editAnItem/${id}`
-export const getEditAnItemIdParams = (id) => ({
-  params: {
-    id: id
-  }
-})
-export const getEditAnItemBody = (quantity, unitPrice) => ({
-  quantity: quantity,
-  unitPrice: unitPrice
-})
-
-//GET ITEM DETAIL FOR UPDATE
-export const ITEM_DETAIL_FOR_UPDATE = (id) => `/items/getItemDetailForUpdate/${id}`
-export const getItemDetailForUpdateIdParams = (id) => ({
-  params: {
-    id: id
-  }
-})
 
 //UPDATE ORDER STATUS
 export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`

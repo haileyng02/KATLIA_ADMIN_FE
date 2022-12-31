@@ -8,13 +8,14 @@ import * as routes from "../../api/apiRoutes";
 import getModalFooter from "../../utils/getModalFooter";
 import getReadOnlyProps from "../../utils/readOnlyProps";
 import categories from "../../utils/categories";
+import axios from "axios";
 
 const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   const [form] = Form.useForm();
   const { currentUser } = useSelector((state) => state.user);
 
   const handleOk = () => {
-      handleUploadImages(form.getFieldValue('images').file);
+    handleUploadImages(form.getFieldValue("images")?.file?.originFileObj);
   };
 
   // useEffect(() => {
@@ -55,22 +56,161 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
       console.log(file);
       const token = currentUser.token;
       const formData = new FormData();
-      // formData.append('productId', 694575);
-      // formData.append('colorId', 1);
 
       formData.append("file", file);
-      const result = await appApi.post(routes.ADD_AN_IMAGE_FOR_PRODUCT("694575", 2), formData, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-        ...routes.getAddAnImageForProductBody("694575", 2)
-      });
+      const result = await appApi.post(
+        routes.ADD_AN_IMAGE_FOR_PRODUCT,
+        formData,
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getAddAnImageForProductBody("694573", "1"),
+        }
+      );
       console.log(result);
-      
     }
   };
-  
-  
+
+  //Set default pic for product
+  const setDefaultPicForProduct = async (id) => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.patch(
+        routes.SET_DEFAULT_PIC_FOR_PRODUCT("694575"),
+        null,
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getSetDefaultPicForProductIdParams("694575"),
+        }
+      );
+      console.log(result.data);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  //Edit product info
+  const editProductInfo = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.patch(
+        routes.EDIT_PRODUCT_INFO("694575"),
+        routes.getEditProductInfoBody("Basic T-shirt", "limited", 20.99),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getEditProductInfoIdParams("694575"),
+        }
+      );
+      console.log(result.data);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  //Delete product image by color
+  const deleteProductImageByColor = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(routes.DELETE_PRODUCT_IMAGE_BY_COLOR, {
+        ...routes.getAccessTokenHeader(token),
+        ...routes.getDeleteProductImageByColorParams("694575", "1"),
+      });
+      console.log(result.data);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  //Delete all image of product
+  const deleteAllImageOfProduct = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(
+        routes.DELETE_ALL_IMAGE_OF_PRODUCT("694575"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDeleteAllImageOfProductParams("694575"),
+        }
+      );
+      console.log(result.data);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  //Delete an image
+  const deleteAnImage = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(
+        routes.DELETE_AN_IMAGE("63afb83bbdb1e33bbb599877"),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDeleteAnImageParams("63afb83bbdb1e33bbb599877"),
+        }
+      );
+      console.log(result.data);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  //Delete some images
+  const deleteSomeImages = async () => {
+    try {
+      const token = currentUser.token;
+
+      const result = await appApi({
+        method: "delete",
+        url: routes.DELETE_SOME_IMAGES,
+        data: routes.getDeleteSomeImages(["63b05debe9f03273141ced39"]),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log(result.data);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
   return (
     <Modal
       title={<ModalTitle text={currItem ? "Edit Product" : "Add Product"} />}
@@ -85,7 +225,9 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         <table className="modal-table table-auto w-full input-table">
           <tbody>
             <tr>
-              <th className="required">Product ID:</th>
+              <th onClick={deleteSomeImages} className="required">
+                Product ID:
+              </th>
               <td>
                 <Form.Item
                   name={"id"}
