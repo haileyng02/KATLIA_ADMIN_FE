@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Modal, Form, Input, Select, InputNumber } from "antd";
+import { Modal, Form, Input, Select, InputNumber, Spin } from "antd";
 import ModalTitle from "../../components/ModalTitle";
 import ColorList from "../../components/ColorList";
 import appApi from "../../api/appApi";
@@ -9,7 +9,7 @@ import { getCategories } from "../../actions/categories";
 import getModalFooter from "../../utils/getModalFooter";
 import getReadOnlyProps from "../../utils/readOnlyProps";
 
-const { Option } = Select; /*  */
+const { Option } = Select;
 
 const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   const [form] = Form.useForm();
@@ -17,13 +17,8 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [categoriesData, setCategoriesData] = useState();
-
-  const handleOk = () => {
-    form.validateFields().then((values) => {
-      console.log(values);
-    });
-    // handleUploadImages(form.getFieldValue("images")?.file?.originFileObj);
-  };
+  const [colorList, setColorList] = useState([{}]);
+  const [loading,setLoading] = useState(false);
 
   // useEffect(() => {
   //   if (currItem) {
@@ -59,12 +54,29 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   };
 
   //Add product
-  const addProduct = async () => {
+  const addProduct = async (
+    productId,
+    name,
+    description,
+    categoryId,
+    price,
+    sizeList,
+    colorIdList
+  ) => {
+    setLoading(true);
     try {
       const token = currentUser.token;
       const result = await appApi.post(
         routes.ADD_PRODUCT,
-        routes.getAddProductBody(694574, "Basic Shirt", "", 1, 39.99, "S", [1]),
+        routes.getAddProductBody(
+          productId,
+          name,
+          description,
+          categoryId,
+          price,
+          sizeList,
+          colorIdList
+        ),
         routes.getAccessTokenHeader(token)
       );
       console.log(result);
@@ -77,6 +89,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         console.log(err.message);
       }
     }
+    setLoading(false);
   };
 
   const handleUploadImages = async (file) => {
@@ -240,6 +253,24 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     }
   };
 
+  const handleOk = () => {
+    form.validateFields().then((values) => {
+      console.log(values);
+      console.log(colorList);
+      const colorIdList = colorList.map((value) => value.colorId);
+      // addProduct(
+      //   values.id,
+      //   values.name,
+      //   values.description,
+      //   values.category,
+      //   values.price,
+      //   values.size,
+      //   colorIdList
+      // );
+    });
+    // handleUploadImages(form.getFieldValue("images")?.file?.originFileObj);
+  };
+
   useEffect(() => {
     if (currentUser) {
       if (categories) {
@@ -260,103 +291,128 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
       footer={getModalFooter({ handleCancel, handleOk })}
       className="width-modal"
     >
-      <Form form={form} className="overflow-y-auto max-h-[70vh]">
-        <table className="modal-table table-auto w-full input-table">
-          <tbody>
-            <tr>
-              <th className="required">Product ID:</th>
-              <td>
-                <Form.Item
-                  name={"id"}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter product ID",
-                      whitespace: true,
-                    },
-                  ]}
-                  className="form-item"
-                >
-                  <Input {...getReadOnlyProps(currItem)} className="input" />
-                </Form.Item>
-              </td>
-            </tr>
-            <tr>
-              <th className="required">Name:</th>
-              <td>
-                <Form.Item
-                  name={"name"}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter product name",
-                    },
-                  ]}
-                  className="form-item"
-                >
-                  <Input className="input capitalize" />
-                </Form.Item>
-              </td>
-            </tr>
-            <tr>
-              <th>Description:</th>
-              <td>
-                <Form.Item name={"description"} className="form-item">
-                  <Input className="input" />
-                </Form.Item>
-              </td>
-            </tr>
-            <tr>
-              <th>Category:</th>
-              <td>
-                <Form.Item name={"category"} initialValue={1}>
-                  <Select
-                    size="large"
-                    loading={!categoriesData}
-                    className="w-full"
+      <Spin spinning={loading}>
+        <Form form={form} className="overflow-modal">
+          <table className="modal-table table-auto w-full input-table">
+            <tbody>
+              <tr>
+                <th className="required">Product ID:</th>
+                <td>
+                  <Form.Item
+                    name={"id"}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter product ID",
+                        whitespace: true,
+                      },
+                    ]}
+                    className="form-item"
                   >
-                    {categoriesData?.map((category, i) => (
-                      <Option key={i} value={category.categoryId}>
-                        {category.category}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </td>
-            </tr>
-            <tr>
-              <th>Size:</th>
-              <td>
-                <Form.Item name={"size"} className="form-item">
-                  <Input {...getReadOnlyProps(currItem)} className="input" />
-                </Form.Item>
-                <p className="mb-0 font-inter text-[12px] text-[#FD3838E5]">
-                  Note: Separate each size with comma. (Ex: S,M,L) Leave it
-                  blank if one size
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <th className="required">Price:</th>
-              <td>
-                <Form.Item
-                  name={"price"}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter price",
-                    },
-                  ]}
-                  className="form-item"
-                >
-                  <InputNumber controls={false} className="input w-full" />
-                </Form.Item>
-              </td>
-            </tr>
-            <ColorList data={currItem?.colors} />
-          </tbody>
-        </table>
-      </Form>
+                    <Input {...getReadOnlyProps(currItem)} className="input" />
+                  </Form.Item>
+                </td>
+              </tr>
+              <tr>
+                <th className="required">Name:</th>
+                <td>
+                  <Form.Item
+                    name={"name"}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter product name",
+                      },
+                    ]}
+                    className="form-item"
+                  >
+                    <Input className="input capitalize" />
+                  </Form.Item>
+                </td>
+              </tr>
+              <tr>
+                <th>Description:</th>
+                <td>
+                  <Form.Item name={"description"} className="form-item">
+                    <Input className="input" />
+                  </Form.Item>
+                </td>
+              </tr>
+              <tr>
+                <th>Category:</th>
+                <td>
+                  <Form.Item name={"category"} initialValue={1}>
+                    <Select
+                      size="large"
+                      loading={!categoriesData}
+                      className="w-full"
+                    >
+                      {categoriesData?.map((category, i) => (
+                        <Option key={i} value={category.categoryId}>
+                          {category.category}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </td>
+              </tr>
+              <tr>
+                <th>Size:</th>
+                <td>
+                  <Form.Item
+                    name={"size"}
+                    className="form-item"
+                    initialValue={""}
+                    rules={[
+                      {
+                        message: "Invalid format.",
+                        validator: (_, value) => {
+                          if (
+                            value.match(/^[A-Za-z]+(?:,[A-Za-z]+)*$/) ||
+                            value === ""
+                          ) {
+                            return Promise.resolve();
+                          } else {
+                            return Promise.reject();
+                          }
+                        },
+                      },
+                    ]}
+                  >
+                    <Input {...getReadOnlyProps(currItem)} className="input" />
+                  </Form.Item>
+                  <p className="mb-0 font-inter text-[12px] text-[#FD3838E5]">
+                    Note: Separate each size with comma. (Ex: S,M,L) Leave it
+                    blank if one size
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <th className="required">Price:</th>
+                <td>
+                  <Form.Item
+                    name={"price"}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter price",
+                      },
+                    ]}
+                    className="form-item"
+                  >
+                    <InputNumber controls={false} className="input w-full" />
+                  </Form.Item>
+                </td>
+              </tr>
+              <ColorList
+                data={currItem?.colors}
+                colorList={colorList}
+                setColorList={setColorList}
+              />
+            </tbody>
+          </table>
+        </Form>
+      </Spin>
     </Modal>
   );
 };
