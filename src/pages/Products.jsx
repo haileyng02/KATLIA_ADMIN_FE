@@ -223,6 +223,7 @@ const Products = () => {
       <ProductDetailModal
         open={detailOpen}
         handleCancel={() => setDetailOpen(false)}
+        currentUser={currentUser}
       />
       <ModifyProductModal
         open={modifyOpen}

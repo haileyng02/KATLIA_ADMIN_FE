@@ -17,7 +17,7 @@ const getRole = (role) => {
       );
     case "STORAGE":
       return (
-        <p className={"table-cell-medium"} style={{ color: "#60BE80" }}>
+        <p className={"table-cell-medium"} style={{ color: "#4169E1" }}>
           {role}
         </p>
       );

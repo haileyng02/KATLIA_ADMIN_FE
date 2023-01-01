@@ -12,6 +12,7 @@ const User = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [data, setData] = useState();
   const [filteredInfo, setFilteredInfo] = useState({});
+  const [currItem, setCurrItem] = useState();
 
   const columns = [
     {
@@ -58,6 +59,10 @@ const User = () => {
           text: "Storage",
           value: "Storage",
         },
+        {
+          text: "Customer",
+          value: "Customer",
+        },
       ],
       filteredValue: filteredInfo.role || null,
       onFilter: (value, record) =>
@@ -70,13 +75,13 @@ const User = () => {
       title: "Action",
       key: "action",
       align: "center",
-      render: (_) => (
+      render: (value) => (
         <div className="flex gap-x-[11px] justify-center">
           <Tooltip title="View Profile">
             <button
               className="action-button"
               style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-              onClick={() => setProfileOpen(true)}
+              onClick={() => handleViewProfile(value)}
             >
               <center>
                 <img src={profileIcon} alt="Profile" />
@@ -96,8 +101,6 @@ const User = () => {
         routes.GET_PROFILE,
         routes.getAccessTokenHeader(token)
       );
-      console.log(result.data);
-
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -107,11 +110,7 @@ const User = () => {
         console.log(err.message);
       }
     }
-  }
-
-  useEffect(() => {
-    if (currentUser) getProfile();
-  }, [currentUser]);
+  };
 
   //Get all user
   const getAllUser = async () => {
@@ -121,8 +120,11 @@ const User = () => {
         routes.GET_ALL_USER,
         routes.getAccessTokenHeader(token)
       );
-      console.log(result);
-      setData(result.data);
+      setData(
+        result.data.map((d, i) => {
+          return { ...d, key: i };
+        })
+      );
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -140,6 +142,11 @@ const User = () => {
 
   const onChange = (pagination, filters, sorter, extra) => {
     setFilteredInfo(filters);
+  };
+
+  const handleViewProfile = (value) => {
+    setProfileOpen(true);
+    setCurrItem(value);
   };
 
   return (
@@ -165,6 +172,7 @@ const User = () => {
       <ProfileModal
         open={profileOpen}
         handleCancel={() => setProfileOpen(false)}
+        currItem={currItem}
       />
     </div>
   );
