@@ -137,6 +137,9 @@ export const getAddStaffBody = (email, role, startAt, status) => ({
 //GET ALL USER
 export const GET_ALL_USER = "/user/getAllUser";
 
+//GET PROFILE
+export const GET_PROFILE = '/profile/getProfile'
+
 //STAFF-IMPORT/ IMPORT
 export const STAFF_IMPORT = '/staff-import/import'
 export const getStaffImportBody = (surcharge) => ({
