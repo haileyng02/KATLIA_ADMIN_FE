@@ -11,6 +11,14 @@ export const getSigninBody = (email, password) => ({
   password: password,
 });
 
+//GET PRODUCT DETAIL
+export const GET_PRODUCT_DETAIL = (id) => `/product/getProductDetail/${id}`
+export const getProductDetailIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //GET ALL PRODUCTS
 export const GET_ALL_PRODUCTS = "/product-admin/getAllProducts";
 
