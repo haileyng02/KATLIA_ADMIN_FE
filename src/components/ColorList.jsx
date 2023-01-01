@@ -1,44 +1,56 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Select, Tooltip, Form } from "antd";
+import appApi from "../api/appApi";
+import * as routes from "../api/apiRoutes";
+import {getColors} from '../actions/colors';
 import ImagesUploader from "./ImagesUploader";
 import ColorIcon from "./ColorIcon";
 
 const { Option } = Select;
 
-const colors = [
-  {
-    name: "Black",
-    hex: "#000000",
-  },
-  {
-    name: "Mint",
-    hex: "#8FD9C4",
-  },
-  {
-    name: "Green",
-    hex: "#32CD32",
-  },
-  {
-    name: "Be",
-    hex: "#EDD3AB",
-  },
-  {
-    name: "Red",
-    hex: "#F81515",
-  },
-  {
-    name: "Gray",
-    hex: "#696969",
-  },
-];
-
-const ColorList = ({ data }) => {
+const ColorList = () => {
   const [colorList, setColorList] = useState([{}]);
+  const [colorsData,setColorsData] = useState();
   const scrollRef = useRef(null);
+  const {currentUser} = useSelector((state)=>state.user);
+  const {colors} = useSelector((state)=>state.colors);
+  const dispatch = useDispatch();
 
   const handleAddColor = () => {
     setColorList([...colorList, {}]);
   };
+
+  //Get all colors
+  const getAllColors = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_ALL_COLORS,
+        routes.getAccessTokenHeader(token)
+      );
+      setColorsData(result.data);
+      dispatch(getColors(result.data));
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  useEffect(()=>{
+    if (currentUser) {
+      if (colors) {
+        setColorsData(colors);
+      } else {
+        getAllColors();
+      }
+    }
+  },[currentUser])
 
   useEffect(() => {
     if (colorList.length < 2) return;
@@ -63,14 +75,14 @@ const ColorList = ({ data }) => {
               >
                 <Select
                   size="large"
-                  // suffixIcon={<img src={selectIcon} alt='Select' className="h-2"/>}
+                  loading={!colorsData}
                   className="w-full"
                 >
-                  {colors.map((color, i) => (
-                    <Option key={i} value={color.name}>
+                  {colorsData?.map((color, i) => (
+                    <Option key={i} value={color.colorId}>
                       <div className="row gap-x-[10px] font-inter font-[16px]">
                         <ColorIcon color={color.hex} />
-                        <p className="mb-0 text-[18px]">{color.name}</p>
+                        <p className="mb-0 text-[18px]">{color.color}</p>
                       </div>
                     </Option>
                   ))}
