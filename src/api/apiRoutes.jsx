@@ -150,6 +150,14 @@ export const getConfirmImportIdParams = (id) => ({
   }
 })
 
+//CANCEL IMPORT
+export const CANCEL_IMPORT = (id) => `/import/cancelImport/${id}`
+export const getCancelImportIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //STAFF-IMPORT/ IMPORT
 export const STAFF_IMPORT = '/staff-import/import'
 export const getStaffImportBody = (surcharge) => ({

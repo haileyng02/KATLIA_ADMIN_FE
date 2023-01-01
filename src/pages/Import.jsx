@@ -5,6 +5,7 @@ import HistoryTab from "../components/HistoryTab";
 import ImportTab from "../components/ImportTab";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
+import { async } from "q";
 
 const tabItems = [
   {
@@ -32,6 +33,31 @@ const Import = () => {
         {
           ...routes.getAccessTokenHeader(token),
           ...routes.getConfirmImportIdParams("63b0302c3f65532e38aec9e5")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  //Cancel import
+  const cancelImport = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjE4ODk2Mn0.DhhxF4AI3qmM0yhEPjidNICcust1GAaZ54YyDc4Q3XQ";
+      const result = await appApi.put(
+        routes.CANCEL_IMPORT("63b101781f2e25cf925f6dc0"),
+        null,
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getCancelImportIdParams("63b101781f2e25cf925f6dc0")
         }
       );
       console.log(result.data);
@@ -324,7 +350,7 @@ const Import = () => {
   return (
     <div>
       <div className="row">
-        <h1 onClick={confirmImport} className="title">Import</h1>
+        <h1 onClick={cancelImport} className="title">Import</h1>
         <p className="subtitle">1 Import found</p>
       </div>
       <Tabs
