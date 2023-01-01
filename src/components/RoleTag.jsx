@@ -1,9 +1,16 @@
 import React from "react";
+import { getRoleLabelAndColor } from "../utils/roles";
 
-const RoleTag = () => {
+const RoleTag = (role) => {
   return (
-    <button className="w-[60px] h-[30px] rounded-5 border-1 border-[#FD3838E5] text-[#FD3838E5] font-inter font-medium text-15 cursor-default">
-      Admin
+    <button
+      className="px-[7px] py-[2px] rounded-5 border-1 font-inter font-medium text-15 cursor-default"
+      style={{
+        borderColor: getRoleLabelAndColor(role?.role)?.color,
+        color: getRoleLabelAndColor(role?.role)?.color,
+      }}
+    >
+      {getRoleLabelAndColor(role?.role)?.label}
     </button>
   );
 };
