@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
-import { Spin } from "antd";
+import { Spin, DatePicker, ConfigProvider } from "antd";
+import dayjs from "dayjs";
+import appApi from "../api/appApi";
+import * as routes from "../api/apiRoutes";
 
 const options = {
   chart: {
@@ -61,32 +64,69 @@ const options = {
   tooltip: {
     y: {
       formatter: function (val) {
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' $';
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " $";
       },
     },
   },
 };
 
-const MonthlyRevenue = ({data}) => {
+const MonthlyRevenue = ({ currentUser }) => {
+  const [revenue, setRevenue] = useState(0);
+  const [loading,setLoading] = useState(true);
+
   const series = [
     {
       name: "Monthly Revenue",
-      data: data
+      data: revenue,
     },
   ];
+
+  //Revenue per month
+  const revenuePerMonth = async (year) => {
+    setLoading(true);
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(routes.REVENUE_PER_MONTH(year), {
+        ...routes.getAccessTokenHeader(token),
+        ...routes.getRevenuePerMonthBody(year),
+      });
+      setRevenue(result.data);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+    setLoading(false);
+  };
+
+  const handleChangeYear = (value) => {
+    revenuePerMonth(dayjs(value).year());  
+  }
+
+  useEffect(()=>{
+    if (currentUser) revenuePerMonth(dayjs().year());
+  },[currentUser])
+
   return (
     <div className="chart-card drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] mt-5">
-      <h2 className="chart-title">
-        Monthly Revenue
-      </h2>
-      <Spin spinning={!data}>
-        <ReactApexChart
-          options={options}
-          series={series}
-          type="area"
-          height={350}
-        />
-      </Spin>
+      <div className="between-row pl-5 pr-6">
+        <h2 className="chart-title">Monthly Revenue</h2>
+        <DatePicker picker="year" defaultValue={dayjs()} onChange={handleChangeYear}/>
+      </div>
+      <ConfigProvider theme={{ token: { colorPrimary: "#3E4259" } }}>
+        <Spin spinning={loading}>
+          <ReactApexChart
+            options={options}
+            series={series}
+            type="area"
+            height={350}
+          />
+        </Spin>
+      </ConfigProvider>
     </div>
   );
 };

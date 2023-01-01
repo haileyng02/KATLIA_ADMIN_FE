@@ -178,7 +178,7 @@ div.row {
 }
 
 .overflow-modal {
-  @apply overflow-y-auto h-[70vh] px-4
+  @apply overflow-y-auto h-[65vh] px-4
 }
 
 .input {
