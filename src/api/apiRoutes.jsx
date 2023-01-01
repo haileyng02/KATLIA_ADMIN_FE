@@ -140,6 +140,14 @@ export const GET_ALL_USER = "/user/getAllUser";
 //GET PROFILE
 export const GET_PROFILE = '/profile/getProfile'
 
+//CONFIRM IMPORT
+export const CONFIRM_IMPORT = (id) => `/import/confirmImport/${id}`
+export const getConfirmImportIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //STAFF-IMPORT/ IMPORT
 export const STAFF_IMPORT = '/staff-import/import'
 export const getStaffImportBody = (surcharge) => ({

@@ -22,6 +22,31 @@ const tabItems = [
 const Import = () => {
   const { currentUser } = useSelector((state) => state.user);
 
+  //Confirm import
+  const confirmImport = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjE4ODk2Mn0.DhhxF4AI3qmM0yhEPjidNICcust1GAaZ54YyDc4Q3XQ";
+      const result = await appApi.put(
+        routes.CONFIRM_IMPORT("63b0302c3f65532e38aec9e5"),
+        null,
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getConfirmImportIdParams("63b0302c3f65532e38aec9e5")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
   //Staff-import/ import
   const patchStaffImport = async () => {
     try {
@@ -299,7 +324,7 @@ const Import = () => {
   return (
     <div>
       <div className="row">
-        <h1 onClick={patchStaffImport} className="title">Import</h1>
+        <h1 onClick={confirmImport} className="title">Import</h1>
         <p className="subtitle">1 Import found</p>
       </div>
       <Tabs
