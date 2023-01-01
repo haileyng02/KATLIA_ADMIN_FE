@@ -6,10 +6,11 @@ import * as routes from "../api/apiRoutes";
 import { getColors } from "../actions/colors";
 import ImagesUploader from "./ImagesUploader";
 import ColorIcon from "./ColorIcon";
+import ReadOnlySuffix from "./ReadOnlySuffix";
 
 const { Option } = Select;
 
-const ColorList = ({colorList,setColorList}) => {
+const ColorList = ({colorList,setColorList,currItem}) => {
   const [colorsData, setColorsData] = useState();
   const scrollRef = useRef(null);
   const { currentUser } = useSelector((state) => state.user);
@@ -38,7 +39,7 @@ const ColorList = ({colorList,setColorList}) => {
   };
 
   const handleAddColor = () => {
-    setColorList([...colorList, {}]);
+    setColorList([...colorList, {colorId:1}]);
   };
 
   const handleDeleteColor = (i) => {
@@ -77,6 +78,8 @@ const ColorList = ({colorList,setColorList}) => {
             <td>
               <Select
                 size="large"
+                disabled={currItem}
+                suffixIcon={currItem && <ReadOnlySuffix/>}
                 loading={!colorsData}
                 className="w-full"
                 defaultValue={1}
@@ -93,7 +96,7 @@ const ColorList = ({colorList,setColorList}) => {
                 ))}
               </Select>
             </td>
-            {colorList.length > 1 && (
+            {(!currItem && colorList.length > 1) && (
               <td className="w-[24px] align-top pt-[8px]">
                 <Tooltip title="Delete color">
                   <button

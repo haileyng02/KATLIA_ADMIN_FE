@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Table, Tooltip } from "antd";
+import { useSnackbar } from "notistack";
 import { viewIcon, editIcon, deleteIcon } from "../images/actions";
 import ProductDetailModal from "../modals/product/ProductDetailModal";
 import ModifyProductModal from "../modals/product/ModifyProductModal";
+import WarningModal from "../modals/WarningModal";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
 import { getProducts } from "../actions/products";
@@ -13,11 +15,14 @@ const Products = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { allProducts } = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const [detailOpen, setDetailOpen] = useState(false);
   const [modifyOpen, setModifyOpen] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
   const [currItem, setCurrItem] = useState(null);
   const [data, setData] = useState();
   const [filteredInfo, setFilteredInfo] = useState({});
+  const [loading,setLoading] = useState(false);
 
   const columns = [
     {
@@ -86,21 +91,24 @@ const Products = () => {
             <button
               className="action-button"
               style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-              onClick={handleEdit}
+              onClick={()=>handleEdit(value)}
             >
               <center>
                 <img src={editIcon} alt="Edit" />
               </center>
             </button>
           </Tooltip>
-          <button
-            className="action-button"
-            style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
-          >
-            <center>
-              <img src={deleteIcon} alt="Cancel" />
-            </center>
-          </button>
+          <Tooltip title="Delete this product">
+            <button
+              className="action-button"
+              style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
+              onClick={() => handleDeleteProduct(value)}
+            >
+              <center>
+                <img src={deleteIcon} alt="Delete" />
+              </center>
+            </button>
+          </Tooltip>
         </div>
       ),
     },
@@ -123,10 +131,30 @@ const Products = () => {
   const handleViewDetail = (value) => {
     setCurrItem(value);
     setDetailOpen(true);
+  };
+
+  const handleDeleteProduct = (value) => {
+    setCurrItem(value);
+    setWarningOpen(true);
+  };
+
+  const handleWarningOk = () => {
+    deleteProduct(currItem.id);
+  };
+
+  const handleDetailCancel = () => {
+    setDetailOpen(false);
+    setCurrItem(null);
+  }
+
+  const handleModifyCancel = () => {
+    setModifyOpen(false);
+    setCurrItem(null);
   }
 
   //Get all products
   const getAllProducts = async () => {
+    setLoading(true);
     try {
       const token = currentUser.token;
       const result = await appApi.get(
@@ -137,7 +165,7 @@ const Products = () => {
       const products = result.data.map((d, i) => {
         return { ...d, key: i };
       });
-      console.log(products)
+      console.log(products);
       setData(products);
       dispatch(getProducts(products));
     } catch (err) {
@@ -149,6 +177,7 @@ const Products = () => {
         console.log(err.message);
       }
     }
+    setLoading(false);
   };
   useEffect(() => {
     if (currentUser) {
@@ -160,36 +189,17 @@ const Products = () => {
     }
   }, [currentUser]);
 
-  //Get undeleted products
-  const getUndeletedProducts = async () => {
-    try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MTE2MjM1MSwiZXhwIjoxNjcxMjQ4NzUxfQ.svzkppg4xRKCLbiD-cjf3PzjvnfxflpIa2GnTA8eMXw";
-      const result = await appApi.get(
-        routes.GET_UNDELETED_PRODUCTS,
-        routes.getAccessTokenHeader(token)
-      );
-      console.log(result);
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-  };
-
   //Delete product
-  const deleteProduct = async () => {
+  const deleteProduct = async (id) => {
     try {
       const token = currentUser.token;
-      const result = await appApi.delete(routes.DELETE_PRODUCT("694575"), {
+      const result = await appApi.delete(routes.DELETE_PRODUCT(id), {
         ...routes.getAccessTokenHeader(token),
-        ...routes.getDeleteProductBody("694575"),
+        ...routes.getDeleteProductBody(id),
       });
       console.log(result);
+      enqueueSnackbar("Product deleted successfully!", { variant: "success" });
+      getAllProducts();
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -222,19 +232,26 @@ const Products = () => {
         dataSource={data}
         onChange={onChange}
         pagination={{ showSizeChanger: false }}
-        loading={!data}
+        loading={loading}
         className="mt-5 pagination-active table-header"
       />
       <ProductDetailModal
         open={detailOpen}
-        handleCancel={() => setDetailOpen(false)}
+        handleCancel={handleDetailCancel}
         currentUser={currentUser}
         currItem={currItem}
       />
       <ModifyProductModal
         open={modifyOpen}
-        handleCancel={() => setModifyOpen(false)}
+        handleCancel={handleModifyCancel}
         currItem={currItem}
+        getAllProducts={getAllProducts}
+      />
+      <WarningModal
+        text={"Are you sure you want to delete this product?"}
+        open={warningOpen}
+        handleCancel={() => setWarningOpen(false)}
+        handleOk={handleWarningOk}
       />
     </div>
   );

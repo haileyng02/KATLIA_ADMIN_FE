@@ -12,8 +12,10 @@ const ProductDetailModal = ({ open, handleCancel, currentUser, currItem }) => {
   const [currColor, setCurrColor] = useState();
 
   useEffect(() => {
-    if (currItem) {
-      getProductDetail(currItem.id);
+    if (open) {
+      if (currItem) {
+        getProductDetail(currItem.id);
+      }
     }
   }, [currItem]);
 
@@ -68,7 +70,7 @@ const ProductDetailModal = ({ open, handleCancel, currentUser, currItem }) => {
       className="width-modal"
     >
       <Spin spinning={loading}>
-        <div className="overflow-y-auto h-[80vh] px-4">
+        <div className="overflow-y-auto max-h-[80vh] px-4">
           <table className="modal-table">
             <tbody>
               <tr>
@@ -77,7 +79,7 @@ const ProductDetailModal = ({ open, handleCancel, currentUser, currItem }) => {
               </tr>
               <tr>
                 <th>Description:</th>
-                <td>{detail?.description || 'No description'}</td>
+                <td>{detail?.description || "No description"}</td>
               </tr>
               <tr>
                 <th>Category:</th>

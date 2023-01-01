@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Modal, Form, Input, Select, InputNumber, Spin } from "antd";
+import { useSnackbar } from "notistack";
 import ModalTitle from "../../components/ModalTitle";
 import ColorList from "../../components/ColorList";
 import appApi from "../../api/appApi";
@@ -8,28 +9,26 @@ import * as routes from "../../api/apiRoutes";
 import { getCategories } from "../../actions/categories";
 import getModalFooter from "../../utils/getModalFooter";
 import getReadOnlyProps from "../../utils/readOnlyProps";
+import toTitleCase from "../../utils/toTitleCase";
+import ReadOnlySuffix from "../../components/ReadOnlySuffix";
 
 const { Option } = Select;
 
-const ModifyProductModal = ({ open, handleCancel, currItem }) => {
+const ModifyProductModal = ({
+  open,
+  handleCancel,
+  currItem,
+  getAllProducts,
+}) => {
   const [form] = Form.useForm();
   const { currentUser } = useSelector((state) => state.user);
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const [categoriesData, setCategoriesData] = useState();
-  const [colorList, setColorList] = useState([{}]);
-  const [loading,setLoading] = useState(false);
-
-  // useEffect(() => {
-  //   if (currItem) {
-  //     form.setFieldsValue({
-  //       name: currItem.name,
-  //       percent: currItem.percent,
-  //     });
-  //   } else {
-  //     form.resetFields();
-  //   }
-  // }, [currItem, form, open]);
+  const [colorList, setColorList] = useState([{ colorId: 1 }]);
+  const [loading, setLoading] = useState(false);
+  const [imagesDone, setImagesDone] = useState(0);
 
   //Get all category
   const getAllCategory = async () => {
@@ -39,7 +38,6 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         routes.GET_ALL_CATEGORY,
         routes.getAccessTokenHeader(token)
       );
-      console.log(result);
       setCategoriesData(result.data);
       dispatch(getCategories(result.data));
     } catch (err) {
@@ -69,7 +67,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
       const result = await appApi.post(
         routes.ADD_PRODUCT,
         routes.getAddProductBody(
-          productId,
+          parseInt(productId),
           name,
           description,
           categoryId,
@@ -80,7 +78,19 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         routes.getAccessTokenHeader(token)
       );
       console.log(result);
+      if (!colorList[0].fileList) {
+        handleDone();
+      } else {
+        handleUploadImages();
+      }
     } catch (err) {
+      setLoading(false);
+      form.setFields([
+        {
+          name: "id",
+          errors: ["This product ID already exists"],
+        },
+      ]);
       if (err.response) {
         console.log(err.response.data);
         console.log(err.response.status);
@@ -89,13 +99,11 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         console.log(err.message);
       }
     }
-    setLoading(false);
   };
 
-  const handleUploadImages = async (file) => {
-    if (file) {
+  const upLoadAnImage = async (file, productId, colorId) => {
+    try {
       //Call api upload image
-      console.log(file);
       const token = currentUser.token;
       const formData = new FormData();
 
@@ -105,10 +113,19 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         formData,
         {
           ...routes.getAccessTokenHeader(token),
-          ...routes.getAddAnImageForProductBody("694573", "1"),
+          ...routes.getAddAnImageForProductBody(productId, colorId),
         }
       );
       console.log(result);
+      setImagesDone((curr) => curr + 1);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
     }
   };
 
@@ -117,15 +134,17 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     try {
       const token = currentUser.token;
       const result = await appApi.patch(
-        routes.SET_DEFAULT_PIC_FOR_PRODUCT("694575"),
+        routes.SET_DEFAULT_PIC_FOR_PRODUCT(id),
         null,
         {
           ...routes.getAccessTokenHeader(token),
-          ...routes.getSetDefaultPicForProductIdParams("694575"),
+          ...routes.getSetDefaultPicForProductIdParams(id),
         }
       );
       console.log(result.data);
+      handleDone();
     } catch (err) {
+      setLoading(false);
       if (err.response) {
         console.log(err.response.data);
         console.log(err.response.status);
@@ -137,19 +156,25 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
   };
 
   //Edit product info
-  const editProductInfo = async () => {
+  const editProductInfo = async (id, name, description, price) => {
+    setLoading(true);
     try {
       const token = currentUser.token;
-      const result = await appApi.patch(
-        routes.EDIT_PRODUCT_INFO("694575"),
-        routes.getEditProductInfoBody("Basic T-shirt", "limited", 20.99),
+      await appApi.patch(
+        routes.EDIT_PRODUCT_INFO(id),
+        routes.getEditProductInfoBody(name, description, price),
         {
           ...routes.getAccessTokenHeader(token),
-          ...routes.getEditProductInfoIdParams("694575"),
+          ...routes.getEditProductInfoIdParams(id),
         }
       );
-      console.log(result.data);
+      if (!colorList[0].fileList) {
+        handleDone();
+      } else {
+        handleUploadImages();
+      }
     } catch (err) {
+      setLoading(false);
       if (err.response) {
         console.log(err.response.data);
         console.log(err.response.status);
@@ -253,22 +278,126 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     }
   };
 
+  //Get product detail
+  const getProductDetail = async (id) => {
+    setLoading(true);
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(routes.GET_PRODUCT_DETAIL(id), {
+        ...routes.getAccessTokenHeader(token),
+        ...routes.getProductDetailIdParams(id),
+      });
+      console.log(result.data);
+      form.setFieldsValue({
+        id: result.data.id,
+        name: result.data.name,
+        description: result.data.description,
+        category: currItem?.category,
+        size: getSizeString(result.data.colorList[0].details),
+        price: result.data.price,
+      });
+      setColorList(
+        result.data.colorList.map((value) => {
+          return { colorId: value.id, fileList: value.imgList };
+        })
+      );
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+    setLoading(false);
+  };
+
+  const getSizeString = (details) => {
+    var sizeString = "";
+    for (let i = 0; i < details.length; i++) {
+      sizeString += details[i].size;
+      if (i !== details.length - 1) {
+        sizeString += ",";
+      }
+    }
+    if (sizeString === "ONESIZE") sizeString = "";
+    return sizeString;
+  };
+
   const handleOk = () => {
     form.validateFields().then((values) => {
       console.log(values);
-      console.log(colorList);
-      const colorIdList = colorList.map((value) => value.colorId);
-      // addProduct(
-      //   values.id,
-      //   values.name,
-      //   values.description,
-      //   values.category,
-      //   values.price,
-      //   values.size,
-      //   colorIdList
-      // );
+      if (currItem) {
+        handleEditProduct(values);
+      } else {
+        handleAddProduct(values);
+      }
     });
-    // handleUploadImages(form.getFieldValue("images")?.file?.originFileObj);
+  };
+
+  const handleAddProduct = (values) => {
+    const colorIdList = colorList.map((value) => value.colorId);
+    addProduct(
+      values.id,
+      toTitleCase(values.name),
+      values.description,
+      values.category,
+      values.price,
+      values.size === "" ? "ONESIZE" : values.size,
+      colorIdList
+    );
+  };
+
+  const handleEditProduct = (values) => {
+    editProductInfo(
+      values.id,
+      toTitleCase(values.name),
+      values.description,
+      values.price
+    );
+  };
+
+  const handleUploadImages = () => {
+    var colorId;
+    for (let i = 0; i < colorList.length; i++) {
+      colorId = colorList[i].colorId;
+      for (let j = 0; j < colorList[i].fileList.length; j++) {
+        if (colorList[i].fileList[j].originFileObj) {
+          upLoadAnImage(
+            colorList[i].fileList[j].originFileObj,
+            form.getFieldValue("id"),
+            colorId
+          );
+        }
+      }
+    }
+  };
+
+  const onCancel = () => {
+    handleCancel();
+    setImagesDone(0);
+    form.resetFields();
+    setColorList([{ colorId: 1 }]);
+  };
+
+  const handleDone = () => {
+    setLoading(false);
+    enqueueSnackbar(currItem ? "Product edited successfully!" : "Product added successfully!", { variant: "success" });
+    onCancel();
+    getAllProducts();
+  };
+
+  const getImageSum = () => {
+    var imageSum = 0;
+    for (let i = 0; i < colorList.length; i++) {
+      for (let j = 0; j < colorList[i].fileList.length; j++) {
+        if (colorList[i].fileList[j].originFileObj) {
+          imageSum++;
+        }
+      }
+    }
+    return imageSum;
   };
 
   useEffect(() => {
@@ -281,14 +410,28 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     }
   }, [currentUser]);
 
+  useEffect(() => {
+    if (!colorList[0].fileList) return;
+    console.log(getImageSum());
+    console.log(imagesDone)
+    if (imagesDone === getImageSum()) {
+      setDefaultPicForProduct(form.getFieldValue("id"));
+    }
+  }, [imagesDone]);
+
+  useEffect(() => {
+    if (!open || !currItem) return;
+    getProductDetail(currItem.id);
+  }, [currItem]);
+
   return (
     <Modal
       title={<ModalTitle text={currItem ? "Edit Product" : "Add Product"} />}
       open={open}
-      onCancel={handleCancel}
+      onCancel={onCancel}
       centered
       width={"45%"}
-      footer={getModalFooter({ handleCancel, handleOk })}
+      footer={getModalFooter({ onCancel, handleOk })}
       className="width-modal"
     >
       <Spin spinning={loading}>
@@ -304,7 +447,16 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
                       {
                         required: true,
                         message: "Please enter product ID",
-                        whitespace: true,
+                      },
+                      {
+                        message: "Product ID must be an integer.",
+                        validator: (_, value) => {
+                          if (parseInt(value) || !value) {
+                            return Promise.resolve();
+                          } else {
+                            return Promise.reject();
+                          }
+                        },
                       },
                     ]}
                     className="form-item"
@@ -333,7 +485,11 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
               <tr>
                 <th>Description:</th>
                 <td>
-                  <Form.Item name={"description"} className="form-item">
+                  <Form.Item
+                    name={"description"}
+                    initialValue={""}
+                    className="form-item"
+                  >
                     <Input className="input" />
                   </Form.Item>
                 </td>
@@ -345,6 +501,8 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
                     <Select
                       size="large"
                       loading={!categoriesData}
+                      disabled={currItem}
+                      suffixIcon={currItem && <ReadOnlySuffix />}
                       className="w-full"
                     >
                       {categoriesData?.map((category, i) => (
@@ -408,6 +566,7 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
                 data={currItem?.colors}
                 colorList={colorList}
                 setColorList={setColorList}
+                currItem={currItem}
               />
             </tbody>
           </table>
