@@ -69,13 +69,13 @@ const Products = () => {
       title: "Action",
       key: "action",
       align: "center",
-      render: (_) => (
+      render: (value) => (
         <div className="flex gap-x-[20px] justify-center">
           <Tooltip title="Product detail">
             <button
               className="action-button"
               style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
-              onClick={() => setDetailOpen(true)}
+              onClick={() => handleViewDetail(value)}
             >
               <center>
                 <img src={viewIcon} alt="View" />
@@ -119,6 +119,11 @@ const Products = () => {
     setCurrItem(value);
     setModifyOpen(true);
   };
+
+  const handleViewDetail = (value) => {
+    setCurrItem(value);
+    setDetailOpen(true);
+  }
 
   //Get all products
   const getAllProducts = async () => {
@@ -224,6 +229,7 @@ const Products = () => {
         open={detailOpen}
         handleCancel={() => setDetailOpen(false)}
         currentUser={currentUser}
+        currItem={currItem}
       />
       <ModifyProductModal
         open={modifyOpen}
