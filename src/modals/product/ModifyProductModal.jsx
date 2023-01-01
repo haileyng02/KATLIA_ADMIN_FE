@@ -250,6 +250,30 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
     }
   }, [currentUser]);
 
+  //Get product detail
+  const getProductDetail = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_PRODUCT_DETAIL(617171),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getProductDetailIdParams(617171)
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  }
+
   return (
     <Modal
       title={<ModalTitle text={currItem ? "Edit Product" : "Add Product"} />}
@@ -264,7 +288,9 @@ const ModifyProductModal = ({ open, handleCancel, currItem }) => {
         <table className="modal-table table-auto w-full input-table">
           <tbody>
             <tr>
-              <th className="required">Product ID:</th>
+              <th onClick={getProductDetail} className="required">
+                Product ID:
+              </th>
               <td>
                 <Form.Item
                   name={"id"}

@@ -88,6 +88,31 @@ const User = () => {
     },
   ];
 
+  //Get profile
+  const getProfile = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.GET_PROFILE,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) getProfile();
+  }, [currentUser]);
+
   //Get all user
   const getAllUser = async () => {
     try {

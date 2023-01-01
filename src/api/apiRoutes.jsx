@@ -11,6 +11,14 @@ export const getSigninBody = (email, password) => ({
   password: password,
 });
 
+//GET PRODUCT DETAIL
+export const GET_PRODUCT_DETAIL = (id) => `/product/getProductDetail/${id}`
+export const getProductDetailIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //GET ALL PRODUCTS
 export const GET_ALL_PRODUCTS = "/product-admin/getAllProducts";
 
@@ -130,6 +138,15 @@ export const getAddStaffBody = (email, role, startAt, status) => ({
 
 //GET ALL USER
 export const GET_ALL_USER = "/user/getAllUser";
+
+//GET PROFILE
+export const GET_PROFILE = '/profile/getProfile'
+
+//STAFF-IMPORT/ IMPORT
+export const STAFF_IMPORT = '/staff-import/import'
+export const getStaffImportBody = (surcharge) => ({
+  surcharge: surcharge
+})
 
 //STAFF IMPORT HISTORY
 export const STAFF_IMPORT_HISTORY = '/staff-import/history'
