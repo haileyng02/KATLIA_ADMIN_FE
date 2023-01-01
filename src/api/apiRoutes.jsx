@@ -186,6 +186,10 @@ export const getStaffImportDetail = (id) => ({
 //IMPORT FORM INFO
 export const IMPORT_FORM_INFO = '/items/getImportFormInfo'
 
+//ADD ITEMS INTO FORM
+export const ADD_ITEMS_INTO_FORM = '/items/addItemsIntoForm'
+export const getAddItemsIntoFormBody = (itemArray) => itemArray
+
 //PRODUCT SIZE FOR IMPORT
 export const PRODUCT_SIZE_FOR_IMPORT = (id) => `/items/getProductSizeForImport/${id}`
 export const getProductSizeForImportIdParams = (id) => ({
