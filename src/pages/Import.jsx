@@ -5,7 +5,6 @@ import HistoryTab from "../components/HistoryTab";
 import ImportTab from "../components/ImportTab";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
-import { async } from "q";
 
 const tabItems = [
   {
@@ -80,27 +79,6 @@ const Import = () => {
       const result = await appApi.patch(
         routes.STAFF_IMPORT, 
         routes.getStaffImportBody(0.25),
-        routes.getAccessTokenHeader(token)
-      );
-      console.log(result.data);
-
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
-      } else {
-        console.log(err.message)
-      }
-    }
-  }
-
-  //get staff import history
-  const getStaffImportHistory = async () => {
-    try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjE4ODk2Mn0.DhhxF4AI3qmM0yhEPjidNICcust1GAaZ54YyDc4Q3XQ";
-      const result = await appApi.get(
-        routes.STAFF_IMPORT_HISTORY,
         routes.getAccessTokenHeader(token)
       );
       console.log(result.data);
