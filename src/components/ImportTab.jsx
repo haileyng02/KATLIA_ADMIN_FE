@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Form, Input, Spin } from "antd";
+import { useSnackbar } from "notistack";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
 import ReadOnlySuffix from "./ReadOnlySuffix";
 import DollarPrefix from "./DollarPrefix";
 import ImportTable from "./tables/ImportTable";
 import AddItemsModal from "../modals/import/AddItemsModal";
+import WarningModal from "../modals/WarningModal";
 
 const ImportTab = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [form] = Form.useForm();
+  const { enqueueSnackbar } = useSnackbar();
   const [addOpen, setAddOpen] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
   const [info, setInfo] = useState();
   const [loading, setLoading] = useState(false);
   const [tableLoading, setTableLoading] = useState(false);
@@ -65,6 +69,34 @@ const ImportTab = () => {
     }
     setTableLoading(false);
   };
+
+  //Delete all items
+  const deleteAllItems = async () => {
+    setLoading(true);
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(
+        routes.DELETE_ALL_ITEMS,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result.data);
+      enqueueSnackbar('All items deleted!',{variant:'success'});
+      getItemsInExistingForm();
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+    setLoading(false);
+  }
+
+  const handleWarningOk = () => {
+    deleteAllItems();
+  }
 
   useEffect(() => {
     if (currentUser) {
@@ -154,7 +186,7 @@ const ImportTab = () => {
         >
           Add items
         </button>
-        <button className="import-button border-[#FF0000] text-[#FF0000]">
+        <button onClick={()=>setWarningOpen(true)} className="import-button border-[#FF0000] text-[#FF0000]">
           Delete All
         </button>
       </div>
@@ -170,6 +202,12 @@ const ImportTab = () => {
         handleCancel={() => setAddOpen(false)}
         currentUser={currentUser}
         getItemsInExistingForm={getItemsInExistingForm}
+      />
+      <WarningModal
+        text={"Are you sure you want to delete all items?"}
+        open={warningOpen}
+        handleCancel={() => setWarningOpen(false)}
+        handleOk={handleWarningOk}
       />
     </div>
   );
