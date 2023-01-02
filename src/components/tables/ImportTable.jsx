@@ -3,14 +3,15 @@ import { Table, Tooltip } from "antd";
 import { editIcon, deleteIcon } from "../../images/actions";
 import EditItemModal from "../../modals/import/EditItemModal";
 
-const ImportTable = ({data,loading}) => {
+const ImportTable = ({ data, loading, getItemsInExistingForm }) => {
   const [editOpen, setEditOpen] = useState(false);
+  const [currItem, setCurrItem] = useState();
 
   const columns = [
     {
       title: "Product ID",
       dataIndex: "productId",
-      sorter: (a, b) => a.productId-b.productId,
+      sorter: (a, b) => a.productId - b.productId,
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
@@ -49,7 +50,7 @@ const ImportTable = ({data,loading}) => {
       title: "Unit price",
       dataIndex: "unitPrice",
       align: "center",
-      sorter: (a, b) => a.unitPrice-b.unitPrice,
+      sorter: (a, b) => a.unitPrice - b.unitPrice,
       defaultSortOrder: "descend",
       render: (value) => (
         <center>
@@ -61,7 +62,7 @@ const ImportTable = ({data,loading}) => {
       title: "Quantity",
       dataIndex: "quantity",
       align: "center",
-      sorter: (a, b) => a.quantity-b.quantity,
+      sorter: (a, b) => a.quantity - b.quantity,
       defaultSortOrder: "descend",
       render: (value) => (
         <center>
@@ -73,7 +74,7 @@ const ImportTable = ({data,loading}) => {
       title: "Total",
       dataIndex: "total",
       align: "center",
-      sorter: (a, b) => a.total-b.total,
+      sorter: (a, b) => a.total - b.total,
       defaultSortOrder: "descend",
       render: (value) => (
         <center>
@@ -85,13 +86,13 @@ const ImportTable = ({data,loading}) => {
       title: "Action",
       key: "action",
       align: "center",
-      render: (_) => (
+      render: (value) => (
         <div className="flex gap-x-5 justify-center">
-          <Tooltip title='Edit item'>
+          <Tooltip title="Edit item">
             <button
               className="action-button"
               style={{ backgroundColor: "#F9AF5EE5" }}
-              onClick={()=>setEditOpen(true)}
+              onClick={() => handleEditItem(value)}
             >
               <center>
                 <img src={editIcon} alt="Edit" />
@@ -111,6 +112,11 @@ const ImportTable = ({data,loading}) => {
     },
   ];
 
+  const handleEditItem = (value) => {
+    setEditOpen(true);
+    setCurrItem(value);
+  };
+
   return (
     <>
       <Table
@@ -119,7 +125,12 @@ const ImportTable = ({data,loading}) => {
         loading={loading}
         className="mt-5 pagination-active table-header"
       />
-      <EditItemModal open={editOpen} handleCancel={() => setEditOpen(false)} />
+      <EditItemModal
+        open={editOpen}
+        handleCancel={() => setEditOpen(false)}
+        currItem={currItem}
+        getItemsInExistingForm={getItemsInExistingForm}
+      />
     </>
   );
 };

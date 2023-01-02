@@ -49,7 +49,11 @@ const ImportTab = () => {
         routes.ITEMS_IN_EXISTING_FORM,
         routes.getAccessTokenHeader(token)
       );
-      setData(result.data);
+      setData(
+        result.data.map((d, i) => {
+          return { ...d, key: i };
+        })
+      );
     } catch (err) {
       if (err.response) {
         console.log(err.response.data)
@@ -154,7 +158,7 @@ const ImportTab = () => {
           Delete All
         </button>
       </div>
-      <ImportTable data={data} loading={tableLoading}/>
+      <ImportTable data={data} loading={tableLoading} getItemsInExistingForm={getItemsInExistingForm}/>
       <AddItemsModal
         open={addOpen}
         handleCancel={() => setAddOpen(false)}

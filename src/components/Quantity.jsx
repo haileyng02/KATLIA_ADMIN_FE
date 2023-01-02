@@ -2,9 +2,9 @@ import React from "react";
 import MinusIcon from "../images/minus.svg";
 import PlusIcon from "../images/plus.svg";
 
-const Quantity = ({ custom = "", size, sizes, setSizes }) => {
+const Quantity = ({ custom = "", size, sizes, setSizes,min=0 }) => {
   const handleMinusClick = () => {
-    if (size.quantity > 0)
+    if (size.quantity > min)
       setSizes(
         sizes.map((value) =>
           value.size === size.size
@@ -26,7 +26,7 @@ const Quantity = ({ custom = "", size, sizes, setSizes }) => {
 
   const handleOnChange = (e) => {
     const quantity = e.target.value;
-    if (isNaN(quantity) || quantity < 0) return;
+    if (isNaN(quantity) || quantity < min) return;
     setSizes(
       sizes.map((value) =>
         value.size === size.size

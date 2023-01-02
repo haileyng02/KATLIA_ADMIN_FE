@@ -169,6 +169,9 @@ const AddItemsModal = ({
 
   const onCancel = () => {
     handleCancel();
+    setProductId();
+    form.resetFields();
+    setSizes();
   };
 
   useEffect(() => {
