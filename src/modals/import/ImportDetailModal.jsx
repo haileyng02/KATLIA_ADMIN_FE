@@ -2,17 +2,10 @@ import React from "react";
 import { Divider, Modal } from "antd";
 import ModalTitle from "../../components/ModalTitle";
 import ImportDetailTable from "../../components/tables/ImportDetailTable";
+import dayjs from "dayjs";
+import getImportStatus from "../../utils/getImportStatus";
 
-const data = {
-  id: 327842,
-  staffName: "Basic Knit Sweater",
-  date: "17/10/2022",
-  surcharge: 54,
-  total: 54,
-  status: "Completed",
-};
-
-const ImportDetailModal = ({ open, handleCancel }) => {
+const ImportDetailModal = ({ open, handleCancel, currItem }) => {
   return (
     <Modal
       title={<ModalTitle text={"Import Detail"} />}
@@ -28,15 +21,15 @@ const ImportDetailModal = ({ open, handleCancel }) => {
             <tbody>
               <tr>
                 <th>Import ID:</th>
-                <td>{data.id}</td>
+                <td>{currItem?.id}</td>
               </tr>
               <tr>
                 <th>Staff’s Name:</th>
-                <td>{data.staffName}</td>
+                <td>{currItem?.staffName}</td>
               </tr>
               <tr>
                 <th>Date:</th>
-                <td>{data.date}</td>
+                <td>{dayjs(currItem?.date).format('DD/MM/YYYY')}</td>
               </tr>
             </tbody>
           </table>
@@ -44,21 +37,21 @@ const ImportDetailModal = ({ open, handleCancel }) => {
             <tbody>
               <tr>
                 <th>Surcharge:</th>
-                <td>{'$'+data.surcharge}</td>
+                <td>{'$'+currItem?.surcharge}</td>
               </tr>
               <tr>
                 <th>Total:</th>
-                <td>{'$'+data.total}</td>
+                <td>{'$'+currItem?.total}</td>
               </tr>
               <tr>
                 <th>Status:</th>
-                <td className="text-[#60BE80]">{data.status}</td>
+                <td style={{color:getImportStatus(currItem?.status).color}}>{getImportStatus(currItem?.status).text}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <Divider />
-        <ImportDetailTable />
+        <ImportDetailTable currItem={currItem}/>
       </div>
     </Modal>
   );

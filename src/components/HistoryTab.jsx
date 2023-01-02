@@ -15,6 +15,7 @@ const HistoryTab = () => {
   const [loading, setLoading] = useState(false);
   const [filteredInfo, setFilteredInfo] = useState({});
   const [option, setOption] = useState();
+  const [currItem,setCurrItem] = useState();
 
   const columns = [
     {
@@ -71,13 +72,13 @@ const HistoryTab = () => {
       title: "Action",
       key: "action",
       align: "center",
-      render: (_) => (
+      render: (value) => (
         <div className="flex gap-x-5 justify-center">
           <Tooltip title="View import's detail">
             <button
               className="action-button"
               style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
-              onClick={() => setDetailOpen(true)}
+              onClick={() => handleViewDetail(value)}
             >
               <center>
                 <img src={viewIcon} alt="View" />
@@ -132,6 +133,12 @@ const HistoryTab = () => {
     setLoading(false);
   };
 
+  const handleViewDetail = (value) => {
+    console.log(value);
+    setDetailOpen(true);
+    setCurrItem(value);
+  }
+
   useEffect(() => {
     if (currentUser) {
       getStaffImportHistory();
@@ -162,6 +169,7 @@ const HistoryTab = () => {
       <ImportDetailModal
         open={detailOpen}
         handleCancel={() => setDetailOpen(false)}
+        currItem={currItem}
       />
     </div>
   );
