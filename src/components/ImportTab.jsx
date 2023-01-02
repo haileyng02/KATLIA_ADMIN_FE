@@ -14,6 +14,8 @@ const ImportTab = () => {
   const [addOpen, setAddOpen] = useState(false);
   const [info, setInfo] = useState();
   const [loading, setLoading] = useState(false);
+  const [tableLoading, setTableLoading] = useState(false);
+  const [data,setData] = useState();
 
   //Get import form info
   const getImportFormInfo = async () => {
@@ -38,8 +40,33 @@ const ImportTab = () => {
     setLoading(false);
   };
 
+  //Get items in existing form
+  const getItemsInExistingForm = async () => {
+    setTableLoading(true);
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.ITEMS_IN_EXISTING_FORM,
+        routes.getAccessTokenHeader(token)
+      );
+      setData(result.data);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+    setTableLoading(false);
+  }
+
   useEffect(() => {
-    if (currentUser) getImportFormInfo();
+    if (currentUser) {
+      getImportFormInfo();
+      getItemsInExistingForm();
+    }
   }, [currentUser]);
 
   useEffect(() => {
@@ -127,11 +154,12 @@ const ImportTab = () => {
           Delete All
         </button>
       </div>
-      <ImportTable />
+      <ImportTable data={data} loading={tableLoading}/>
       <AddItemsModal
         open={addOpen}
         handleCancel={() => setAddOpen(false)}
         currentUser={currentUser}
+        getItemsInExistingForm={getItemsInExistingForm}
       />
     </div>
   );
