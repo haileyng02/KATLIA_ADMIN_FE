@@ -38,7 +38,7 @@ function App() {
         <Route path='import' element={<Import />} />
         <Route path='staff' element={<Staff />} />
         <Route path='user' element={<User />} />
-        <Route path='promotion' element={<Promotion />} />
+        <Route path='discount' element={<Promotion />} />
         <Route path='statistic' element={<Statistic />} />
       </Route>
       <Route path='login' element={<Login />} />

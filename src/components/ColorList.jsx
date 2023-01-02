@@ -3,23 +3,25 @@ import { useSelector, useDispatch } from "react-redux";
 import { Select, Tooltip, Form } from "antd";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
-import {getColors} from '../actions/colors';
+import { getColors } from "../actions/colors";
 import ImagesUploader from "./ImagesUploader";
 import ColorIcon from "./ColorIcon";
+import ReadOnlySuffix from "./ReadOnlySuffix";
 
 const { Option } = Select;
 
-const ColorList = () => {
-  const [colorList, setColorList] = useState([{}]);
-  const [colorsData,setColorsData] = useState();
+const ColorList = ({
+  colorList,
+  setColorList,
+  currItem,
+  deleteString,
+  setDeleteString,
+}) => {
+  const [colorsData, setColorsData] = useState();
   const scrollRef = useRef(null);
-  const {currentUser} = useSelector((state)=>state.user);
-  const {colors} = useSelector((state)=>state.colors);
+  const { currentUser } = useSelector((state) => state.user);
+  const { colors } = useSelector((state) => state.colors);
   const dispatch = useDispatch();
-
-  const handleAddColor = () => {
-    setColorList([...colorList, {}]);
-  };
 
   //Get all colors
   const getAllColors = async () => {
@@ -42,7 +44,23 @@ const ColorList = () => {
     }
   };
 
-  useEffect(()=>{
+  const handleAddColor = () => {
+    setColorList([...colorList, { colorId: 1 }]);
+  };
+
+  const handleDeleteColor = (i) => {
+    setColorList(colorList.filter((_, index) => index !== i));
+  };
+
+  const handleSelectColor = (value, i) => {
+    setColorList(
+      colorList.map((color, index) =>
+        index === i ? { ...color, colorId: value } : { ...color }
+      )
+    );
+  };
+
+  useEffect(() => {
     if (currentUser) {
       if (colors) {
         setColorsData(colors);
@@ -50,7 +68,7 @@ const ColorList = () => {
         getAllColors();
       }
     }
-  },[currentUser])
+  }, [currentUser]);
 
   useEffect(() => {
     if (colorList.length < 2) return;
@@ -64,35 +82,33 @@ const ColorList = () => {
           <tr>
             <th className="required">Color:</th>
             <td>
-              <Form.Item
-                name={"color" + i}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please choose color",
-                  },
-                ]}
+              <Select
+                size="large"
+                disabled={currItem}
+                suffixIcon={currItem && <ReadOnlySuffix />}
+                loading={!colorsData}
+                className="w-full"
+                defaultValue={1}
+                value={color.colorId}
+                onChange={(value) => handleSelectColor(value, i)}
               >
-                <Select
-                  size="large"
-                  loading={!colorsData}
-                  className="w-full"
-                >
-                  {colorsData?.map((color, i) => (
-                    <Option key={i} value={color.colorId}>
-                      <div className="row gap-x-[10px] font-inter font-[16px]">
-                        <ColorIcon color={color.hex} />
-                        <p className="mb-0 text-[18px]">{color.color}</p>
-                      </div>
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
+                {colorsData?.map((color, i) => (
+                  <Option key={i} value={color.colorId}>
+                    <div className="row gap-x-[10px] font-inter font-[16px]">
+                      <ColorIcon color={color.hex} />
+                      <p className="mb-0 text-[18px]">{color.color}</p>
+                    </div>
+                  </Option>
+                ))}
+              </Select>
             </td>
-            {i !== 0 && (
+            {!currItem && colorList.length > 1 && (
               <td className="w-[24px] align-top pt-[8px]">
                 <Tooltip title="Delete color">
-                  <button className="flex items-center group">
+                  <button
+                    className="flex items-center group"
+                    onClick={() => handleDeleteColor(i)}
+                  >
                     <svg
                       width="24"
                       height="24"
@@ -113,7 +129,14 @@ const ColorList = () => {
           <tr>
             <th className="align-top">Images:</th>
             <td>
-              <ImagesUploader />
+              <ImagesUploader
+                setColorList={setColorList}
+                colorList={colorList}
+                index={i}
+                fileList={color.fileList}
+                deleteString={deleteString}
+                setDeleteString={setDeleteString}
+              />
             </td>
           </tr>
         </React.Fragment>

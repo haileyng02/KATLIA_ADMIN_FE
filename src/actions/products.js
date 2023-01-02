@@ -5,9 +5,9 @@ export const getPromotionProducts = (products) => {
     };
 };
 
-export const getProducts = (products) => {
+export const getProducts = (products,nextId) => {
     return {
         type: "GET_PRODUCTS",
-        payload: products,
+        payload: {products,nextId},
     };
 };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { PlusOutlined, CameraOutlined } from "@ant-design/icons";
-import { Form, Modal, Upload } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Upload } from "antd";
 
 const getBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -11,36 +11,17 @@ const getBase64 = (file) => {
   });
 };
 
-const ImagesUploader = () => {
+const ImagesUploader = ({
+  setColorList,
+  colorList,
+  index,
+  fileList,
+  deleteString,
+  setDeleteString,
+}) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([
-    // {
-    //   uid: "-1",
-    //   name: "image.png",
-    //   status: "done",
-    //   url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    // },
-    // {
-    //   uid: "-2",
-    //   name: "image.png",
-    //   status: "done",
-    //   url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    // },
-    // {
-    //   uid: "-3",
-    //   name: "image.png",
-    //   status: "done",
-    //   url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    // },
-    // {
-    //   uid: "-4",
-    //   name: "image.png",
-    //   status: "done",
-    //   url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    // },
-  ]);
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -58,7 +39,11 @@ const ImagesUploader = () => {
     // setFileList(temp);
   };
   const handleChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
+    setColorList(
+      colorList.map((color, i) =>
+        i === index ? { ...color, fileList: newFileList } : { ...color }
+      )
+    );
   };
   const uploadButton = (
     <div>
@@ -78,33 +63,38 @@ const ImagesUploader = () => {
       //   console.log(file);
     }, 0);
   };
+
+  const onRemove = (file) => {
+    setDeleteString([...deleteString,file.id]);
+  };
+
   return (
     <>
-      <Form.Item name={'images'}>
-        <Upload
-          customRequest={handleUpload}
-          listType="picture-card"
-          fileList={fileList}
-          onPreview={handlePreview}
-          onChange={handleChange}
-          // showUploadList={{
-          //   showPreviewIcon: true,
-          //   previewIcon: (
-          //     <Upload name="file" id="custom-upload">
-          //       <CameraOutlined
-          //         style={{
-          //           color: "#fff",
-          //         }}
-          //         title="Change Picture"
-          //         className="opacity-50 hover:opacity-100"
-          //       />
-          //     </Upload>
-          //   ),
-          // }}
-        >
-          {fileList.length >= 10 ? null : uploadButton}
-        </Upload>
-      </Form.Item>
+      <Upload
+        customRequest={handleUpload}
+        listType="picture-card"
+        fileList={fileList}
+        onPreview={handlePreview}
+        onChange={handleChange}
+        onRemove={onRemove}
+        accept="image/*"
+        // showUploadList={{
+        //   showPreviewIcon: true,
+        //   previewIcon: (
+        //     <Upload name="file" id="custom-upload">
+        //       <CameraOutlined
+        //         style={{
+        //           color: "#fff",
+        //         }}
+        //         title="Change Picture"
+        //         className="opacity-50 hover:opacity-100"
+        //       />
+        //     </Upload>
+        //   ),
+        // }}
+      >
+        {fileList?.length >= 10 ? null : uploadButton}
+      </Upload>
       <Modal
         open={previewOpen}
         title={previewTitle}

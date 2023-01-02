@@ -59,7 +59,7 @@ const navItems = [
     selectedIcon: userIcon2,
   },
   {
-    title: "Promotion",
+    title: "Discount",
     icon: promotionIcon,
     selectedIcon: promotionIcon2,
   },
