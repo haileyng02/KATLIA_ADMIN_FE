@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import { Table, Tooltip } from "antd";
+import { useSnackbar } from "notistack";
+import appApi from "../../api/appApi";
+import * as routes from "../../api/apiRoutes";
 import { editIcon, deleteIcon } from "../../images/actions";
 import EditItemModal from "../../modals/import/EditItemModal";
 
-const ImportTable = ({ data, loading, getItemsInExistingForm }) => {
+const ImportTable = ({
+  data,
+  loading,
+  setLoading,
+  getItemsInExistingForm,
+  currentUser,
+}) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [editOpen, setEditOpen] = useState(false);
   const [currItem, setCurrItem] = useState();
 
@@ -99,18 +109,48 @@ const ImportTable = ({ data, loading, getItemsInExistingForm }) => {
               </center>
             </button>
           </Tooltip>
-          <button
-            className="action-button"
-            style={{ backgroundColor: "#FD3838E5" }}
-          >
-            <center>
-              <img src={deleteIcon} alt="Delete" />
-            </center>
-          </button>
+          <Tooltip title="Delete item">
+            <button
+              className="action-button"
+              style={{ backgroundColor: "#FD3838E5" }}
+              onClick={()=>deleteAnItem(value.id)}
+            >
+              <center>
+                <img src={deleteIcon} alt="Delete" />
+              </center>
+            </button>
+          </Tooltip>
         </div>
       ),
     },
   ];
+
+  //Delete an item
+  const deleteAnItem = async (id) => {
+    setLoading(true);
+    try {
+      const token = currentUser.token;
+      const result = await appApi.delete(
+        routes.DELETE_AN_ITEM(id),
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getDeleteAnItemIdParams(id),
+        }
+      );
+      console.log(result.data);
+      enqueueSnackbar('Deleted item successfully!',{variant:'success'});
+      getItemsInExistingForm();
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+    setLoading(false);
+  };
 
   const handleEditItem = (value) => {
     setEditOpen(true);

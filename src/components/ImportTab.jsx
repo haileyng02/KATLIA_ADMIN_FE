@@ -15,7 +15,7 @@ const ImportTab = () => {
   const [info, setInfo] = useState();
   const [loading, setLoading] = useState(false);
   const [tableLoading, setTableLoading] = useState(false);
-  const [data,setData] = useState();
+  const [data, setData] = useState();
 
   //Get import form info
   const getImportFormInfo = async () => {
@@ -56,15 +56,15 @@ const ImportTab = () => {
       );
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
       } else {
-        console.log(err.message)
+        console.log(err.message);
       }
     }
     setTableLoading(false);
-  }
+  };
 
   useEffect(() => {
     if (currentUser) {
@@ -158,7 +158,13 @@ const ImportTab = () => {
           Delete All
         </button>
       </div>
-      <ImportTable data={data} loading={tableLoading} getItemsInExistingForm={getItemsInExistingForm}/>
+      <ImportTable
+        data={data}
+        loading={tableLoading}
+        setLoading={setLoading}
+        getItemsInExistingForm={getItemsInExistingForm}
+        currentUser={currentUser}
+      />
       <AddItemsModal
         open={addOpen}
         handleCancel={() => setAddOpen(false)}
