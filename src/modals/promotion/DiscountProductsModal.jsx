@@ -105,6 +105,7 @@ const DiscountProductsModal = ({
         </Space>
       </div>
     ),
+    filteredValue: filteredInfo[dataIndex] || null,
     filterIcon: (filtered) => (
       <SearchOutlined
         style={{
@@ -225,11 +226,12 @@ const DiscountProductsModal = ({
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
+    setFilteredInfo({ ...filteredInfo, name: [selectedKeys[0]] });
   };
 
   const handleReset = (clearFilters) => {
-    clearFilters();
     setSearchText("");
+    setFilteredInfo({ ...filteredInfo, name: null });
   };
 
   const handleOk = () => {
