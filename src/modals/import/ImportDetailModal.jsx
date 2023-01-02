@@ -45,13 +45,13 @@ const ImportDetailModal = ({ open, handleCancel, currItem }) => {
               </tr>
               <tr>
                 <th>Status:</th>
-                <td style={{color:getImportStatus(currItem?.status).color}}>{getImportStatus(currItem?.status).text}</td>
+                <td style={{color:getImportStatus(currItem?.status)?.color}}>{getImportStatus(currItem?.status)?.text}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <Divider />
-        <ImportDetailTable currItem={currItem}/>
+        <ImportDetailTable currItem={currItem} open={open}/>
       </div>
     </Modal>
   );

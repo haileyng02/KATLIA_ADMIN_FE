@@ -81,13 +81,13 @@ const columns = [
   },
 ];
 
-const ImportDetailTable = ({ currItem }) => {
+const ImportDetailTable = ({ currItem,open }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (currentUser && currItem?.id) {
+    if (currentUser && currItem?.id && open) {
       staffImportDetail();
     }
   }, [currentUser, currItem]);
