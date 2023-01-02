@@ -13,7 +13,7 @@ const ImportTab = () => {
   const [form] = Form.useForm();
   const [addOpen, setAddOpen] = useState(false);
   const [info, setInfo] = useState();
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   //Get import form info
   const getImportFormInfo = async () => {
@@ -128,7 +128,11 @@ const ImportTab = () => {
         </button>
       </div>
       <ImportTable />
-      <AddItemsModal open={addOpen} handleCancel={() => setAddOpen(false)} />
+      <AddItemsModal
+        open={addOpen}
+        handleCancel={() => setAddOpen(false)}
+        currentUser={currentUser}
+      />
     </div>
   );
 };
