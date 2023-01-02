@@ -142,6 +142,22 @@ export const GET_ALL_USER = "/user/getAllUser";
 //GET PROFILE
 export const GET_PROFILE = '/profile/getProfile'
 
+//CONFIRM IMPORT
+export const CONFIRM_IMPORT = (id) => `/import/confirmImport/${id}`
+export const getConfirmImportIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
+//CANCEL IMPORT
+export const CANCEL_IMPORT = (id) => `/import/cancelImport/${id}`
+export const getCancelImportIdParams = (id) => ({
+  params: {
+    id: id
+  }
+})
+
 //STAFF-IMPORT/ IMPORT
 export const STAFF_IMPORT = '/staff-import/import'
 export const getStaffImportBody = (surcharge) => ({
@@ -169,6 +185,10 @@ export const getStaffImportDetail = (id) => ({
 
 //IMPORT FORM INFO
 export const IMPORT_FORM_INFO = '/items/getImportFormInfo'
+
+//ADD ITEMS INTO FORM
+export const ADD_ITEMS_INTO_FORM = '/items/addItemsIntoForm'
+export const getAddItemsIntoFormBody = (itemArray) => itemArray
 
 //PRODUCT SIZE FOR IMPORT
 export const PRODUCT_SIZE_FOR_IMPORT = (id) => `/items/getProductSizeForImport/${id}`

@@ -5,6 +5,7 @@ import HistoryTab from "../components/HistoryTab";
 import ImportTab from "../components/ImportTab";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
+import { async } from "q";
 
 const tabItems = [
   {
@@ -21,6 +22,56 @@ const tabItems = [
 
 const Import = () => {
   const { currentUser } = useSelector((state) => state.user);
+
+  //Confirm import
+  const confirmImport = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjE4ODk2Mn0.DhhxF4AI3qmM0yhEPjidNICcust1GAaZ54YyDc4Q3XQ";
+      const result = await appApi.put(
+        routes.CONFIRM_IMPORT("63b0302c3f65532e38aec9e5"),
+        null,
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getConfirmImportIdParams("63b0302c3f65532e38aec9e5")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
+  //Cancel import
+  const cancelImport = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjE4ODk2Mn0.DhhxF4AI3qmM0yhEPjidNICcust1GAaZ54YyDc4Q3XQ";
+      const result = await appApi.put(
+        routes.CANCEL_IMPORT("63b101781f2e25cf925f6dc0"),
+        null,
+        {
+          ...routes.getAccessTokenHeader(token),
+          ...routes.getCancelImportIdParams("63b101781f2e25cf925f6dc0")
+        }
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
 
   //Staff-import/ import
   const patchStaffImport = async () => {
@@ -132,6 +183,33 @@ const Import = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (currentUser) getImportFormInfo();
+  }, [currentUser]);
+
+  //Add items into form
+  const addItemsIntoForm = async () => {
+    try {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjE4ODk2Mn0.DhhxF4AI3qmM0yhEPjidNICcust1GAaZ54YyDc4Q3XQ";
+      const result = await appApi.post(
+        routes.ADD_ITEMS_INTO_FORM,
+        routes.getAddItemsIntoFormBody([{productId: 694571, colorId: 2, size: "S", quantity: 5, unitPrice: 39.99}]),
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(err.message)
+      }
+    }
+  }
+
 
   //Product size for import
   const getProductSizeForImport = async () => {
@@ -299,7 +377,7 @@ const Import = () => {
   return (
     <div>
       <div className="row">
-        <h1 onClick={patchStaffImport} className="title">Import</h1>
+        <h1 onClick={addItemsIntoForm} className="title">Import</h1>
         <p className="subtitle">1 Import found</p>
       </div>
       <Tabs
