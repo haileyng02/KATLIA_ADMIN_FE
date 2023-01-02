@@ -13,7 +13,7 @@ import categories from "../utils/categories";
 
 const Products = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const { allProducts } = useSelector((state) => state.products);
+  const { allProducts, nextProductId } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [detailOpen, setDetailOpen] = useState(false);
@@ -21,8 +21,9 @@ const Products = () => {
   const [warningOpen, setWarningOpen] = useState(false);
   const [currItem, setCurrItem] = useState(null);
   const [data, setData] = useState();
+  const [nextId, setNextId] = useState();
   const [filteredInfo, setFilteredInfo] = useState({});
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const columns = [
     {
@@ -91,7 +92,7 @@ const Products = () => {
             <button
               className="action-button"
               style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-              onClick={()=>handleEdit(value)}
+              onClick={() => handleEdit(value)}
             >
               <center>
                 <img src={editIcon} alt="Edit" />
@@ -145,12 +146,12 @@ const Products = () => {
   const handleDetailCancel = () => {
     setDetailOpen(false);
     setCurrItem(null);
-  }
+  };
 
   const handleModifyCancel = () => {
     setModifyOpen(false);
     setCurrItem(null);
-  }
+  };
 
   //Get all products
   const getAllProducts = async () => {
@@ -161,13 +162,15 @@ const Products = () => {
         routes.GET_ALL_PRODUCTS,
         routes.getAccessTokenHeader(token)
       );
-      result.data.pop();
+      //Set next product id
+      const nextNewProductId = result.data.pop().nextNewProductId;
+      setNextId(nextNewProductId);
+      //Set data
       const products = result.data.map((d, i) => {
         return { ...d, key: i };
       });
-      console.log(products);
       setData(products);
-      dispatch(getProducts(products));
+      dispatch(getProducts(products, nextNewProductId));
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -183,6 +186,7 @@ const Products = () => {
     if (currentUser) {
       if (allProducts) {
         setData(allProducts);
+        setNextId(nextProductId);
       } else {
         getAllProducts();
       }
@@ -246,6 +250,7 @@ const Products = () => {
         handleCancel={handleModifyCancel}
         currItem={currItem}
         getAllProducts={getAllProducts}
+        nextProductId={nextId}
       />
       <WarningModal
         text={"Are you sure you want to delete this product?"}

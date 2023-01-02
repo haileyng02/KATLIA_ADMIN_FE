@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { PlusOutlined, CameraOutlined } from "@ant-design/icons";
-import { Form, Modal, Upload } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Upload } from "antd";
 
 const getBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -11,7 +11,14 @@ const getBase64 = (file) => {
   });
 };
 
-const ImagesUploader = ({ setColorList, colorList, index, fileList }) => {
+const ImagesUploader = ({
+  setColorList,
+  colorList,
+  index,
+  fileList,
+  deleteString,
+  setDeleteString,
+}) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -56,6 +63,11 @@ const ImagesUploader = ({ setColorList, colorList, index, fileList }) => {
       //   console.log(file);
     }, 0);
   };
+
+  const onRemove = (file) => {
+    setDeleteString([...deleteString,file.id]);
+  };
+
   return (
     <>
       <Upload
@@ -64,6 +76,7 @@ const ImagesUploader = ({ setColorList, colorList, index, fileList }) => {
         fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}
+        onRemove={onRemove}
         accept="image/*"
         // showUploadList={{
         //   showPreviewIcon: true,

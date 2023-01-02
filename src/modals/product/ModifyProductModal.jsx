@@ -19,6 +19,7 @@ const ModifyProductModal = ({
   handleCancel,
   currItem,
   getAllProducts,
+  nextProductId
 }) => {
   const [form] = Form.useForm();
   const { currentUser } = useSelector((state) => state.user);
@@ -29,6 +30,10 @@ const ModifyProductModal = ({
   const [colorList, setColorList] = useState([{ colorId: 1 }]);
   const [loading, setLoading] = useState(false);
   const [imagesDone, setImagesDone] = useState(0);
+  const [deleteString, setDeleteString] = useState([]);
+  const [doneDelete, setDoneDelete] = useState(false);
+  const [doneEdit, setDoneEdit] = useState(false);
+  const [detail, setDetail] = useState();
 
   //Get all category
   const getAllCategory = async () => {
@@ -157,10 +162,9 @@ const ModifyProductModal = ({
 
   //Edit product info
   const editProductInfo = async (id, name, description, price) => {
-    setLoading(true);
     try {
       const token = currentUser.token;
-      await appApi.patch(
+      const result = await appApi.patch(
         routes.EDIT_PRODUCT_INFO(id),
         routes.getEditProductInfoBody(name, description, price),
         {
@@ -168,11 +172,7 @@ const ModifyProductModal = ({
           ...routes.getEditProductInfoIdParams(id),
         }
       );
-      if (!colorList[0].fileList) {
-        handleDone();
-      } else {
-        handleUploadImages();
-      }
+      console.log(result.data);
     } catch (err) {
       setLoading(false);
       if (err.response) {
@@ -183,6 +183,7 @@ const ModifyProductModal = ({
         console.log(err.message);
       }
     }
+    setDoneEdit(true);
   };
 
   //Delete product image by color
@@ -252,14 +253,14 @@ const ModifyProductModal = ({
   };
 
   //Delete some images
-  const deleteSomeImages = async () => {
+  const deleteSomeImages = async (deleteArray) => {
     try {
       const token = currentUser.token;
 
       const result = await appApi({
         method: "delete",
         url: routes.DELETE_SOME_IMAGES,
-        data: routes.getDeleteSomeImages(["63b05debe9f03273141ced39"]),
+        data: routes.getDeleteSomeImages(deleteArray),
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: "Bearer " + token,
@@ -276,6 +277,7 @@ const ModifyProductModal = ({
         console.log(err.message);
       }
     }
+    setDoneDelete(true);
   };
 
   //Get product detail
@@ -287,20 +289,7 @@ const ModifyProductModal = ({
         ...routes.getAccessTokenHeader(token),
         ...routes.getProductDetailIdParams(id),
       });
-      console.log(result.data);
-      form.setFieldsValue({
-        id: result.data.id,
-        name: result.data.name,
-        description: result.data.description,
-        category: currItem?.category,
-        size: getSizeString(result.data.colorList[0].details),
-        price: result.data.price,
-      });
-      setColorList(
-        result.data.colorList.map((value) => {
-          return { colorId: value.id, fileList: value.imgList };
-        })
-      );
+      setDetail(result.data);
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -327,7 +316,6 @@ const ModifyProductModal = ({
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      console.log(values);
       if (currItem) {
         handleEditProduct(values);
       } else {
@@ -350,12 +338,33 @@ const ModifyProductModal = ({
   };
 
   const handleEditProduct = (values) => {
-    editProductInfo(
-      values.id,
-      toTitleCase(values.name),
-      values.description,
-      values.price
-    );
+    setLoading(true);
+
+    //Edit product info
+    if (
+      detail.name.toLowerCase() !== values.name.toLowerCase() ||
+      detail.description !== values.description ||
+      detail.price !== values.price
+    ) {
+      editProductInfo(
+        values.id,
+        toTitleCase(values.name),
+        values.description,
+        values.price
+      );
+    } else {
+      setDoneEdit(true);
+    }
+
+    //Upload image
+    handleUploadImages();
+
+    //Delete images
+    if (deleteString.length >= 1) {
+      deleteSomeImages(deleteString);
+    } else {
+      setDoneDelete(true);
+    }
   };
 
   const handleUploadImages = () => {
@@ -377,24 +386,42 @@ const ModifyProductModal = ({
   const onCancel = () => {
     handleCancel();
     setImagesDone(0);
+    setDoneDelete(false);
+    setDoneEdit(false);
     form.resetFields();
+    setDeleteString([]);
     setColorList([{ colorId: 1 }]);
   };
 
   const handleDone = () => {
     setLoading(false);
-    enqueueSnackbar(currItem ? "Product edited successfully!" : "Product added successfully!", { variant: "success" });
+    enqueueSnackbar(
+      currItem ? "Product edited successfully!" : "Product added successfully!",
+      { variant: "success" }
+    );
     onCancel();
     getAllProducts();
   };
 
   const getImageSum = () => {
+    if (!colorList[0].fileList) return 0;
     var imageSum = 0;
     for (let i = 0; i < colorList.length; i++) {
       for (let j = 0; j < colorList[i].fileList.length; j++) {
         if (colorList[i].fileList[j].originFileObj) {
           imageSum++;
         }
+      }
+    }
+    return imageSum;
+  };
+
+  const getAllImageSum = () => {
+    if (!colorList[0].fileList) return 0;
+    var imageSum = 0;
+    for (let i = 0; i < colorList.length; i++) {
+      for (let j = 0; j < colorList[i].fileList.length; j++) {
+        imageSum++;
       }
     }
     return imageSum;
@@ -411,18 +438,52 @@ const ModifyProductModal = ({
   }, [currentUser]);
 
   useEffect(() => {
-    if (!colorList[0].fileList) return;
-    console.log(getImageSum());
-    console.log(imagesDone)
-    if (imagesDone === getImageSum()) {
-      setDefaultPicForProduct(form.getFieldValue("id"));
+    if (!colorList[0].fileList && !currItem) return;
+    const imageSum = getImageSum();
+    if (!currItem) {
+      if (imagesDone === imageSum) {
+        setDefaultPicForProduct(form.getFieldValue("id"));
+      }
+    } else {
+      if (imagesDone === imageSum && doneEdit && doneDelete) {
+        if (
+          getAllImageSum() === 0 ||
+          (imageSum === 0 && deleteString.length === 0)
+        ) {
+          handleDone();
+        } else {
+          setDefaultPicForProduct(form.getFieldValue("id"));
+        }
+      }
     }
-  }, [imagesDone]);
+  }, [imagesDone, doneEdit, doneDelete]);
 
   useEffect(() => {
-    if (!open || !currItem) return;
+    if (!open) return;
+    if (!currItem) {
+      form.setFieldValue('id',nextProductId);
+      return;
+    }
     getProductDetail(currItem.id);
-  }, [currItem]);
+  }, [currItem,nextProductId,open]);
+
+  useEffect(() => {
+    if (detail) {
+      form.setFieldsValue({
+        id: detail.id,
+        name: detail.name,
+        description: detail.description,
+        category: currItem?.category,
+        size: getSizeString(detail.colorList[0].details),
+        price: detail.price,
+      });
+      setColorList(
+        detail.colorList.map((value) => {
+          return { colorId: value.id, fileList: value.imgList };
+        })
+      );
+    }
+  }, [detail]);
 
   return (
     <Modal
@@ -461,7 +522,7 @@ const ModifyProductModal = ({
                     ]}
                     className="form-item"
                   >
-                    <Input {...getReadOnlyProps(currItem)} className="input" />
+                    <Input {...getReadOnlyProps(true)} className="input" />
                   </Form.Item>
                 </td>
               </tr>
@@ -567,6 +628,8 @@ const ModifyProductModal = ({
                 colorList={colorList}
                 setColorList={setColorList}
                 currItem={currItem}
+                deleteString={deleteString}
+                setDeleteString={setDeleteString}
               />
             </tbody>
           </table>

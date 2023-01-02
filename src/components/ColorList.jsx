@@ -10,7 +10,13 @@ import ReadOnlySuffix from "./ReadOnlySuffix";
 
 const { Option } = Select;
 
-const ColorList = ({colorList,setColorList,currItem}) => {
+const ColorList = ({
+  colorList,
+  setColorList,
+  currItem,
+  deleteString,
+  setDeleteString,
+}) => {
   const [colorsData, setColorsData] = useState();
   const scrollRef = useRef(null);
   const { currentUser } = useSelector((state) => state.user);
@@ -39,7 +45,7 @@ const ColorList = ({colorList,setColorList,currItem}) => {
   };
 
   const handleAddColor = () => {
-    setColorList([...colorList, {colorId:1}]);
+    setColorList([...colorList, { colorId: 1 }]);
   };
 
   const handleDeleteColor = (i) => {
@@ -79,7 +85,7 @@ const ColorList = ({colorList,setColorList,currItem}) => {
               <Select
                 size="large"
                 disabled={currItem}
-                suffixIcon={currItem && <ReadOnlySuffix/>}
+                suffixIcon={currItem && <ReadOnlySuffix />}
                 loading={!colorsData}
                 className="w-full"
                 defaultValue={1}
@@ -96,7 +102,7 @@ const ColorList = ({colorList,setColorList,currItem}) => {
                 ))}
               </Select>
             </td>
-            {(!currItem && colorList.length > 1) && (
+            {!currItem && colorList.length > 1 && (
               <td className="w-[24px] align-top pt-[8px]">
                 <Tooltip title="Delete color">
                   <button
@@ -128,6 +134,8 @@ const ColorList = ({colorList,setColorList,currItem}) => {
                 colorList={colorList}
                 index={i}
                 fileList={color.fileList}
+                deleteString={deleteString}
+                setDeleteString={setDeleteString}
               />
             </td>
           </tr>
