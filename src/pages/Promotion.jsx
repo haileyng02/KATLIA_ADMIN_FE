@@ -191,8 +191,8 @@ const Promotion = () => {
   return (
     <div>
       <div className="row">
-        <h1 className="title">Promotion</h1>
-        <p className="subtitle">{data.length + " Promotions found"}</p>
+        <h1 className="title">Discount</h1>
+        <p className="subtitle">{data.length + " Discounts found"}</p>
       </div>
       <div className="mt-[12px] flex justify-end gap-x-[10px]">
         <button
