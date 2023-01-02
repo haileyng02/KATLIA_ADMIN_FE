@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Table, Tooltip } from "antd";
 import { useSnackbar } from "notistack";
-import { viewIcon, editIcon, deleteIcon } from "../images/actions";
 import ProductDetailModal from "../modals/product/ProductDetailModal";
 import ModifyProductModal from "../modals/product/ModifyProductModal";
 import WarningModal from "../modals/WarningModal";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
 import { getProducts } from "../actions/products";
-import categories from "../utils/categories";
+import ProductTable from "../components/tables/ProductTable";
 
 const Products = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -24,100 +22,6 @@ const Products = () => {
   const [nextId, setNextId] = useState();
   const [filteredInfo, setFilteredInfo] = useState({});
   const [loading, setLoading] = useState(false);
-
-  const columns = [
-    {
-      title: "Product ID",
-      dataIndex: "id",
-      sorter: (a, b) => a.id - b.id,
-      defaultSortOrder: "descend",
-      render: (value) => <p className="table-cell">{"#" + value}</p>,
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-      sorter: (a, b) => a.name?.localeCompare(b.name),
-      defaultSortOrder: "descend",
-      render: (value) => <p className="table-cell">{value}</p>,
-    },
-    {
-      title: "Image",
-      dataIndex: "image",
-      align: "center",
-      render: (value) => (
-        <center>
-          <img
-            src={value}
-            alt="Product"
-            className="w-[47px] h-[53px] object-cover object-center"
-          />
-        </center>
-      ),
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      filters: categories,
-      filteredValue: filteredInfo.category || null,
-      onFilter: (value, record) => record.category?.indexOf(value) === 0,
-      sorter: (a, b) => a.category?.localeCompare(b.category),
-      defaultSortOrder: "descend",
-      render: (value) => <p className="table-cell">{value}</p>,
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      sorter: (a, b) => a.price - b.price,
-      defaultSortOrder: "descend",
-      render: (value) => <p className="table-cell">{"$" + value}</p>,
-    },
-    {
-      title: "Action",
-      key: "action",
-      align: "center",
-      render: (value) => (
-        <div className="flex gap-x-[20px] justify-center">
-          <Tooltip title="Product detail">
-            <button
-              className="action-button"
-              style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
-              onClick={() => handleViewDetail(value)}
-            >
-              <center>
-                <img src={viewIcon} alt="View" />
-              </center>
-            </button>
-          </Tooltip>
-          <Tooltip title="Edit product">
-            <button
-              className="action-button"
-              style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-              onClick={() => handleEdit(value)}
-            >
-              <center>
-                <img src={editIcon} alt="Edit" />
-              </center>
-            </button>
-          </Tooltip>
-          <Tooltip title="Delete this product">
-            <button
-              className="action-button"
-              style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
-              onClick={() => handleDeleteProduct(value)}
-            >
-              <center>
-                <img src={deleteIcon} alt="Delete" />
-              </center>
-            </button>
-          </Tooltip>
-        </div>
-      ),
-    },
-  ];
-
-  const onChange = (pagination, filters, sorter, extra) => {
-    setFilteredInfo(filters);
-  };
 
   const handleAdd = () => {
     setCurrItem(null);
@@ -231,13 +135,14 @@ const Products = () => {
           <p>Clear Filter</p>
         </button>
       </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        onChange={onChange}
-        pagination={{ showSizeChanger: false }}
+      <ProductTable
+        data={data}
         loading={loading}
-        className="mt-5 pagination-active table-header"
+        handleViewDetail={handleViewDetail}
+        handleEdit={handleEdit}
+        handleDeleteProduct={handleDeleteProduct}
+        filteredInfo={filteredInfo}
+        setFilteredInfo={setFilteredInfo}
       />
       <ProductDetailModal
         open={detailOpen}
