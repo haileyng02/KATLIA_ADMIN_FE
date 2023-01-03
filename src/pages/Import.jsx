@@ -45,28 +45,6 @@ const Import = () => {
     }
   }
 
-  //Staff-import/ import
-  const patchStaffImport = async () => {
-    try {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzQ2ZTgzMDIwNjE5M2M4N2RlMWFjMzIiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3MjE4ODk2Mn0.DhhxF4AI3qmM0yhEPjidNICcust1GAaZ54YyDc4Q3XQ";
-      const result = await appApi.patch(
-        routes.STAFF_IMPORT, 
-        routes.getStaffImportBody(0.25),
-        routes.getAccessTokenHeader(token)
-      );
-      console.log(result.data);
-
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
-      } else {
-        console.log(err.message)
-      }
-    }
-  }
-
   //Import info
   // const importInfo = async () => {
   //   try {

@@ -20,6 +20,7 @@ const ImportTab = () => {
   const [loading, setLoading] = useState(false);
   const [tableLoading, setTableLoading] = useState(false);
   const [data, setData] = useState();
+  const [confirm, setConfirm] = useState(false);
 
   //Get import form info
   const getImportFormInfo = async () => {
@@ -80,28 +81,71 @@ const ImportTab = () => {
         routes.getAccessTokenHeader(token)
       );
       console.log(result.data);
-      enqueueSnackbar('All items deleted!',{variant:'success'});
-      getItemsInExistingForm();
+      enqueueSnackbar("All items deleted!", { variant: "success" });
+      handleUpdateForm();
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
       } else {
-        console.log(err.message)
+        console.log(err.message);
       }
     }
     setLoading(false);
-  }
+  };
+
+  //Staff-import/ import
+  const patchStaffImport = async (surcharge) => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.patch(
+        routes.STAFF_IMPORT,
+        routes.getStaffImportBody(surcharge),
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result.data);
+      enqueueSnackbar("Imported items successfully!", { variant: "success" });
+      handleUpdateForm();
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
+  const handleDeleteAll = () => {
+    setConfirm(false);
+    setWarningOpen(true);
+  };
 
   const handleWarningOk = () => {
     deleteAllItems();
-  }
+  };
+
+  const handleConfirmImport = () => {
+    setConfirm(true);
+    setWarningOpen(true);
+  };
+
+  const handleConfirmWarningOk = () => {
+    form.validateFields().then((values) => {
+      patchStaffImport(parseFloat(values.surcharge));
+    });
+  };
+
+  const handleUpdateForm = () => {
+    getImportFormInfo();
+    getItemsInExistingForm();
+  };
 
   useEffect(() => {
     if (currentUser) {
-      getImportFormInfo();
-      getItemsInExistingForm();
+      handleUpdateForm();
     }
   }, [currentUser]);
 
@@ -137,7 +181,25 @@ const ImportTab = () => {
               <tr>
                 <th className="required">Surcharge:</th>
                 <td>
-                  <Form.Item name={"surcharge"}>
+                  <Form.Item
+                    name={"surcharge"}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter surcharge",
+                      },
+                      {
+                        message: "Surcharge must be a number",
+                        validator: (_, value) => {
+                          if (!isNaN(value) || !value) {
+                            return Promise.resolve();
+                          } else {
+                            return Promise.reject();
+                          }
+                        },
+                      },
+                    ]}
+                  >
                     <Input prefix={<DollarPrefix />} className="input" />
                   </Form.Item>
                 </td>
@@ -177,7 +239,10 @@ const ImportTab = () => {
       </Spin>
       <Divider />
       <div className="row gap-x-5 justify-end">
-        <button className="w-[189px] h-[34px] rounded-5 bg-secondary text-white font-inter font-bold text-15">
+        <button
+          onClick={handleConfirmImport}
+          className="w-[189px] h-[34px] rounded-5 bg-secondary text-white font-inter font-bold text-15"
+        >
           CONFIRM IMPORT
         </button>
         <button
@@ -186,7 +251,10 @@ const ImportTab = () => {
         >
           Add items
         </button>
-        <button onClick={()=>setWarningOpen(true)} className="import-button border-[#FF0000] text-[#FF0000]">
+        <button
+          onClick={handleDeleteAll}
+          className="import-button border-[#FF0000] text-[#FF0000]"
+        >
           Delete All
         </button>
       </div>
@@ -194,20 +262,24 @@ const ImportTab = () => {
         data={data}
         loading={tableLoading}
         setLoading={setLoading}
-        getItemsInExistingForm={getItemsInExistingForm}
+        getItemsInExistingForm={handleUpdateForm}
         currentUser={currentUser}
       />
       <AddItemsModal
         open={addOpen}
         handleCancel={() => setAddOpen(false)}
         currentUser={currentUser}
-        getItemsInExistingForm={getItemsInExistingForm}
+        getItemsInExistingForm={handleUpdateForm}
       />
       <WarningModal
-        text={"Are you sure you want to delete all items?"}
+        text={
+          confirm
+            ? "Confirm this import?"
+            : "Are you sure you want to delete all items?"
+        }
         open={warningOpen}
         handleCancel={() => setWarningOpen(false)}
-        handleOk={handleWarningOk}
+        handleOk={confirm ? handleConfirmWarningOk : handleWarningOk}
       />
     </div>
   );
