@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Table, Tooltip } from "antd";
-import { useSnackbar } from "notistack";
+import React, { useState,useRef } from "react";
+import { Table, Tooltip, Input, Space, Button } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 import appApi from "../../api/appApi";
 import * as routes from "../../api/apiRoutes";
 import { editIcon, deleteIcon } from "../../images/actions";
@@ -13,9 +14,108 @@ const ImportTable = ({
   getItemsInExistingForm,
   currentUser,
 }) => {
-  const { enqueueSnackbar } = useSnackbar();
+  const searchInput = useRef(null);
   const [editOpen, setEditOpen] = useState(false);
   const [currItem, setCurrItem] = useState();
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const [filteredInfo, setFilteredInfo] = useState({});
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters,dataIndex)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1890ff' : undefined,
+        }}
+      />
+    ),
+    filteredValue: filteredInfo[dataIndex] || null,
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
 
   const columns = [
     {
@@ -28,6 +128,7 @@ const ImportTable = ({
     {
       title: "Product's Name",
       dataIndex: "name",
+      ...getColumnSearchProps("name"),
       sorter: (a, b) => a.name?.localeCompare(b.name),
       defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
@@ -36,6 +137,7 @@ const ImportTable = ({
       title: "Color",
       dataIndex: "color",
       align: "center",
+      ...getColumnSearchProps("color"),
       sorter: (a, b) => a.color?.localeCompare(b.color),
       defaultSortOrder: "descend",
       render: (value) => (
@@ -48,6 +150,7 @@ const ImportTable = ({
       title: "Size",
       dataIndex: "size",
       align: "center",
+      ...getColumnSearchProps("size"),
       sorter: (a, b) => a.size?.localeCompare(b.size),
       defaultSortOrder: "descend",
       render: (value) => (
@@ -138,7 +241,6 @@ const ImportTable = ({
         }
       );
       console.log(result.data);
-      enqueueSnackbar('Deleted item successfully!',{variant:'success'});
       getItemsInExistingForm();
     } catch (err) {
       if (err.response) {
@@ -150,6 +252,22 @@ const ImportTable = ({
       }
     }
     setLoading(false);
+  };
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+    var temp = filteredInfo;
+    temp[dataIndex] = [selectedKeys[0]]
+    setFilteredInfo(temp);
+  };
+  const handleReset = (clearFilters,dataIndex) => {
+    clearFilters();
+    setSearchText('');
+    var temp = filteredInfo;
+    temp[dataIndex] = null;
+    setFilteredInfo(temp);
   };
 
   const handleEditItem = (value) => {

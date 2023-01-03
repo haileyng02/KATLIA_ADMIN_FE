@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, Form, Input, Select, Spin } from "antd";
-import { useSnackbar } from "notistack";
 import appApi from "../../api/appApi";
 import * as routes from "../../api/apiRoutes";
 import { getPromotionProducts } from "../../actions/products";
@@ -22,7 +21,6 @@ const AddItemsModal = ({
   const { promoProducts } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const { enqueueSnackbar } = useSnackbar();
   const [products, setProducts] = useState();
   const [productId, setProductId] = useState();
   const [colors, setColors] = useState();
@@ -119,7 +117,6 @@ const AddItemsModal = ({
         routes.getAccessTokenHeader(token)
       );
       console.log(result.data);
-      enqueueSnackbar("Added items into form!", { variant: "success" });
       onCancel();
       getItemsInExistingForm();
     } catch (err) {

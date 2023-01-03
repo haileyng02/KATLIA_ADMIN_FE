@@ -22,7 +22,7 @@ const WarningModal = ({ handleOk, handleCancel, open, text }) => {
       width={450}
       footer={getModalFooter({ handleCancel, handleOk:onOk })}
     >
-      <p className="text-center text-20">{text}</p>
+      <p className="text-center text-20 mb-5">{text}</p>
     </Modal>
   );
 };

@@ -14,7 +14,7 @@ const HistoryTab = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
   const [detailOpen, setDetailOpen] = useState(false);
-  const [warningOpen, setWarningOpen] = useState(false);
+  const [warning, setWarning] = useState("");
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [filteredInfo, setFilteredInfo] = useState({});
@@ -92,23 +92,36 @@ const HistoryTab = () => {
               </center>
             </button>
           </Tooltip>
-          <button
-            className="action-button"
-            style={{ backgroundColor: "#60BE80" }}
-          >
-            <center>
-              <img src={checkIcon} alt="Check" />
-            </center>
-          </button>
+          <Tooltip title={value.status === 1 && "Confirm import"}>
+            <button
+              className={`action-button ${
+                value.status !== 1 && "cursor-not-allowed"
+              }`}
+              style={{
+                backgroundColor:
+                  value.status === 1 ? "#60BE80" : "#CDCDCD",
+              }}
+              onClick={
+                value.status === 1 ? () => handleConfirmImport(value) : null
+              }
+            >
+              <center>
+                <img src={checkIcon} alt="Check" />
+              </center>
+            </button>
+          </Tooltip>
           <Tooltip title={value.status === 1 && "Cancel this import"}>
             <button
               className={`action-button ${
                 value.status !== 1 && "cursor-not-allowed"
               }`}
               style={{
-                backgroundColor: value.status === 1 ? "rgba(253, 56, 56, 0.9)" : "#CDCDCD",
+                backgroundColor:
+                  value.status === 1 ? "rgba(253, 56, 56, 0.9)" : "#CDCDCD",
               }}
-              onClick={value.status === 1 ? () => handleCancelImport(value) : null}
+              onClick={
+                value.status === 1 ? () => handleCancelImport(value) : null
+              }
             >
               <center>
                 <img src={cancelIcon} alt="Cancel" />
@@ -147,16 +160,17 @@ const HistoryTab = () => {
     setLoading(false);
   };
 
-  //Cancel import
-  const cancelImport = async (id) => {
+  //Confirm import
+  const confirmImport = async (id) => {
+    setLoading(true);
     try {
       const token = currentUser.token;
-      const result = await appApi.put(routes.CANCEL_IMPORT(id), null, {
+      const result = await appApi.put(routes.CONFIRM_IMPORT(id), null, {
         ...routes.getAccessTokenHeader(token),
-        ...routes.getCancelImportIdParams(id),
+        ...routes.getConfirmImportIdParams(id),
       });
       console.log(result.data);
-      enqueueSnackbar('Import canceled!',{variant:'success'})
+      enqueueSnackbar("Import confirmed!", { variant: "success" });
       getStaffImportHistory();
     } catch (err) {
       if (err.response) {
@@ -167,6 +181,31 @@ const HistoryTab = () => {
         console.log(err.message);
       }
     }
+    setLoading(false);
+  };
+
+  //Cancel import
+  const cancelImport = async (id) => {
+    setLoading(true);
+    try {
+      const token = currentUser.token;
+      const result = await appApi.put(routes.CANCEL_IMPORT(id), null, {
+        ...routes.getAccessTokenHeader(token),
+        ...routes.getCancelImportIdParams(id),
+      });
+      console.log(result.data);
+      enqueueSnackbar("Import canceled!", { variant: "success" });
+      getStaffImportHistory();
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+    setLoading(false);
   };
 
   const handleViewDetail = (value) => {
@@ -174,13 +213,22 @@ const HistoryTab = () => {
     setCurrItem(value);
   };
 
-  const handleCancelImport = (value) => {
+  const handleConfirmImport = (value) => {
     setCurrItem(value);
-    setWarningOpen(true);
+    setWarning("Confirm this import?");
   };
 
-  const handleWarningOk = () => {
+  const handleCancelImport = (value) => {
+    setCurrItem(value);
+    setWarning("Are you sure you want to cancel this import?");
+  };
+
+  const handleWarningCancel = () => {
     cancelImport(currItem.id);
+  };
+
+  const handleWarningConfirm = () => {
+    confirmImport(currItem.id);
   };
 
   useEffect(() => {
@@ -216,10 +264,14 @@ const HistoryTab = () => {
         currItem={currItem}
       />
       <WarningModal
-        text={"Are you sure you want to cancel this import?"}
-        open={warningOpen}
-        handleOk={handleWarningOk}
-        handleCancel={() => setWarningOpen(false)}
+        text={warning}
+        open={warning !== ""}
+        handleOk={
+          warning === "Confirm this import?"
+            ? handleWarningConfirm
+            : handleWarningCancel
+        }
+        handleCancel={() => setWarning("")}
       />
     </div>
   );

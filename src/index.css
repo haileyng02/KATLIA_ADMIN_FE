@@ -65,8 +65,16 @@ div.row {
   @apply h-[34px] border-1 border-black rounded-5 px-[10px] text-15 hover:border-secondary hover:text-secondary;
 }
 
+.error-cancel-button {
+  @apply h-[34px] border-1 border-black70 text-black70 rounded-5 px-[10px] text-15 hover:border-black hover:text-black;
+}
+
 .confirm-button {
   @apply h-[34px] bg-[#F9AF5EE5] rounded-5 px-[10px] text-15 text-white ml-5 hover:bg-[#C85A27];
+}
+
+.error-confirm-button {
+  @apply h-[34px] bg-error hover:brightness-125 rounded-5 px-[10px] text-15 text-white ml-5;
 }
 
 .import-button {

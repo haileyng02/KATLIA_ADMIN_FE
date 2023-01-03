@@ -9,6 +9,7 @@ import DollarPrefix from "./DollarPrefix";
 import ImportTable from "./tables/ImportTable";
 import AddItemsModal from "../modals/import/AddItemsModal";
 import WarningModal from "../modals/WarningModal";
+import ErrorModal from "../modals/ErrorModal";
 
 const ImportTab = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -16,6 +17,7 @@ const ImportTab = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [addOpen, setAddOpen] = useState(false);
   const [warningOpen, setWarningOpen] = useState(false);
+  const [errText, setErrText] = useState("");
   const [info, setInfo] = useState();
   const [loading, setLoading] = useState(false);
   const [tableLoading, setTableLoading] = useState(false);
@@ -54,12 +56,14 @@ const ImportTab = () => {
         routes.ITEMS_IN_EXISTING_FORM,
         routes.getAccessTokenHeader(token)
       );
+      console.log(result.data);
       setData(
         result.data.map((d, i) => {
           return { ...d, key: i };
         })
       );
     } catch (err) {
+      setData();
       if (err.response) {
         console.log(err.response.data);
         console.log(err.response.status);
@@ -81,7 +85,6 @@ const ImportTab = () => {
         routes.getAccessTokenHeader(token)
       );
       console.log(result.data);
-      enqueueSnackbar("All items deleted!", { variant: "success" });
       handleUpdateForm();
     } catch (err) {
       if (err.response) {
@@ -97,6 +100,7 @@ const ImportTab = () => {
 
   //Staff-import/ import
   const patchStaffImport = async (surcharge) => {
+    setLoading(true);
     try {
       const token = currentUser.token;
       const result = await appApi.patch(
@@ -109,13 +113,12 @@ const ImportTab = () => {
       handleUpdateForm();
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
+        setErrText(err.response.data.message)
       } else {
         console.log(err.message);
       }
     }
+    setLoading(false);
   };
 
   const handleDeleteAll = () => {
@@ -280,6 +283,11 @@ const ImportTab = () => {
         open={warningOpen}
         handleCancel={() => setWarningOpen(false)}
         handleOk={confirm ? handleConfirmWarningOk : handleWarningOk}
+      />
+      <ErrorModal 
+        text={errText}
+        open={errText !== ""}
+        handleCancel={()=>setErrText("")}
       />
     </div>
   );
