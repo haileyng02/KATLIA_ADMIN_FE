@@ -16,7 +16,7 @@ const store = createStore(allReducers, applyMiddleware(...middleware));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <SnackbarProvider autoHideDuration={2000} anchorOrigin={{
       vertical: 'top',
       horizontal: 'center',
@@ -29,7 +29,7 @@ root.render(
         </ConfigProvider>
       </Provider>
     </SnackbarProvider>
-  </React.StrictMode >
+  // </React.StrictMode >
 );
 
 reportWebVitals();
