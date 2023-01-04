@@ -328,7 +328,7 @@ const ModifyProductModal = ({
     const colorIdList = colorList.map((value) => value.colorId);
     addProduct(
       values.id,
-      toTitleCase(values.name),
+      values.name.toUpperCase(),
       values.description,
       values.category,
       values.price,
@@ -348,7 +348,7 @@ const ModifyProductModal = ({
     ) {
       editProductInfo(
         values.id,
-        toTitleCase(values.name),
+        values.name.toUpperCase(),
         values.description,
         values.price
       );
@@ -539,7 +539,7 @@ const ModifyProductModal = ({
                     ]}
                     className="form-item"
                   >
-                    <Input className="input capitalize" />
+                    <Input className="input uppercase" />
                   </Form.Item>
                 </td>
               </tr>
