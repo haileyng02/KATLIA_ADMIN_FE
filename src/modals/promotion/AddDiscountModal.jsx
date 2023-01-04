@@ -195,7 +195,6 @@ const AddDiscountModal = ({
                     <DatePicker
                       className="input w-full"
                       format="DD-MM-YYYY HH:mm"
-                      {...dateTimeProps}
                       showTime
                     />
                   </Form.Item>
@@ -227,7 +226,6 @@ const AddDiscountModal = ({
                     <DatePicker
                       className="input w-full"
                       format="DD-MM-YYYY HH:mm"
-                      {...dateTimeProps}
                       showTime
                     />
                   </Form.Item>

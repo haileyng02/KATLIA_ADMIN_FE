@@ -79,11 +79,26 @@ const Promotion = () => {
       align: "center",
       render: (value) => (
         <div className="flex gap-x-[20px] justify-center">
-          <Tooltip title="List products for discount">
+          <Tooltip
+            title={
+              value.message !== "Can't edit" && "List products for discount"
+            }
+          >
             <button
-              className="action-button"
-              style={{ backgroundColor: "rgba(67, 204, 248, 0.9)" }}
-              onClick={() => handleView(value)}
+              className={`action-button ${
+                value.message === "Can't edit" && "cursor-not-allowed"
+              }`}
+              style={{
+                backgroundColor:
+                  value.message !== "Can't edit"
+                    ? "rgba(67, 204, 248, 0.9)"
+                    : "#CDCDCD",
+              }}
+              onClick={
+                value.message !== "Can't edit"
+                  ? () => handleView(value)
+                  : null
+              }
             >
               <center>
                 <img src={viewIcon} alt="View" />
@@ -146,9 +161,12 @@ const Promotion = () => {
         routes.GET_ALL_DISCOUNT_LIST,
         routes.getAccessTokenHeader(token)
       );
-      setData(result.data.map((d, i) => {
-        return { ...d, key: i };
-      }));
+      console.log(result.data);
+      setData(
+        result.data.map((d, i) => {
+          return { ...d, key: i };
+        })
+      );
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -197,7 +215,7 @@ const Promotion = () => {
       <div className="mt-[12px] flex justify-end gap-x-[10px]">
         <button
           onClick={handleAdd}
-          className="px-[17px] py-[11px] rounded-5 bg-primary text-[#9098B1] font-bold text-14"
+          className="px-[17px] h-[40px] rounded-5 bg-primary text-[#9098B1] font-bold text-14"
         >
           Add Discount
         </button>

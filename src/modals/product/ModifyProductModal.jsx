@@ -9,7 +9,6 @@ import * as routes from "../../api/apiRoutes";
 import { getCategories } from "../../actions/categories";
 import getModalFooter from "../../utils/getModalFooter";
 import getReadOnlyProps from "../../utils/readOnlyProps";
-import toTitleCase from "../../utils/toTitleCase";
 import ReadOnlySuffix from "../../components/ReadOnlySuffix";
 
 const { Option } = Select;
@@ -328,7 +327,7 @@ const ModifyProductModal = ({
     const colorIdList = colorList.map((value) => value.colorId);
     addProduct(
       values.id,
-      toTitleCase(values.name),
+      values.name.toUpperCase(),
       values.description,
       values.category,
       values.price,
@@ -348,7 +347,7 @@ const ModifyProductModal = ({
     ) {
       editProductInfo(
         values.id,
-        toTitleCase(values.name),
+        values.name.toUpperCase(),
         values.description,
         values.price
       );
@@ -492,7 +491,7 @@ const ModifyProductModal = ({
       onCancel={onCancel}
       centered
       width={"45%"}
-      footer={getModalFooter({ onCancel, handleOk })}
+      footer={getModalFooter({ handleCancel: onCancel, handleOk })}
       className="width-modal"
     >
       <Spin spinning={loading}>
@@ -539,7 +538,7 @@ const ModifyProductModal = ({
                     ]}
                     className="form-item"
                   >
-                    <Input className="input capitalize" />
+                    <Input className="input uppercase" />
                   </Form.Item>
                 </td>
               </tr>

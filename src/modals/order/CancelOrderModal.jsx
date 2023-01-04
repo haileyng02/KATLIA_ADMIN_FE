@@ -71,7 +71,7 @@ const CancelOrderModal = ({
       onCancel={onCancel}
       centered
       width={700}
-      footer={getModalFooter({ onCancel, handleOk })}
+      footer={getModalFooter({ handleCancel: onCancel, handleOk })}
     >
       <Spin spinning={loading}>
         <h2 className="font-medium text-[20px]">Cancel Reason</h2>

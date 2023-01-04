@@ -301,7 +301,7 @@ const DiscountProductsModal = ({
       open={open}
       onCancel={onCancel}
       centered
-      footer={getModalFooter({ onCancel, handleOk })}
+      footer={getModalFooter({ handleCancel: onCancel, handleOk })}
       width={"50%"}
     >
       <div className="overflow-y-scroll h-[65vh] px-4">

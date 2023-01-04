@@ -203,7 +203,7 @@ const AddItemsModal = ({
       onCancel={onCancel}
       centered
       width={700}
-      footer={getModalFooter({ onCancel, handleOk })}
+      footer={getModalFooter({ handleCancel: onCancel, handleOk })}
     >
       <Spin spinning={loading}>
         <Form form={form}>
