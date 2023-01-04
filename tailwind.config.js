@@ -30,7 +30,8 @@ module.exports = {
         'black70': 'rgba(0,0,0,0.7)',
         'black80': 'rgba(0,0,0,0.8)',
         'kaliablue': "#223263",
-        'kaliayellow': "#F9AF5E"
+        'kaliayellow': "#F9AF5E",
+        'error':'#ff4d4f'
       },
       fontSize: {
         '13': ['13px', '13px'],
