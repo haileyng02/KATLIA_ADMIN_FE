@@ -215,7 +215,7 @@ const Promotion = () => {
       <div className="mt-[12px] flex justify-end gap-x-[10px]">
         <button
           onClick={handleAdd}
-          className="px-[17px] py-[11px] rounded-5 bg-primary text-[#9098B1] font-bold text-14"
+          className="px-[17px] h-[40px] rounded-5 bg-primary text-[#9098B1] font-bold text-14"
         >
           Add Discount
         </button>
