@@ -241,24 +241,26 @@ const ImportTab = () => {
         </Form>
       </Spin>
       <Divider />
-      <div className="row gap-x-5 justify-end">
+      <div className="between-row">
+        <div className="row gap-x-5">
+          <button
+            onClick={() => setAddOpen(true)}
+            className="import-button border-customer-primary text-customer-primary"
+          >
+            Add items
+          </button>
+          <button
+            onClick={handleDeleteAll}
+            className="import-button border-[#FF0000] text-[#FF0000]"
+          >
+            Delete All
+          </button>  
+        </div>
         <button
           onClick={handleConfirmImport}
           className="w-[189px] h-[34px] rounded-5 bg-secondary text-white font-inter font-bold text-15"
         >
           CONFIRM IMPORT
-        </button>
-        <button
-          onClick={() => setAddOpen(true)}
-          className="import-button border-customer-primary text-customer-primary"
-        >
-          Add items
-        </button>
-        <button
-          onClick={handleDeleteAll}
-          className="import-button border-[#FF0000] text-[#FF0000]"
-        >
-          Delete All
         </button>
       </div>
       <ImportTable
