@@ -141,7 +141,7 @@ const ColorList = ({
           </tr>
         </React.Fragment>
       ))}
-      <tr>
+      {!currItem && <tr>
         <th>
           <button
             ref={scrollRef}
@@ -152,7 +152,7 @@ const ColorList = ({
           </button>
         </th>
         <td></td>
-      </tr>
+      </tr>}
     </>
   );
 };

@@ -587,7 +587,7 @@ const ModifyProductModal = ({
                         message: "Invalid format.",
                         validator: (_, value) => {
                           if (
-                            value.match(/^[A-Za-z]+(?:,[A-Za-z]+)*$/) ||
+                            value.match(/^[A-Za-z0-9]+(?:,[A-Za-z0-9]+)*$/) ||
                             value === ""
                           ) {
                             return Promise.resolve();
