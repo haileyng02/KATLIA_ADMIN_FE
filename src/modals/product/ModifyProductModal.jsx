@@ -9,7 +9,6 @@ import * as routes from "../../api/apiRoutes";
 import { getCategories } from "../../actions/categories";
 import getModalFooter from "../../utils/getModalFooter";
 import getReadOnlyProps from "../../utils/readOnlyProps";
-import toTitleCase from "../../utils/toTitleCase";
 import ReadOnlySuffix from "../../components/ReadOnlySuffix";
 
 const { Option } = Select;
@@ -492,7 +491,7 @@ const ModifyProductModal = ({
       onCancel={onCancel}
       centered
       width={"45%"}
-      footer={getModalFooter({ onCancel, handleOk })}
+      footer={getModalFooter({ handleCancel: onCancel, handleOk })}
       className="width-modal"
     >
       <Spin spinning={loading}>
