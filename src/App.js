@@ -10,9 +10,9 @@ import { Main, Orders, Products, Import, Staff, User, Promotion, Statistic, Logi
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {currentUser} = useSelector((state)=>state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const [role, setRole] = useState();
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   //Get user me
   const getUserMe = async (item) => {
@@ -48,22 +48,24 @@ function App() {
       else {
         localStorage.removeItem('user');
         navigate('/login');
+        setLoading(false);
       }
     }
     else {
       navigate('/login');
+      setLoading(false);
     }
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     if (currentUser) {
       setRole(currentUser.role);
     }
-  },[currentUser])
-  
+  }, [currentUser])
+
   return (
     <Routes>
-      <Route path='/' element={<Main loading={loading}/>}>
+      <Route path='/' element={<Main loading={loading} />}>
         {role && <>
           <Route index element={role === 'STORAGE' ? <Products /> : <Orders />} />
           {(role === 'SALES' || role === 'ADMIN') && <Route path='orders' element={<Orders />} />}
@@ -78,7 +80,7 @@ function App() {
         </>}
       </Route>
       <Route path='login' element={<Login />} />
-      <Route path='*' element={loading ? <Main/> : <NotFound />} />
+      <Route path='*' element={loading ? <Main /> : <NotFound />} />
     </Routes>
   );
 }
