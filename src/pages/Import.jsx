@@ -1,22 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Tabs } from "antd";
+import appApi from "../api/appApi";
+import * as routes from "../api/apiRoutes";
 import HistoryTab from "../components/HistoryTab";
 import ImportTab from "../components/ImportTab";
 
-const tabItems = [
-  {
-    label: "History",
-    key: 0,
-    children: <HistoryTab />,
-  },
-  {
-    label: "Import",
-    key: 1,
-    children: <ImportTab />,
-  },
-];
-
 const Import = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
+  const [currTab, setCurrTab] = useState(0);
+
   //Import info
   // const importInfo = async () => {
   //   try {
@@ -40,7 +35,59 @@ const Import = () => {
   //     }
   //   }
   // }
-  
+
+  //get staff import history
+  const getStaffImportHistory = async () => {
+    setLoading(true);
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.STAFF_IMPORT_HISTORY,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result.data);
+      setData(
+        result.data.map((d, i) => {
+          return { ...d, key: i };
+        })
+      );
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+    setLoading(false);
+  };
+
+  const tabItems = [
+    {
+      label: "History",
+      key: 0,
+      children: (
+        <HistoryTab
+          data={data}
+          loading={loading}
+          setLoading={setLoading}
+          getStaffImportHistory={getStaffImportHistory}
+        />
+      ),
+    },
+    {
+      label: "Import",
+      key: 1,
+      children: (
+        <ImportTab
+          getStaffImportHistory={getStaffImportHistory}
+          setCurrTab={setCurrTab}
+        />
+      ),
+    },
+  ];
+
   return (
     <div>
       <div className="row">
@@ -51,7 +98,8 @@ const Import = () => {
         type="card"
         items={tabItems}
         tabPosition="top"
-        className=""
+        onChange={setCurrTab}
+        activeKey={currTab}
       />
     </div>
   );

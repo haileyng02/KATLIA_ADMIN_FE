@@ -10,13 +10,11 @@ import getImportStatus from "../utils/getImportStatus";
 import dayjs from "dayjs";
 import WarningModal from "../modals/WarningModal";
 
-const HistoryTab = () => {
+const HistoryTab = ({data,loading,setLoading,getStaffImportHistory}) => {
   const { currentUser } = useSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
   const [detailOpen, setDetailOpen] = useState(false);
   const [warning, setWarning] = useState("");
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(false);
   const [filteredInfo, setFilteredInfo] = useState({});
   const [option, setOption] = useState();
   const [currItem, setCurrItem] = useState();
@@ -131,34 +129,7 @@ const HistoryTab = () => {
         </div>
       ),
     },
-  ];
-
-  //get staff import history
-  const getStaffImportHistory = async () => {
-    setLoading(true);
-    try {
-      const token = currentUser.token;
-      const result = await appApi.get(
-        routes.STAFF_IMPORT_HISTORY,
-        routes.getAccessTokenHeader(token)
-      );
-      console.log(result.data);
-      setData(
-        result.data.map((d, i) => {
-          return { ...d, key: i };
-        })
-      );
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      } else {
-        console.log(err.message);
-      }
-    }
-    setLoading(false);
-  };
+  ]; 
 
   //Confirm import
   const confirmImport = async (id) => {
