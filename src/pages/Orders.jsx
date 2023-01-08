@@ -177,7 +177,6 @@ const Orders = () => {
         routes.GET_ALL_ORDER,
         routes.getAccessTokenHeader(token)
       );
-      console.log(result.data)
       setData(
         result.data.map((d, i) => {
           return { ...d, key: i };
