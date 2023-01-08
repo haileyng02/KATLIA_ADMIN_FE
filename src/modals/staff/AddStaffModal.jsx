@@ -71,7 +71,7 @@ const AddStaffModal = ({ open, handleCancel, getStaff }) => {
       centered
       confirmLoading={true}
       width={"40%"}
-      footer={getModalFooter({ onCancel, handleOk })}
+      footer={getModalFooter({ handleCancel: onCancel, handleOk })}
     >
       <Spin spinning={loading}>
         <Form form={form}>

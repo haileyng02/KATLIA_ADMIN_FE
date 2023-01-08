@@ -1,6 +1,7 @@
 const initialState = {
     promoProducts: null,
-    allProducts: null
+    allProducts: null,
+    nextProductId : null
 }
 
 export const productReducer = (state = initialState, action) => {
@@ -13,7 +14,8 @@ export const productReducer = (state = initialState, action) => {
         case 'GET_PRODUCTS':
             return {
                 ...state,
-                allProducts: action.payload,
+                allProducts: action.payload.products,
+                nextProductId: action.payload.nextId
             }
         default:
             return state;

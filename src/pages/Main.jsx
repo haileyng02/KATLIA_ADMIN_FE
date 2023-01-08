@@ -18,7 +18,8 @@ const Main = () => {
           height:61,
           ml: { sm: `${drawerWidth}px` },
           backgroundColor: "white",
-          justifyContent:'center'
+          justifyContent:'center',
+          zIndex:10
         }}
       >
         <Toolbar className="flex justify-end">

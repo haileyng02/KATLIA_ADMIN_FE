@@ -65,8 +65,16 @@ div.row {
   @apply h-[34px] border-1 border-black rounded-5 px-[10px] text-15 hover:border-secondary hover:text-secondary;
 }
 
+.error-cancel-button {
+  @apply h-[34px] border-1 border-black70 text-black70 rounded-5 px-[10px] text-15 hover:border-black hover:text-black;
+}
+
 .confirm-button {
   @apply h-[34px] bg-[#F9AF5EE5] rounded-5 px-[10px] text-15 text-white ml-5 hover:bg-[#C85A27];
+}
+
+.error-confirm-button {
+  @apply h-[34px] bg-error hover:brightness-125 rounded-5 px-[10px] text-15 text-white ml-5;
 }
 
 .import-button {
@@ -74,11 +82,11 @@ div.row {
 }
 
 .add-color-button {
-  @apply w-[90px] h-[34px] border-1 border-black50 text-15 text-black50 rounded-5 hover:border-secondary hover:text-secondary
+  @apply w-[90px] h-[34px] border-1 border-black50 text-15 text-black50 rounded-5 hover:border-secondary hover:text-secondary;
 }
 
-.ant-btn-primary{
-  @apply bg-[#F9AF5E]
+.ant-btn-primary {
+  @apply bg-[#F9AF5E];
 }
 
 .ant-btn-link {
@@ -116,11 +124,11 @@ div.row {
 }
 
 .ant-table-column-title {
-  @apply text-[18px] font-semibold
+  @apply text-[18px] font-semibold;
 }
 
 .ant-table-thead {
-  @apply text-[18px]
+  @apply text-[18px];
 }
 
 .options .ant-segmented-group {
@@ -136,7 +144,7 @@ div.row {
 }
 
 .ant-select-item-option-content {
-  @apply text-[16px]
+  @apply text-[16px];
 }
 
 .ant-segmented-item-label {
@@ -169,8 +177,8 @@ div.row {
   @apply text-right font-inter font-medium w-0 whitespace-nowrap text-20;
 }
 
-.modal-table.input-table th  {
-  @apply align-top pt-[5px]
+.modal-table.input-table th {
+  @apply align-top pt-[5px];
 }
 
 .modal-table td {
@@ -178,7 +186,7 @@ div.row {
 }
 
 .overflow-modal {
-  @apply overflow-y-auto h-[65vh] px-4
+  @apply overflow-y-auto h-[65vh] px-4;
 }
 
 .input {
@@ -186,20 +194,32 @@ div.row {
 }
 
 .login-input {
-  @apply w-full h-[52px] border-[0.6px] border-[#828282] rounded-lg mt-[30px] text-[20px] text-[#828282]
+  @apply w-full h-[52px] border-[0.6px] border-[#828282] rounded-lg mt-[30px] text-[20px] text-[#828282];
 }
 
 .ant-input-number {
-  @apply flex items-center
+  @apply flex items-center;
 }
 
 .ant-input-number-input-wrap {
-  @apply text-[16px]
+  @apply text-[16px];
+}
+
+input:read-only {
+  @apply cursor-not-allowed
 }
 
 .ant-select-selector {
   border-color: black !important;
   box-shadow: none !important;
+}
+
+.ant-select-disabled:where(.css-dev-only-do-not-override-z6wftn).ant-select:not(
+    :where(.css-dev-only-do-not-override-z6wftn).ant-select-customize-input
+  )
+  .ant-select-selector {
+    background: rgba(0, 0, 0, 0);
+    color: rgba(0, 0, 0, 1);
 }
 
 .ant-upload-wrapper.ant-upload-picture-card-wrapper::before,
@@ -291,5 +311,5 @@ div.row {
 }
 
 .ant-modal-root .ant-modal-centered .ant-modal:not(.width-modal) {
-  @apply min-w-fit
+  @apply min-w-fit;
 }
