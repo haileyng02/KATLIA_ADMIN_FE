@@ -149,6 +149,31 @@ const User = () => {
     setCurrItem(value);
   };
 
+  //Get user me
+  const getUserMe = async () => {
+    try {
+      const token = currentUser.token;
+      const result = await appApi.get(
+        routes.USER_ME,
+        routes.getAccessTokenHeader(token)
+      );
+      console.log(result.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) getUserMe();
+  }, [currentUser]);
+
   return (
     <div>
       <div className="row">
