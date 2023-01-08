@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -32,50 +31,13 @@ import {
 import { logOut } from "../actions/auth";
 import logOutIcon from "../images/log-out.svg";
 
-const navItems = [
-  {
-    title: "Orders",
-    icon: ordersIcon,
-    selectedIcon: ordersIcon2,
-  },
-  {
-    title: "Products",
-    icon: productsIcon,
-    selectedIcon: productsIcon2,
-  },
-  {
-    title: "Import",
-    icon: importIcon,
-    selectedIcon: importIcon2,
-  },
-  {
-    title: "Staff",
-    icon: staffIcon,
-    selectedIcon: staffIcon2,
-  },
-  {
-    title: "User",
-    icon: userIcon,
-    selectedIcon: userIcon2,
-  },
-  {
-    title: "Discount",
-    icon: promotionIcon,
-    selectedIcon: promotionIcon2,
-  },
-  {
-    title: "Statistic",
-    icon: statisticIcon,
-    selectedIcon: statisticIcon2,
-  },
-];
-
-const AppMenu = ({ drawerWidth }) => {
+const AppMenu = ({ drawerWidth, currentUser }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [logOutOpen, setLogOutOpen] = useState(false);
   const [currNav, setCurrNav] = useState("orders");
+  const [navItems, setNavItems] = useState([]);
 
   const handleNavClick = (path) => {
     navigate("/" + path.toLowerCase());
@@ -85,9 +47,93 @@ const AppMenu = ({ drawerWidth }) => {
   useEffect(() => {
     const path = window.location.pathname;
     let nav = path.substring(1);
-    if (nav === "") nav = "orders";
+    if (nav === "") {
+      if (currentUser) {
+        if (currentUser.role === "STORAGE") {
+          nav = "products";
+        } else {  
+          nav = "orders";
+        }
+      }
+    }
     setCurrNav(nav);
-  }, [navigate]);
+  }, [navigate,currentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      switch (currentUser.role) {
+        case "ADMIN":
+          setNavItems([
+            {
+              title: "Orders",
+              icon: ordersIcon,
+              selectedIcon: ordersIcon2,
+            },
+            {
+              title: "Products",
+              icon: productsIcon,
+              selectedIcon: productsIcon2,
+            },
+            {
+              title: "Import",
+              icon: importIcon,
+              selectedIcon: importIcon2,
+            },
+            {
+              title: "Staff",
+              icon: staffIcon,
+              selectedIcon: staffIcon2,
+            },
+            {
+              title: "User",
+              icon: userIcon,
+              selectedIcon: userIcon2,
+            },
+            {
+              title: "Discount",
+              icon: promotionIcon,
+              selectedIcon: promotionIcon2,
+            },
+            {
+              title: "Statistic",
+              icon: statisticIcon,
+              selectedIcon: statisticIcon2,
+            },
+          ]);
+          break;
+        case "SALES":
+          setNavItems([
+            {
+              title: "Orders",
+              icon: ordersIcon,
+              selectedIcon: ordersIcon2,
+            },
+            {
+              title: "Products",
+              icon: productsIcon,
+              selectedIcon: productsIcon2,
+            },
+          ]);
+          break;
+        case "STORAGE":
+          setNavItems([
+            {
+              title: "Products",
+              icon: productsIcon,
+              selectedIcon: productsIcon2,
+            },
+            {
+              title: "Import",
+              icon: importIcon,
+              selectedIcon: importIcon2,
+            },
+          ]);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [currentUser]);
 
   const handleLogOut = () => {
     localStorage.clear();
@@ -141,7 +187,6 @@ const AppMenu = ({ drawerWidth }) => {
           </ListItem>
         ))}
       </List>
-      <Divider />
       <Box className="flex-1" sx={{ backgroundColor: "#C85A27" }} />
       <Box sx={{ height: 60 }}>
         <Button
@@ -152,7 +197,7 @@ const AppMenu = ({ drawerWidth }) => {
             textTransform: "none",
             color: "black",
             fontFamily: "Inter",
-            fontSize:20
+            fontSize: 20,
           }}
           onClick={() => setLogOutOpen(true)}
         >

@@ -11,7 +11,7 @@ import AddItemsModal from "../modals/import/AddItemsModal";
 import WarningModal from "../modals/WarningModal";
 import ErrorModal from "../modals/ErrorModal";
 
-const ImportTab = () => {
+const ImportTab = ({ getStaffImportHistory, setCurrTab }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [form] = Form.useForm();
   const { enqueueSnackbar } = useSnackbar();
@@ -111,9 +111,11 @@ const ImportTab = () => {
       console.log(result.data);
       enqueueSnackbar("Imported items successfully!", { variant: "success" });
       handleUpdateForm();
+      setCurrTab(0);
+      getStaffImportHistory();
     } catch (err) {
       if (err.response) {
-        setErrText(err.response.data.message)
+        setErrText(err.response.data.message);
       } else {
         console.log(err.message);
       }
@@ -254,7 +256,7 @@ const ImportTab = () => {
             className="import-button border-[#FF0000] text-[#FF0000]"
           >
             Delete All
-          </button>  
+          </button>
         </div>
         <button
           onClick={handleConfirmImport}
@@ -286,10 +288,10 @@ const ImportTab = () => {
         handleCancel={() => setWarningOpen(false)}
         handleOk={confirm ? handleConfirmWarningOk : handleWarningOk}
       />
-      <ErrorModal 
+      <ErrorModal
         text={errText}
         open={errText !== ""}
-        handleCancel={()=>setErrText("")}
+        handleCancel={() => setErrText("")}
       />
     </div>
   );

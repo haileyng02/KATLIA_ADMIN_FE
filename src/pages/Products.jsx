@@ -128,9 +128,11 @@ const Products = () => {
         ) : null}
       </div>
       <div className="mt-[15px] buttons-row justify-end">
-        <button onClick={handleAdd} className="button">
-          Add Item
-        </button>
+        {currentUser?.role === "ADMIN" && (
+          <button onClick={handleAdd} className="button">
+            Add Item
+          </button>
+        )}
         <button onClick={() => setFilteredInfo({})} className="clear-button">
           <p>Clear Filter</p>
         </button>
@@ -143,6 +145,7 @@ const Products = () => {
         handleDeleteProduct={handleDeleteProduct}
         filteredInfo={filteredInfo}
         setFilteredInfo={setFilteredInfo}
+        currentUser={currentUser}
       />
       <ProductDetailModal
         open={detailOpen}

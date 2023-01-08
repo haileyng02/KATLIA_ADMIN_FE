@@ -13,6 +13,7 @@ const ProductTable = ({
   handleDeleteProduct,
   filteredInfo,
   setFilteredInfo,
+  currentUser,
 }) => {
   const searchInput = useRef(null);
   const [searchText, setSearchText] = useState("");
@@ -116,7 +117,7 @@ const ProductTable = ({
           searchWords={[searchText]}
           autoEscape
           textToHighlight={text ? text.toString() : ""}
-          className='table-cell'
+          className="table-cell"
         />
       ) : (
         <p className="table-cell">{text}</p>
@@ -185,28 +186,32 @@ const ProductTable = ({
               </center>
             </button>
           </Tooltip>
-          <Tooltip title="Edit product">
-            <button
-              className="action-button"
-              style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
-              onClick={() => handleEdit(value)}
-            >
-              <center>
-                <img src={editIcon} alt="Edit" />
-              </center>
-            </button>
-          </Tooltip>
-          <Tooltip title="Delete this product">
-            <button
-              className="action-button"
-              style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
-              onClick={() => handleDeleteProduct(value)}
-            >
-              <center>
-                <img src={deleteIcon} alt="Delete" />
-              </center>
-            </button>
-          </Tooltip>
+          {currentUser?.role === "ADMIN" && (
+            <>
+              <Tooltip title="Edit product">
+                <button
+                  className="action-button"
+                  style={{ backgroundColor: "rgba(249, 175, 94, 0.9)" }}
+                  onClick={() => handleEdit(value)}
+                >
+                  <center>
+                    <img src={editIcon} alt="Edit" />
+                  </center>
+                </button>
+              </Tooltip>
+              <Tooltip title="Delete this product">
+                <button
+                  className="action-button"
+                  style={{ backgroundColor: "rgba(253, 56, 56, 0.9)" }}
+                  onClick={() => handleDeleteProduct(value)}
+                >
+                  <center>
+                    <img src={deleteIcon} alt="Delete" />
+                  </center>
+                </button>
+              </Tooltip>
+            </>
+          )}
         </div>
       ),
     },
