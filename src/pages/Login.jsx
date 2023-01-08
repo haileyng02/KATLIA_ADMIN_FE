@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Input, Form, Spin } from "antd";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
-import signInProcess from "../utils/signInProcess";
+import { signIn } from "../actions/auth";
 import decorationImage from "../images/login-decoration.png";
 
 const Login = () => {
@@ -22,12 +22,9 @@ const Login = () => {
         routes.getSigninBody(email, password)
       );
       console.log(result);
-      signInProcess({
-        token: result.data.access_token,
-        dispatch,
-        navigate,
-      });
+      handleSignIn(result.data.access_token);
     } catch (err) {
+      setLoading(false);
       if (err.response) {
         const message = err.response.data.message;
         if (message === "User's not exist") {
@@ -52,6 +49,27 @@ const Login = () => {
         console.log(err.message);
       }
     }
+  };
+
+  //Get user me
+  const getUserMe = async (item) => {
+    try {
+      const result = await appApi.get(
+        routes.USER_ME,
+        routes.getAccessTokenHeader(item.token)
+      );
+      dispatch(signIn({ ...item, ...result.data }));
+      localStorage.setItem("user", JSON.stringify({ ...item, ...result.data }));
+      navigate("/");
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else {
+        console.log(err.message);
+      }
+    }
     setLoading(false);
   };
 
@@ -59,6 +77,17 @@ const Login = () => {
     form.validateFields().then((values) => {
       signInWithEmailAndPassword(values.email, values.password);
     });
+  };
+
+  const handleSignIn = (token) => {
+    //Local storage for user remembering
+    const date = new Date();
+    date.setDate(date.getDate() + 30);
+    const item = {
+      token: token,
+      expiry: date,
+    };
+    getUserMe(item);
   };
 
   return (
