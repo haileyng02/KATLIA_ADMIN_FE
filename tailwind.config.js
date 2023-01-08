@@ -18,6 +18,7 @@ module.exports = {
         primary: 'rgba(249, 175, 94, 0.57)',
         secondary: "rgba(249, 175, 94, 0.9)",
         'customer-primary': 'rgba(200, 90, 39, 0.57)',
+        'customer-secondary': '#C85A27',
         divider: "#ABABAB",
         'header': '#D9D9D9',
         'placeholder': 'rgba(0, 0, 0, 0.25)',
@@ -53,7 +54,8 @@ module.exports = {
         'inder': ['Inder'],
         'kopub-batang': ['KoPub Batang'],
         'inconsolata': ['Inconsolata'],
-        'poppins': ['Poppins']
+        'poppins': ['Poppins'],
+        'montserrat': ['Montserrat']
       },
       borderWidth: {
         '1': '1px',

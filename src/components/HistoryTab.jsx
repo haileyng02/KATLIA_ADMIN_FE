@@ -10,7 +10,7 @@ import getImportStatus from "../utils/getImportStatus";
 import dayjs from "dayjs";
 import WarningModal from "../modals/WarningModal";
 
-const HistoryTab = ({data,loading,setLoading,getStaffImportHistory}) => {
+const HistoryTab = ({ data, loading, setLoading, getStaffImportHistory }) => {
   const { currentUser } = useSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
   const [detailOpen, setDetailOpen] = useState(false);
@@ -90,46 +90,49 @@ const HistoryTab = ({data,loading,setLoading,getStaffImportHistory}) => {
               </center>
             </button>
           </Tooltip>
-          <Tooltip title={value.status === 1 && "Confirm import"}>
-            <button
-              className={`action-button ${
-                value.status !== 1 && "cursor-not-allowed"
-              }`}
-              style={{
-                backgroundColor:
-                  value.status === 1 ? "#60BE80" : "#CDCDCD",
-              }}
-              onClick={
-                value.status === 1 ? () => handleConfirmImport(value) : null
-              }
-            >
-              <center>
-                <img src={checkIcon} alt="Check" />
-              </center>
-            </button>
-          </Tooltip>
-          <Tooltip title={value.status === 1 && "Cancel this import"}>
-            <button
-              className={`action-button ${
-                value.status !== 1 && "cursor-not-allowed"
-              }`}
-              style={{
-                backgroundColor:
-                  value.status === 1 ? "rgba(253, 56, 56, 0.9)" : "#CDCDCD",
-              }}
-              onClick={
-                value.status === 1 ? () => handleCancelImport(value) : null
-              }
-            >
-              <center>
-                <img src={cancelIcon} alt="Cancel" />
-              </center>
-            </button>
-          </Tooltip>
+          {currentUser?.role === "ADMIN" && (
+            <>
+              <Tooltip title={value.status === 1 && "Confirm import"}>
+                <button
+                  className={`action-button ${
+                    value.status !== 1 && "cursor-not-allowed"
+                  }`}
+                  style={{
+                    backgroundColor: value.status === 1 ? "#60BE80" : "#CDCDCD",
+                  }}
+                  onClick={
+                    value.status === 1 ? () => handleConfirmImport(value) : null
+                  }
+                >
+                  <center>
+                    <img src={checkIcon} alt="Check" />
+                  </center>
+                </button>
+              </Tooltip>
+              <Tooltip title={value.status === 1 && "Cancel this import"}>
+                <button
+                  className={`action-button ${
+                    value.status !== 1 && "cursor-not-allowed"
+                  }`}
+                  style={{
+                    backgroundColor:
+                      value.status === 1 ? "rgba(253, 56, 56, 0.9)" : "#CDCDCD",
+                  }}
+                  onClick={
+                    value.status === 1 ? () => handleCancelImport(value) : null
+                  }
+                >
+                  <center>
+                    <img src={cancelIcon} alt="Cancel" />
+                  </center>
+                </button>
+              </Tooltip>
+            </>
+          )}
         </div>
       ),
     },
-  ]; 
+  ];
 
   //Confirm import
   const confirmImport = async (id) => {
