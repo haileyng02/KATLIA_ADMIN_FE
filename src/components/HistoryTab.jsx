@@ -24,21 +24,18 @@ const HistoryTab = ({ data, loading, setLoading, getStaffImportHistory }) => {
       title: "Import ID",
       dataIndex: "id",
       sorter: (a, b) => a.id?.localeCompare(b.id),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Staff's Name",
       dataIndex: "staffName",
       sorter: (a, b) => a.staffName?.localeCompare(b.staffName),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Date",
       dataIndex: "date",
       sorter: (a, b) => a.date?.localeCompare(b.date),
-      defaultSortOrder: "descend",
       render: (value) => (
         <p className="table-cell">{dayjs(value).format("DD/MM/YYYY")}</p>
       ),
@@ -47,7 +44,6 @@ const HistoryTab = ({ data, loading, setLoading, getStaffImportHistory }) => {
       title: "Price",
       dataIndex: "total",
       sorter: (a, b) => a.total - b.total,
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"$" + value}</p>,
     },
     {
@@ -61,7 +57,6 @@ const HistoryTab = ({ data, loading, setLoading, getStaffImportHistory }) => {
         getImportStatus(a.status).text?.localeCompare(
           getImportStatus(b.status).text
         ),
-      defaultSortOrder: "descend",
       render: (value) => (
         <center>
           <p

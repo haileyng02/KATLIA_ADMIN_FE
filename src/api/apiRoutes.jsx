@@ -12,12 +12,12 @@ export const getSigninBody = (email, password) => ({
 });
 
 //GET PRODUCT DETAIL
-export const GET_PRODUCT_DETAIL = (id) => `/product/getProductDetail/${id}`
+export const GET_PRODUCT_DETAIL = (id) => `/product/getProductDetail/${id}`;
 export const getProductDetailIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //GET ALL PRODUCTS
 export const GET_ALL_PRODUCTS = "/product-admin/getAllProducts";
@@ -48,73 +48,76 @@ export const getAddProductBody = (
 });
 
 //ADD AN IMAGE FOR PRODUCT
-export const ADD_AN_IMAGE_FOR_PRODUCT = '/product-admin/addAnImageForProduct'
+export const ADD_AN_IMAGE_FOR_PRODUCT = "/product-admin/addAnImageForProduct";
 export const getAddAnImageForProductBody = (productId, colorId) => ({
   params: {
     productId: productId,
-    colorId: colorId
-  }
-})
+    colorId: colorId,
+  },
+});
 
 //SET DEFAULT PIC FOR PRODUCT
-export const SET_DEFAULT_PIC_FOR_PRODUCT = (id) => `/product-admin/setDefaultPicForProduct/${id}`
+export const SET_DEFAULT_PIC_FOR_PRODUCT = (id) =>
+  `/product-admin/setDefaultPicForProduct/${id}`;
 export const getSetDefaultPicForProductIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //EDIT PRODUCT INFO
-export const EDIT_PRODUCT_INFO = (id) => `/product-admin/editProductInfo/${id}`
+export const EDIT_PRODUCT_INFO = (id) => `/product-admin/editProductInfo/${id}`;
 export const getEditProductInfoIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 export const getEditProductInfoBody = (name, description, price) => ({
   name: name,
   description: description,
-  price: price
-})
+  price: price,
+});
 
 //DELETE PRODUCT IMAGE BY COLOR
-export const DELETE_PRODUCT_IMAGE_BY_COLOR = '/product-admin/deleteProductImageByColor'
+export const DELETE_PRODUCT_IMAGE_BY_COLOR =
+  "/product-admin/deleteProductImageByColor";
 export const getDeleteProductImageByColorParams = (productId, colorId) => ({
   params: {
     productId: productId,
-    colorId: colorId
-  }
-})
+    colorId: colorId,
+  },
+});
 
 //DELETE ALL IMAGE OF PRODUCT
-export const DELETE_ALL_IMAGE_OF_PRODUCT = (id) => `/product-admin/deleteAllImageOfProduct/${id}`
+export const DELETE_ALL_IMAGE_OF_PRODUCT = (id) =>
+  `/product-admin/deleteAllImageOfProduct/${id}`;
 export const getDeleteAllImageOfProductParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //DELETE AN IMAGE
-export const DELETE_AN_IMAGE = (id) => `/product-admin/deleteAnImage/${id}`
+export const DELETE_AN_IMAGE = (id) => `/product-admin/deleteAnImage/${id}`;
 export const getDeleteAnImageParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //DELETE SOME IMAGES
-export const DELETE_SOME_IMAGES = '/product-admin/deleteSomeImages'
+export const DELETE_SOME_IMAGES = "/product-admin/deleteSomeImages";
 export const getDeleteSomeImages = (idList) => ({
-  idList: idList
-})
+  idList: idList,
+});
 
 //DELETE PRODUCT
-export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`
+export const DELETE_PRODUCT = (id) => `/product-admin/deleteProduct/${id}`;
 export const getDeleteProductBody = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //GET ALL STAFF
 export const GET_ALL_STAFF = "/staff/getAllStaff";
@@ -123,8 +126,8 @@ export const GET_ALL_STAFF = "/staff/getAllStaff";
 export const UPDATE_STAFF = (id) => `/staff/updateStaff/${id}`;
 export const getUpdateStaffIdParams = (id) => ({
   params: {
-    id: id
-  }
+    id: id,
+  },
 });
 
 //ADD STAFF
@@ -140,126 +143,128 @@ export const getAddStaffBody = (email, role, startAt, status) => ({
 export const GET_ALL_USER = "/user/getAllUser";
 
 //GET PROFILE
-export const GET_PROFILE = '/profile/getProfile'
+export const GET_PROFILE = "/profile/getProfile";
 
 //CONFIRM IMPORT
-export const CONFIRM_IMPORT = (id) => `/import/confirmImport/${id}`
+export const CONFIRM_IMPORT = (id) => `/import/confirmImport/${id}`;
 export const getConfirmImportIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //CANCEL IMPORT
-export const CANCEL_IMPORT = (id) => `/import/cancelImport/${id}`
+export const CANCEL_IMPORT = (id) => `/import/cancelImport/${id}`;
 export const getCancelImportIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //STAFF-IMPORT/ IMPORT
-export const STAFF_IMPORT = '/staff-import/import'
+export const STAFF_IMPORT = "/staff-import/import";
 export const getStaffImportBody = (surcharge) => ({
-  surcharge: surcharge
-})
+  surcharge: surcharge,
+});
 
 //STAFF IMPORT HISTORY
-export const STAFF_IMPORT_HISTORY = '/staff-import/history'
+export const STAFF_IMPORT_HISTORY = "/staff-import/history";
 
 //STAFF-IMPORT/ IMPORT INFO
-export const IMPORT_INFO = (id) => `/staff-import/importInfo/${id}`
+export const IMPORT_INFO = (id) => `/staff-import/importInfo/${id}`;
 export const getImportInfo = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //STAFF-IMPORT/ DETAIL
-export const STAFF_IMPORT_DETAIL = (id) => `/staff-import/detail/${id}`
+export const STAFF_IMPORT_DETAIL = (id) => `/staff-import/detail/${id}`;
 export const getStaffImportDetail = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //IMPORT FORM INFO
-export const IMPORT_FORM_INFO = '/items/getImportFormInfo'
+export const IMPORT_FORM_INFO = "/items/getImportFormInfo";
 
 //ADD ITEMS INTO FORM
-export const ADD_ITEMS_INTO_FORM = '/items/addItemsIntoForm'
-export const getAddItemsIntoFormBody = (itemArray) => itemArray
+export const ADD_ITEMS_INTO_FORM = "/items/addItemsIntoForm";
+export const getAddItemsIntoFormBody = (itemArray) => itemArray;
 
 //PRODUCT SIZE FOR IMPORT
-export const PRODUCT_SIZE_FOR_IMPORT = (id) => `/items/getProductSizeForImport/${id}`
+export const PRODUCT_SIZE_FOR_IMPORT = (id) =>
+  `/items/getProductSizeForImport/${id}`;
 export const getProductSizeForImportIdParams = (id) => ({
   params: {
-    id: id
-  }
-}) 
+    id: id,
+  },
+});
 
 //PRODUCT COLOR FOR IMPORT
-export const PRODUCT_COLOR_FOR_IMPORT = (id) => `/items/getProductColorForImport/${id}`
+export const PRODUCT_COLOR_FOR_IMPORT = (id) =>
+  `/items/getProductColorForImport/${id}`;
 export const getProductColorForImportIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //GET ITEMS IN EXISTING FORM
-export const ITEMS_IN_EXISTING_FORM = '/items/getItemsInExistingForm'
+export const ITEMS_IN_EXISTING_FORM = "/items/getItemsInExistingForm";
 
 //DELETE AN ITEM
-export const DELETE_AN_ITEM = (id) => `/items/deleteAnItem/${id}`
+export const DELETE_AN_ITEM = (id) => `/items/deleteAnItem/${id}`;
 export const getDeleteAnItemIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //DELETE ALL ITEM
-export const DELETE_ALL_ITEMS = '/items/deleteAllItems'
+export const DELETE_ALL_ITEMS = "/items/deleteAllItems";
 
-//EDIT AN ITEM 
-export const EDIT_AN_ITEMS = (id) => `/items/editAnItem/${id}`
+//EDIT AN ITEM
+export const EDIT_AN_ITEMS = (id) => `/items/editAnItem/${id}`;
 export const getEditAnItemIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 export const getEditAnItemBody = (quantity, unitPrice) => ({
   quantity: quantity,
-  unitPrice: unitPrice
-})
+  unitPrice: unitPrice,
+});
 
 //GET ITEM DETAIL FOR UPDATE
-export const ITEM_DETAIL_FOR_UPDATE = (id) => `/items/getItemDetailForUpdate/${id}`
+export const ITEM_DETAIL_FOR_UPDATE = (id) =>
+  `/items/getItemDetailForUpdate/${id}`;
 export const getItemDetailForUpdateIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //UPDATE ORDER STATUS
-export const UPDATE_ORDER_STATUS = (id) => `/staff-order/updateOrderStatus/${id}`
+export const UPDATE_ORDER_STATUS = (id) =>
+  `/staff-order/updateOrderStatus/${id}`;
 export const getUpdateOrderStatusBody = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //CANCEL ORDER
-export const CANCEL_ORDER = (id) => `/staff-order/cancelOrder/${id}`
+export const CANCEL_ORDER = (id) => `/staff-order/cancelOrder/${id}`;
 export const getCancelOrderParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 export const getCancelOrderBody = (cancelReason) => ({
-  body: {
-    cancelReason: cancelReason
-  }
-})
+  cancelReason: cancelReason,
+});
 
 //GET ALL ORDER
 export const GET_ALL_ORDER = "/staff-order/getAllOrder";
@@ -268,93 +273,100 @@ export const GET_ALL_ORDER = "/staff-order/getAllOrder";
 export const GET_DETAIL_ORDER = (id) => `/staff-order/getDetailOrder/${id}`;
 export const getDetailOrderBody = (id) => ({
   params: {
-    id: id
-  }
+    id: id,
+  },
 });
 
 //GET PRICE ORDER
 export const GET_PRICE_ORDER = (id) => `/staff-order/getPriceOrder/${id}`;
 export const getPriceOrderBody = (id) => ({
   params: {
-    id: id
-  }
+    id: id,
+  },
 });
 
 //GET ALL COLORS
-export const GET_ALL_COLORS = '/filter/getAllColors'
+export const GET_ALL_COLORS = "/filter/getAllColors";
 
 //ADD NEW DISCOUNT
-export const ADD_NEW_DISCOUNT = '/discount/addNewDiscount'
-export const getAddNewDiscountBody = (discountName, percent, startAt, endAt) => ({
+export const ADD_NEW_DISCOUNT = "/discount/addNewDiscount";
+export const getAddNewDiscountBody = (
+  discountName,
+  percent,
+  startAt,
+  endAt
+) => ({
   discountName: discountName,
   percent: percent,
   startAt: startAt,
-  endAt: endAt
-})
+  endAt: endAt,
+});
 
 //EDIT LIST PRODUCTS FOR DISCOUNT
-export const EDIT_LIST_PRODUCTS_FOR_DISCOUNT = (id) => `/discount/editListProductsForDiscount/${id}`
+export const EDIT_LIST_PRODUCTS_FOR_DISCOUNT = (id) =>
+  `/discount/editListProductsForDiscount/${id}`;
 export const getEditListProductsForDiscountIdPrams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //EDIT DISCOUNT INFO
-export const EDIT_DISCOUNT_INFO = (id) => `/discount/editDiscountInfo/${id}`
+export const EDIT_DISCOUNT_INFO = (id) => `/discount/editDiscountInfo/${id}`;
 export const getEditDiscountInfoIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //DELETE DISCOUNT
-export const DELETE_DISCOUNT = (id) => `/discount/deleteDiscount/${id}`
+export const DELETE_DISCOUNT = (id) => `/discount/deleteDiscount/${id}`;
 export const getDeleteDiscountIdParams = (id) => ({
   params: {
-    id: id
-  }
-})
+    id: id,
+  },
+});
 
 //GET ALL CATEGORY
-export const GET_ALL_CATEGORY = '/category/getAll'
+export const GET_ALL_CATEGORY = "/category/getAll";
 
 //GET ALL DISCOUNT
-export const GET_ALL_DISCOUNT_LIST = '/discount/getAllDiscountList'
+export const GET_ALL_DISCOUNT_LIST = "/discount/getAllDiscountList";
 
 //GET STATISTIC USER
-export const GET_STATISTIC_USER = '/statistics/statisticsUser'
+export const GET_STATISTIC_USER = "/statistics/statisticsUser";
 
-//NEW ORDER OF MONTH 
-export const NEW_ORDER_OF_MONTH = '/statistics/newOrderOfMonth'
+//NEW ORDER OF MONTH
+export const NEW_ORDER_OF_MONTH = "/statistics/newOrderOfMonth";
 
 //ORDER PERCENT GROWTH
-export const ORDER_PERCENT_GROWTH = '/statistics/orderPercentGrowth'
+export const ORDER_PERCENT_GROWTH = "/statistics/orderPercentGrowth";
 
 //REVENUE OF MONTH
-export const REVENUE_OF_MONTH = '/statistics/revenueOfMonth'
+export const REVENUE_OF_MONTH = "/statistics/revenueOfMonth";
 
 //REVENUE PERCENT GROWTH
-export const REVENUE_PERCENT_GROWTH = '/statistics/revenuePercentGrowth'
+export const REVENUE_PERCENT_GROWTH = "/statistics/revenuePercentGrowth";
 
 //ORDER PER MONTH
-export const ORDER_PER_MONTH = (year) => `/statistics/orderPerMonth/${year}`
+export const ORDER_PER_MONTH = (year) => `/statistics/orderPerMonth/${year}`;
 export const getOrderPerMonthBody = (year) => ({
   params: {
-    year: year
-  }
-})
+    year: year,
+  },
+});
 
 //REVENUE PER MONTH
-export const REVENUE_PER_MONTH = (year) => `/statistics/revenuePerMonth/${year}`
+export const REVENUE_PER_MONTH = (year) =>
+  `/statistics/revenuePerMonth/${year}`;
 export const getRevenuePerMonthBody = (year) => ({
   params: {
-    year: year
-  }
-})
+    year: year,
+  },
+});
 
 //EXPENDITURE OF MONTH
-export const EXPENDITURE_OF_MONTH = '/statistics/ratio'
+export const EXPENDITURE_OF_MONTH = "/statistics/ratio";
 
 //GET USER ME
-export const USER_ME = '/user/me'
+export const USER_ME = "/user/me";

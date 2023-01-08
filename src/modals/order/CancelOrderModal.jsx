@@ -33,6 +33,7 @@ const CancelOrderModal = ({
 
   //Cancel order
   const cancelOrder = async (cancelReason) => {
+    console.log(cancelReason)
     setLoading(true);
     try {
       const token = currentUser.token;

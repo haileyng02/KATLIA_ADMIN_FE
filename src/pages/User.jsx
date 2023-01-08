@@ -19,28 +19,24 @@ const User = () => {
       title: "User ID",
       dataIndex: "id",
       sorter: (a, b) => a.id?.localeCompare(b.id),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Name",
       dataIndex: "fullName",
       sorter: (a, b) => a.fullName?.localeCompare(b.fullName),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Email",
       dataIndex: "email",
       sorter: (a, b) => a.email?.localeCompare(b.email),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
       sorter: (a, b) => a.phoneNumber?.localeCompare(b.phoneNumber),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
@@ -68,7 +64,6 @@ const User = () => {
       onFilter: (value, record) =>
         record.role?.indexOf(value.toUpperCase()) === 0,
       sorter: (a, b) => a.role?.localeCompare(b.role),
-      defaultSortOrder: "descend",
       render: (value) => getRole(value),
     },
     {

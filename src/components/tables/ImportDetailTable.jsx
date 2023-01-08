@@ -9,14 +9,12 @@ const columns = [
     title: "Product ID",
     dataIndex: "productId",
     sorter: (a, b) => a.productId - b.productId,
-    defaultSortOrder: "descend",
     render: (value) => <p className="table-cell">{"#" + value}</p>,
   },
   {
     title: "Product's Name",
     dataIndex: "name",
     sorter: (a, b) => a.name?.localeCompare(b.name),
-    defaultSortOrder: "descend",
     render: (value) => <p className="table-cell">{value}</p>,
   },
   {
@@ -24,7 +22,6 @@ const columns = [
     dataIndex: "color",
     align: "center",
     sorter: (a, b) => a.color?.localeCompare(b.color),
-    defaultSortOrder: "descend",
     render: (value) => (
       <center>
         <p className="table-cell uppercase text-center">{value}</p>
@@ -36,7 +33,6 @@ const columns = [
     dataIndex: "size",
     align: "center",
     sorter: (a, b) => a.size?.localeCompare(b.size),
-    defaultSortOrder: "descend",
     render: (value) => (
       <center>
         <p className="table-cell uppercase text-center">{value}</p>
@@ -48,7 +44,6 @@ const columns = [
     dataIndex: "unitPrice",
     align: "center",
     sorter: (a, b) => a.unitPrice - b.unitPrice,
-    defaultSortOrder: "descend",
     render: (value) => (
       <center>
         <p className="table-cell">{"$" + value}</p>
@@ -60,7 +55,6 @@ const columns = [
     dataIndex: "quantity",
     align: "center",
     sorter: (a, b) => a.quantity - b.quantity,
-    defaultSortOrder: "descend",
     render: (value) => (
       <center>
         <p className="table-cell">{value}</p>
@@ -70,7 +64,6 @@ const columns = [
   {
     title: "Total",
     align: "center",
-    defaultSortOrder: "descend",
     render: (value) => (
       <center>
         <p className="table-cell">
