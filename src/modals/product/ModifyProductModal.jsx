@@ -18,7 +18,7 @@ const ModifyProductModal = ({
   handleCancel,
   currItem,
   getAllProducts,
-  nextProductId
+  nextProductId,
 }) => {
   const [form] = Form.useForm();
   const { currentUser } = useSelector((state) => state.user);
@@ -42,8 +42,18 @@ const ModifyProductModal = ({
         routes.GET_ALL_CATEGORY,
         routes.getAccessTokenHeader(token)
       );
-      setCategoriesData(result.data);
-      dispatch(getCategories(result.data));
+      const formattedCategories = result.data.map((r) => {
+        return {
+          ...r,
+          category:
+            r.gender.charAt(0).toUpperCase() +
+            r.gender.slice(1) +
+            "'s " +
+            r.category,
+        };
+      })
+      setCategoriesData(formattedCategories);
+      dispatch(getCategories(formattedCategories));
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -460,11 +470,11 @@ const ModifyProductModal = ({
   useEffect(() => {
     if (!open) return;
     if (!currItem) {
-      form.setFieldValue('id',nextProductId);
+      form.setFieldValue("id", nextProductId);
       return;
     }
     getProductDetail(currItem.id);
-  }, [currItem,nextProductId,open]);
+  }, [currItem, nextProductId, open]);
 
   useEffect(() => {
     if (detail) {
