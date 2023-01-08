@@ -38,28 +38,24 @@ const Promotion = () => {
       title: "Discount ID",
       dataIndex: "id",
       sorter: (a, b) => a.id?.localeCompare(b.id),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Discount Name",
       dataIndex: "discountName",
       sorter: (a, b) => a.discountName?.localeCompare(b.discountName),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Percent",
       dataIndex: "percent",
       sorter: (a, b) => a.percent - b.percent,
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value + "%"}</p>,
     },
     {
       title: "Start At",
       dataIndex: "startAt",
       sorter: (a, b) => a.startAt?.localeCompare(b.startAt),
-      defaultSortOrder: "descend",
       render: (value) => (
         <p className="table-cell">{dayjs(value).format("HH:mm DD-MM-YYYY")}</p>
       ),
@@ -68,7 +64,6 @@ const Promotion = () => {
       title: "End At",
       dataIndex: "endAt",
       sorter: (a, b) => a.endAt?.localeCompare(b.endAt),
-      defaultSortOrder: "descend",
       render: (value) => (
         <p className="table-cell">{dayjs(value).format("HH:mm DD-MM-YYYY")}</p>
       ),

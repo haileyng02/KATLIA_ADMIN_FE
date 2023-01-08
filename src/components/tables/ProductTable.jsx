@@ -128,7 +128,6 @@ const ProductTable = ({
       title: "Product ID",
       dataIndex: "id",
       sorter: (a, b) => a.id - b.id,
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
@@ -136,7 +135,6 @@ const ProductTable = ({
       dataIndex: "name",
       ...getColumnSearchProps("name"),
       sorter: (a, b) => a.name?.localeCompare(b.name),
-      defaultSortOrder: "descend",
     },
     {
       title: "Image",
@@ -159,14 +157,12 @@ const ProductTable = ({
       filteredValue: filteredInfo.category || null,
       onFilter: (value, record) => record.category?.indexOf(value) === 0,
       sorter: (a, b) => a.category?.localeCompare(b.category),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Price",
       dataIndex: "price",
       sorter: (a, b) => a.price - b.price,
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"$" + value}</p>,
     },
     {

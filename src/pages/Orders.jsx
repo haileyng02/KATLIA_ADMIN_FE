@@ -36,21 +36,18 @@ const Orders = () => {
       title: "Order ID",
       dataIndex: "orderId",
       sorter: (a, b) => a.orderId?.localeCompare(b.orderId),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Customer's Name",
       dataIndex: "customerName",
       sorter: (a, b) => a.customerName?.localeCompare(b.customerName),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Address",
       dataIndex: "address",
       sorter: (a, b) => a.address?.localeCompare(b.address),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
@@ -60,7 +57,6 @@ const Orders = () => {
       onFilter: (value, record) =>
         dayjs(value).isSame(dayjs(record.createDate), "date"),
       sorter: (a, b) => a.createDate?.localeCompare(b.createDate),
-      defaultSortOrder: "descend",
       render: (value) => (
         <p className="table-cell">{dayjs(value).format("DD-MM-YYYY")}</p>
       ),
@@ -69,7 +65,6 @@ const Orders = () => {
       title: "Total",
       dataIndex: "total",
       sorter: (a, b) => a.total - b.total,
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"$" + value}</p>,
     },
     {
@@ -83,7 +78,6 @@ const Orders = () => {
         getOrderStatusText(a.status)?.localeCompare(
           getOrderStatusText(b.status)
         ),
-      defaultSortOrder: "descend",
       render: (value) => getStatus(value),
     },
     {
@@ -183,6 +177,7 @@ const Orders = () => {
         routes.GET_ALL_ORDER,
         routes.getAccessTokenHeader(token)
       );
+      console.log(result.data)
       setData(
         result.data.map((d, i) => {
           return { ...d, key: i };

@@ -22,28 +22,24 @@ const Staff = () => {
       title: "Staff ID",
       dataIndex: "staffId",
       sorter: (a, b) => a.staffId?.localeCompare(b.staffId),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Name",
       dataIndex: "fullname",
       sorter: (a, b) => a.fullname?.localeCompare(b.name),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Email",
       dataIndex: "email",
       sorter: (a, b) => a.email?.localeCompare(b.email),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
       sorter: (a, b) => a.phoneNumber?.localeCompare(b.phoneNumber),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
@@ -67,14 +63,12 @@ const Staff = () => {
       onFilter: (value, record) =>
         record.role?.indexOf(value.toUpperCase()) === 0,
       sorter: (a, b) => a.role?.localeCompare(b.role),
-      defaultSortOrder: "descend",
       render: (value) => getRole(value),
     },
     {
       title: "Start At",
       dataIndex: "startAt",
       sorter: (a, b) => a.startAt?.localeCompare(b.startAt),
-      defaultSortOrder: "descend",
       render: (value) => (
         <p className="table-cell">{dayjs(value).format("DD-MM-YYYY")}</p>
       ),
@@ -95,7 +89,6 @@ const Staff = () => {
       filteredValue: filteredInfo.status || null,
       onFilter: (value, record) => record.status === value,
       sorter: (a, b) => b.status - a.status,
-      defaultSortOrder: "descend",
       render: (value) => getStatus(value),
     },
     {

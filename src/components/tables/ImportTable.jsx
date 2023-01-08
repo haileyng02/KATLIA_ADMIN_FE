@@ -122,7 +122,6 @@ const ImportTable = ({
       title: "Product ID",
       dataIndex: "productId",
       sorter: (a, b) => a.productId - b.productId,
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
@@ -130,7 +129,6 @@ const ImportTable = ({
       dataIndex: "name",
       ...getColumnSearchProps("name"),
       sorter: (a, b) => a.name?.localeCompare(b.name),
-      defaultSortOrder: "descend",
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
@@ -139,7 +137,6 @@ const ImportTable = ({
       align: "center",
       ...getColumnSearchProps("color"),
       sorter: (a, b) => a.color?.localeCompare(b.color),
-      defaultSortOrder: "descend",
       render: (value) => (
         <center>
           <p className="table-cell uppercase text-center">{value}</p>
@@ -152,7 +149,6 @@ const ImportTable = ({
       align: "center",
       ...getColumnSearchProps("size"),
       sorter: (a, b) => a.size?.localeCompare(b.size),
-      defaultSortOrder: "descend",
       render: (value) => (
         <center>
           <p className="table-cell uppercase text-center">{value}</p>
@@ -164,7 +160,6 @@ const ImportTable = ({
       dataIndex: "unitPrice",
       align: "center",
       sorter: (a, b) => a.unitPrice - b.unitPrice,
-      defaultSortOrder: "descend",
       render: (value) => (
         <center>
           <p className="table-cell">{"$" + value}</p>
@@ -176,7 +171,6 @@ const ImportTable = ({
       dataIndex: "quantity",
       align: "center",
       sorter: (a, b) => a.quantity - b.quantity,
-      defaultSortOrder: "descend",
       render: (value) => (
         <center>
           <p className="table-cell">{value}</p>
@@ -188,7 +182,6 @@ const ImportTable = ({
       dataIndex: "total",
       align: "center",
       sorter: (a, b) => a.total - b.total,
-      defaultSortOrder: "descend",
       render: (value) => (
         <center>
           <p className="table-cell">{"$" + value.toFixed(2)}</p>
