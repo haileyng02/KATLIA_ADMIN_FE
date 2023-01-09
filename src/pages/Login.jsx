@@ -22,7 +22,19 @@ const Login = () => {
         routes.getSigninBody(email, password)
       );
       console.log(result);
-      handleSignIn(result.data.access_token);
+      if (result.data.canAccessAdminSite === false) {
+        setLoading(false);
+        form.setFields([
+          {
+            name: "email",
+            errors: [
+              "This account doesn't have permission to access this website",
+            ],
+          },
+        ]);
+      } else {
+        handleSignIn(result.data.access_token);
+      }
     } catch (err) {
       setLoading(false);
       if (err.response) {
