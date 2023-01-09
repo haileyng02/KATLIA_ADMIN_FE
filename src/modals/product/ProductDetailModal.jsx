@@ -28,7 +28,6 @@ const ProductDetailModal = ({ open, handleCancel, currentUser, currItem }) => {
         ...routes.getAccessTokenHeader(token),
         ...routes.getProductDetailIdParams(id),
       });
-      console.log(result.data);
       setDetail(result.data);
       setCurrColor(result.data.colorList[0]);
     } catch (err) {

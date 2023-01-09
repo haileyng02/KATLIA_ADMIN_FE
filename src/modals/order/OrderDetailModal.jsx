@@ -34,6 +34,10 @@ const OrderDetailModal = ({ open, handleCancel, currentUser, currItem }) => {
               <td>{dayjs(currItem?.createDate).format("DD/MM/YYYY")}</td>
             </tr>
             <tr>
+              <th>Note:</th>
+              <td>{currItem?.note}</td>
+            </tr>
+            <tr>
               <th>Total:</th>
               <td>{"$" + currItem?.total}</td>
             </tr>
