@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { Table, Tooltip, Input, Space, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import categories from "../../utils/categories";
 import { viewIcon, editIcon, deleteIcon } from "../../images/actions";
 
 const ProductTable = ({
@@ -14,6 +13,7 @@ const ProductTable = ({
   filteredInfo,
   setFilteredInfo,
   currentUser,
+  categories
 }) => {
   const searchInput = useRef(null);
   const [searchText, setSearchText] = useState("");

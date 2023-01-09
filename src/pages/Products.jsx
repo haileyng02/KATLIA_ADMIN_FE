@@ -22,6 +22,7 @@ const Products = () => {
   const [nextId, setNextId] = useState();
   const [filteredInfo, setFilteredInfo] = useState({});
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState();
 
   const handleAdd = () => {
     setCurrItem(null);
@@ -71,7 +72,15 @@ const Products = () => {
       setNextId(nextNewProductId);
       //Set data
       const products = result.data.map((d, i) => {
-        return { ...d, key: i };
+        return {
+          ...d,
+          key: i,
+          category:
+            d.gender.charAt(0).toUpperCase() +
+            d.gender.slice(1) +
+            "'s " +
+            d.category,
+        };
       });
       setData(products);
       dispatch(getProducts(products, nextNewProductId));
@@ -86,16 +95,6 @@ const Products = () => {
     }
     setLoading(false);
   };
-  useEffect(() => {
-    if (currentUser) {
-      if (allProducts) {
-        setData(allProducts);
-        setNextId(nextProductId);
-      } else {
-        getAllProducts();
-      }
-    }
-  }, [currentUser]);
 
   //Delete product
   const deleteProduct = async (id) => {
@@ -118,6 +117,33 @@ const Products = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      if (allProducts) {
+        setData(allProducts);
+        setNextId(nextProductId);
+      } else {
+        getAllProducts();
+      }
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (data) {
+      setCategories([
+        ...new Map(
+          data.map((d) => [
+            d.category,
+            {
+              text: d.category,
+              value: d.category,
+            },
+          ])
+        ).values(),
+      ]);
+    }
+  }, [data]);
 
   return (
     <div>
@@ -146,6 +172,7 @@ const Products = () => {
         filteredInfo={filteredInfo}
         setFilteredInfo={setFilteredInfo}
         currentUser={currentUser}
+        categories={categories}
       />
       <ProductDetailModal
         open={detailOpen}
