@@ -122,16 +122,16 @@ const Orders = () => {
               </center>
             </button>
           </Tooltip>
-          <Tooltip title={value.status < 3 ? "Cancel order" : null}>
+          <Tooltip title={value.status < 4 ? "Cancel order" : null}>
             <button
               className={`action-button ${
-                value.status >= 3 && "cursor-not-allowed"
+                value.status >= 4 && "cursor-not-allowed"
               }`}
               style={{
                 backgroundColor:
-                  value.status < 3 ? "rgba(253, 56, 56, 0.9)" : "#CDCDCD",
+                  value.status < 4 ? "rgba(253, 56, 56, 0.9)" : "#CDCDCD",
               }}
-              onClick={value.status < 3 ? () => handleCancelOrder(value) : null}
+              onClick={value.status < 4 ? () => handleCancelOrder(value) : null}
             >
               <center>
                 <img src={cancelIcon} alt="Cancel" />
@@ -192,10 +192,6 @@ const Orders = () => {
       }
     }
     setLoading(false);
-  };
-
-  const onChange = (pagination, filters, sorter, extra) => {
-    setFilteredInfo(filters);
   };
 
   const handleChooseStatus = (value) => {
@@ -285,7 +281,6 @@ const Orders = () => {
       <Table
         columns={columns}
         dataSource={data}
-        onChange={onChange}
         loading={loading}
         className="mt-5 pagination-active table-header"
       />
