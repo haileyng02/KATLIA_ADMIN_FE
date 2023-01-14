@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { DatePicker, Table, Segmented, Tooltip } from "antd";
 import { useSnackbar } from "notistack";
+import useColumnSearchProps from "../hooks/useColumnSearchProps";
 import getStatus, { getOrderStatusText } from "../utils/getStatus";
 import { viewIcon, checkIcon, cancelIcon } from "../images/actions";
 import CancelOrderModal from "../modals/order/CancelOrderModal";
@@ -20,8 +21,6 @@ const options = [
 ];
 
 const Orders = () => {
-  const { currentUser } = useSelector((state) => state.user);
-  const { enqueueSnackbar } = useSnackbar();
   const [cancelModal, setCancelModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [data, setData] = useState();
@@ -30,23 +29,29 @@ const Orders = () => {
   const [currItem, setCurrItem] = useState();
   const [option, setOption] = useState();
   const [date, setDate] = useState();
+  const { currentUser } = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
+  const { getColumnSearchProps, resetAll } = useColumnSearchProps({filteredInfo,setFilteredInfo});
 
   const columns = [
     {
       title: "Order ID",
       dataIndex: "orderId",
+      ...getColumnSearchProps("orderId"),
       sorter: (a, b) => a.orderId?.localeCompare(b.orderId),
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Customer's Name",
       dataIndex: "customerName",
+      ...getColumnSearchProps("customerName"),
       sorter: (a, b) => a.customerName?.localeCompare(b.customerName),
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Address",
       dataIndex: "address",
+      ...getColumnSearchProps("address"),
       sorter: (a, b) => a.address?.localeCompare(b.address),
       render: (value) => <p className="table-cell">{value}</p>,
     },
@@ -215,7 +220,7 @@ const Orders = () => {
   const handleClearFilter = () => {
     setOption("All Order");
     setDate(null);
-    setFilteredInfo({ ...filteredInfo, createDate: null });
+    resetAll();
   };
 
   useEffect(() => {
@@ -230,10 +235,7 @@ const Orders = () => {
   }, [option]);
 
   useEffect(() => {
-    if (!date) {
-      return;
-    }
-    console.log(filteredInfo);
+    if (!date) return;
     setFilteredInfo({ ...filteredInfo, createDate: [date] });
   }, [date]);
 

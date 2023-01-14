@@ -1,78 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Table } from "antd";
 import appApi from "../../api/appApi";
 import * as routes from "../../api/apiRoutes";
-
-const columns = [
-  {
-    title: "Product ID",
-    dataIndex: "productId",
-    sorter: (a, b) => a.productId - b.productId,
-    render: (value) => <p className="table-cell">{"#" + value}</p>,
-  },
-  {
-    title: "Product's Name",
-    dataIndex: "name",
-    sorter: (a, b) => a.name?.localeCompare(b.name),
-    render: (value) => <p className="table-cell">{value}</p>,
-  },
-  {
-    title: "Color",
-    dataIndex: "color",
-    align: "center",
-    sorter: (a, b) => a.color?.localeCompare(b.color),
-    render: (value) => (
-      <center>
-        <p className="table-cell uppercase text-center">{value}</p>
-      </center>
-    ),
-  },
-  {
-    title: "Size",
-    dataIndex: "size",
-    align: "center",
-    sorter: (a, b) => a.size?.localeCompare(b.size),
-    render: (value) => (
-      <center>
-        <p className="table-cell uppercase text-center">{value}</p>
-      </center>
-    ),
-  },
-  {
-    title: "Unit price",
-    dataIndex: "unitPrice",
-    align: "center",
-    sorter: (a, b) => a.unitPrice - b.unitPrice,
-    render: (value) => (
-      <center>
-        <p className="table-cell">{"$" + value}</p>
-      </center>
-    ),
-  },
-  {
-    title: "Quantity",
-    dataIndex: "quantity",
-    align: "center",
-    sorter: (a, b) => a.quantity - b.quantity,
-    render: (value) => (
-      <center>
-        <p className="table-cell">{value}</p>
-      </center>
-    ),
-  },
-  {
-    title: "Total",
-    align: "center",
-    render: (value) => (
-      <center>
-        <p className="table-cell">
-          {"$" + (value?.quantity * value?.unitPrice).toFixed(2)}
-        </p>
-      </center>
-    ),
-  },
-];
+import ImportTable from "./ImportTable";
 
 const ImportDetailTable = ({ currItem,open }) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -113,12 +43,7 @@ const ImportDetailTable = ({ currItem,open }) => {
   };
 
   return (
-    <Table
-      columns={columns}
-      dataSource={data}
-      loading={loading}
-      className="mt-5 pagination-active table-header"
-    />
+    <ImportTable data={data} loading={loading} hideAction/>
   );
 };
 

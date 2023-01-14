@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
+import useColumnSearchProps from "../hooks/useColumnSearchProps";
 import ProductDetailModal from "../modals/product/ProductDetailModal";
 import ModifyProductModal from "../modals/product/ModifyProductModal";
 import WarningModal from "../modals/WarningModal";
@@ -10,10 +11,6 @@ import { getProducts } from "../actions/products";
 import ProductTable from "../components/tables/ProductTable";
 
 const Products = () => {
-  const { currentUser } = useSelector((state) => state.user);
-  const { allProducts, nextProductId } = useSelector((state) => state.products);
-  const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const [detailOpen, setDetailOpen] = useState(false);
   const [modifyOpen, setModifyOpen] = useState(false);
   const [warningOpen, setWarningOpen] = useState(false);
@@ -23,6 +20,14 @@ const Products = () => {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState();
+  const { currentUser } = useSelector((state) => state.user);
+  const { allProducts, nextProductId } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const { resetAll } = useColumnSearchProps({
+    filteredInfo,
+    setFilteredInfo,
+  });
 
   const handleAdd = () => {
     setCurrItem(null);
@@ -159,7 +164,7 @@ const Products = () => {
             Add Item
           </button>
         )}
-        <button onClick={() => setFilteredInfo({})} className="clear-button">
+        <button onClick={resetAll} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Segmented, Table, Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
+import useColumnSearchProps from "../hooks/useColumnSearchProps";
 import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
 import ImportDetailModal from "../modals/import/ImportDetailModal";
@@ -11,24 +12,27 @@ import dayjs from "dayjs";
 import WarningModal from "../modals/WarningModal";
 
 const HistoryTab = ({ data, loading, setLoading, getStaffImportHistory }) => {
-  const { currentUser } = useSelector((state) => state.user);
-  const { enqueueSnackbar } = useSnackbar();
   const [detailOpen, setDetailOpen] = useState(false);
   const [warning, setWarning] = useState("");
   const [filteredInfo, setFilteredInfo] = useState({});
   const [option, setOption] = useState();
   const [currItem, setCurrItem] = useState();
+  const { currentUser } = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
+  const { getColumnSearchProps } = useColumnSearchProps({filteredInfo,setFilteredInfo});
 
   const columns = [
     {
       title: "Import ID",
       dataIndex: "id",
+      ...getColumnSearchProps("id"),
       sorter: (a, b) => a.id?.localeCompare(b.id),
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Staff's Name",
       dataIndex: "staffName",
+      ...getColumnSearchProps("staffName"),
       sorter: (a, b) => a.staffName?.localeCompare(b.staffName),
       render: (value) => <p className="table-cell">{value}</p>,
     },
