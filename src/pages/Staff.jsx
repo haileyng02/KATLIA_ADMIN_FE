@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import { Table } from "antd";
+import useColumnSearchProps from "../hooks/useColumnSearchProps";
 import getRole from "../utils/getRole";
 import { editIcon } from "../images/actions";
 import AddStaffModal from "../modals/staff/AddStaffModal";
@@ -10,35 +11,40 @@ import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
 
 const Staff = () => {
-  const { currentUser } = useSelector((state) => state.user);
   const [addOpen, setAddOpen] = useState(false);
   const [actionOpen, setActionOpen] = useState(false);
   const [data, setData] = useState();
   const [filteredInfo, setFilteredInfo] = useState({});
   const [curStaff, setCurStaff] = useState();
+  const { currentUser } = useSelector((state) => state.user);
+  const { getColumnSearchProps, resetAll } = useColumnSearchProps({filteredInfo,setFilteredInfo});
 
   const columns = [
     {
       title: "Staff ID",
       dataIndex: "staffId",
+      ...getColumnSearchProps("staffId"),
       sorter: (a, b) => a.staffId?.localeCompare(b.staffId),
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Name",
       dataIndex: "fullname",
+      ...getColumnSearchProps("fullname"),
       sorter: (a, b) => a.fullname?.localeCompare(b.name),
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Email",
       dataIndex: "email",
+      ...getColumnSearchProps("email"),
       sorter: (a, b) => a.email?.localeCompare(b.email),
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
+      ...getColumnSearchProps("phoneNumber"),
       sorter: (a, b) => a.phoneNumber?.localeCompare(b.phoneNumber),
       render: (value) => <p className="table-cell">{value}</p>,
     },
@@ -179,7 +185,7 @@ const Staff = () => {
         <button onClick={() => setAddOpen(true)} className="button">
           Add Staff
         </button>
-        <button onClick={() => setFilteredInfo({})} className="clear-button">
+        <button onClick={resetAll} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>

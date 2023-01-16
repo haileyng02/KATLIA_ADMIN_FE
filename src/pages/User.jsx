@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Table, Tooltip } from "antd";
+import useColumnSearchProps from "../hooks/useColumnSearchProps";
 import getRole from "../utils/getRole";
 import { profileIcon } from "../images/actions";
 import ProfileModal from "../modals/user/ProfileModal";
@@ -8,34 +9,39 @@ import appApi from "../api/appApi";
 import * as routes from "../api/apiRoutes";
 
 const User = () => {
-  const { currentUser } = useSelector((state) => state.user);
   const [profileOpen, setProfileOpen] = useState(false);
   const [data, setData] = useState();
   const [filteredInfo, setFilteredInfo] = useState({});
   const [currItem, setCurrItem] = useState();
+  const { currentUser } = useSelector((state) => state.user);
+  const { getColumnSearchProps, resetAll } = useColumnSearchProps({filteredInfo,setFilteredInfo});
 
   const columns = [
     {
       title: "User ID",
       dataIndex: "id",
+      ...getColumnSearchProps("id"),
       sorter: (a, b) => a.id?.localeCompare(b.id),
       render: (value) => <p className="table-cell">{"#" + value}</p>,
     },
     {
       title: "Name",
       dataIndex: "fullName",
+      ...getColumnSearchProps("fullName"),
       sorter: (a, b) => a.fullName?.localeCompare(b.fullName),
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Email",
       dataIndex: "email",
+      ...getColumnSearchProps("email"),
       sorter: (a, b) => a.email?.localeCompare(b.email),
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
+      ...getColumnSearchProps("phoneNumber"),
       sorter: (a, b) => a.phoneNumber?.localeCompare(b.phoneNumber),
       render: (value) => <p className="table-cell">{value}</p>,
     },
@@ -153,7 +159,7 @@ const User = () => {
         ) : null}
       </div>
       <div className="mt-[12px] flex justify-end">
-        <button onClick={() => setFilteredInfo({})} className="clear-button">
+        <button onClick={resetAll} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>

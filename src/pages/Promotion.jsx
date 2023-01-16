@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Table, Tooltip } from "antd";
 import { useSnackbar } from "notistack";
+import useColumnSearchProps from "../hooks/useColumnSearchProps";
 import { viewIcon, editIcon, deleteIcon } from "../images/actions";
 import AddDiscountModal from "../modals/promotion/AddDiscountModal";
 import DiscountProductsModal from "../modals/promotion/DiscountProductsModal";
@@ -10,13 +11,15 @@ import * as routes from "../api/apiRoutes";
 import dayjs from "dayjs";
 
 const Promotion = () => {
-  const { currentUser } = useSelector((state) => state.user);
-  const { enqueueSnackbar } = useSnackbar();
   const [addOpen, setAddOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
   const [currItem, setCurrItem] = useState(null);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState([]);
+  const [filteredInfo, setFilteredInfo] = useState({});
+  const { currentUser } = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
+  const { getColumnSearchProps, resetAll } = useColumnSearchProps({filteredInfo,setFilteredInfo});
 
   const handleAdd = () => {
     setCurrItem(null);
@@ -37,12 +40,14 @@ const Promotion = () => {
     {
       title: "Discount ID",
       dataIndex: "id",
+      ...getColumnSearchProps("id"),
       sorter: (a, b) => a.id?.localeCompare(b.id),
       render: (value) => <p className="table-cell">{value}</p>,
     },
     {
       title: "Discount Name",
       dataIndex: "discountName",
+      ...getColumnSearchProps("discountName"),
       sorter: (a, b) => a.discountName?.localeCompare(b.discountName),
       render: (value) => <p className="table-cell">{value}</p>,
     },
@@ -214,7 +219,7 @@ const Promotion = () => {
         >
           Add Discount
         </button>
-        <button className="clear-button">
+        <button onClick={resetAll} className="clear-button">
           <p>Clear Filter</p>
         </button>
       </div>
